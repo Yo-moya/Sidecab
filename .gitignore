@@ -1,0 +1,6 @@
+**/.vs
+**/.vscode
+**/*.csproj.user
+**/*.code-workspace
+obj/
+bin/
