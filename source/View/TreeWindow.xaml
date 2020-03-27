@@ -10,7 +10,7 @@
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
     FontFamily="{materialDesign:MaterialDesignFont}"
-    Title="TreeWindow" Height="450" Width="800" WindowStyle="None"
+    Title="TreeWindow" Height="450" Width="800" WindowStyle="None" ShowInTaskbar="False"
     Closing="Window_Closing" KeyDown="Window_KeyDown">
 
     <Grid>

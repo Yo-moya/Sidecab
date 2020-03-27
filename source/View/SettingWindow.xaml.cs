@@ -1,29 +1,17 @@
 ﻿
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.ComponentModel;
 
 namespace Sidecab.View
 {
-    public partial class TreeWindow : Window
+    public partial class SettingWindow : Window
     {
         //======================================================================
-        public TreeWindow()
+        public SettingWindow()
         {
-            WindowStyle = WindowStyle.None;
-            ResizeMode = ResizeMode.NoResize;
-            Topmost = true;
-
             InitializeComponent();
-        }
-
-        //======================================================================
-        public void Initialize(MainWindow mainWindow)
-        {
-            Top    = mainWindow.Top;
-            Left   = mainWindow.Left;
-            Height = mainWindow.Height;
-            Width  = App.Model.Settings.TreeWidth;
         }
 
         //======================================================================
@@ -40,6 +28,12 @@ namespace Sidecab.View
             {
                 Close();
             }
+        }
+
+        //======================================================================
+        private void Window_SourceInitialized(object sender, EventArgs e)
+        {
+            Utility.WindowAttributes.HideMinimizeButton(this);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Sidecab.View
     public partial class MainWindow
     {
         TreeWindow TreeWindow = null;
+        SettingWindow SettingWindow = null;
 
 
         //======================================================================
@@ -17,6 +18,8 @@ namespace Sidecab.View
 
             DockedWidthOrHeight = App.Model.Settings.KnobWidth;
             Background = new SolidColorBrush(App.Model.Settings.KnobColor);
+
+            Utility.WindowAttributes.SetAsToolWindow(this);
         }
 
         //======================================================================
@@ -37,12 +40,39 @@ namespace Sidecab.View
         }
 
         //======================================================================
+        public void OpenSettingWindow()
+        {
+            if (SettingWindow == null)
+            {
+                SettingWindow = new SettingWindow();
+                SettingWindow.Show();
+            }
+        }
+
+        //======================================================================
+        public void CloseSettingWindow()
+        {
+            SettingWindow?.Close();
+        }
+
+        //======================================================================
         public void NotifyChildWindowClosing(Window child)
         {
-            if ((child != null) && (child == TreeWindow))
+            if (child == null) return;
+
+            //------------------------------------------------------------------
+            if (child == TreeWindow)
             {
                 TreeWindow = null;
+                return;
             }
+            //------------------------------------------------------------------
+            if (child == SettingWindow)
+            {
+                SettingWindow = null;
+                return;
+            }
+            //------------------------------------------------------------------
         }
 
         //======================================================================
