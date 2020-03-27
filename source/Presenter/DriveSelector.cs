@@ -29,6 +29,7 @@ namespace Sidecab.Presenter
         {
             _driveList = new ObservableCollection<Drive>();
             foreach (var d in model) { _driveList.Add(new Drive(d)); }
+            _currentDrive = _driveList[0];
         }
 
 
