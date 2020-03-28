@@ -16,8 +16,8 @@ namespace Sidecab.View
         {
             InitializeComponent();
 
+            DataContext = App.Presenter;
             DockedWidthOrHeight = App.Model.Settings.KnobWidth;
-            Background = new SolidColorBrush(App.Model.Settings.KnobColor);
 
             Utility.WindowAttributes.SetAsToolWindow(this);
         }

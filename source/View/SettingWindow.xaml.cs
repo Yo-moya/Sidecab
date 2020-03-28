@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.ComponentModel;
 
@@ -12,6 +13,9 @@ namespace Sidecab.View
         public SettingWindow()
         {
             InitializeComponent();
+
+            DataContext = App.Presenter.Settings;
+            popup_KnobColor.DataContext = App.Presenter.Settings.KnobColor;
         }
 
         //======================================================================
@@ -40,18 +44,6 @@ namespace Sidecab.View
         private void button_KnobColor_Click(object sender, RoutedEventArgs e)
         {
             popup_KnobColor.IsOpen = true;
-        }
-
-        //======================================================================
-        private void button_TreeBackgroundColor_Click(object sender, RoutedEventArgs e)
-        {
-            popup_TreeBackgroundColor.IsOpen = true;
-        }
-
-        //======================================================================
-        private void button_TreeFontColor_Click(object sender, RoutedEventArgs e)
-        {
-            popup_TreeFontColor.IsOpen = true;
         }
     }
 }

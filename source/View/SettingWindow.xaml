@@ -24,11 +24,9 @@
         <Grid VerticalAlignment="Center">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -43,21 +41,10 @@
             <ComboBox Grid.Row="1" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Focusable="False"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Knob Color"/>
-            <Button x:Name="button_KnobColor"  Grid.Row="2" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="4,4" Background="Gray" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="False" Click="button_KnobColor_Click"/>
-
-            <TextBlock Grid.Row="3" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Tree Background Color"/>
-            <Button x:Name="button_TreeBackgroundColor" Grid.Row="3" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="4,4" Background="Gray" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="False" Click="button_TreeBackgroundColor_Click"/>
-
-            <TextBlock Grid.Row="4" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Tree Font Color"/>
-            <Button x:Name="button_TreeFontColor"  Grid.Row="4" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="4,4" Background="Gray" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="False" Cursor="Hand" Click="button_TreeFontColor_Click"/>
+            <Button x:Name="button_KnobColor"  Grid.Row="2" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                Padding="4,4" Height="25" Background="{Binding KnobBrush}" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="False" Click="button_KnobColor_Click"/>
 
             <Popup x:Name="popup_KnobColor" Placement="Bottom" PlacementTarget="{Binding ElementName=button_KnobColor}" StaysOpen="False">
-                <lc:ColorPicker/>
-            </Popup>
-            <Popup x:Name="popup_TreeBackgroundColor" Placement="Bottom" PlacementTarget="{Binding ElementName=button_TreeBackgroundColor}" StaysOpen="False">
-                <lc:ColorPicker/>
-            </Popup>
-            <Popup x:Name="popup_TreeFontColor" Placement="Bottom" PlacementTarget="{Binding ElementName=button_TreeFontColor}" StaysOpen="False">
                 <lc:ColorPicker/>
             </Popup>
 

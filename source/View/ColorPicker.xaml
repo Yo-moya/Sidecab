@@ -33,13 +33,13 @@
         <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="G"/>
         <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="B"/>
 
-        <Slider Grid.Row="0" Grid.Column="1" Margin="8,4" VerticalAlignment="Center" Width="256" Minimum="0" Maximum="255"/>
-        <Slider Grid.Row="1" Grid.Column="1" Margin="8,4" VerticalAlignment="Center" Width="256" Minimum="0" Maximum="255"/>
-        <Slider Grid.Row="2" Grid.Column="1" Margin="8,4" VerticalAlignment="Center" Width="256" Minimum="0" Maximum="255"/>
+        <Slider Grid.Row="0" Grid.Column="1" Margin="8,4" VerticalAlignment="Center" Width="256" Minimum="0" Maximum="255" Value="{Binding R}"/>
+        <Slider Grid.Row="1" Grid.Column="1" Margin="8,4" VerticalAlignment="Center" Width="256" Minimum="0" Maximum="255" Value="{Binding G}"/>
+        <Slider Grid.Row="2" Grid.Column="1" Margin="8,4" VerticalAlignment="Center" Width="256" Minimum="0" Maximum="255" Value="{Binding B}"/>
 
-        <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="30" Text="255"/>
-        <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Width="30" Text="255"/>
-        <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Width="30" Text="255"/>
+        <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="30" Text="{Binding R}"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Width="30" Text="{Binding G}"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Width="30" Text="{Binding B}"/>
 
     </Grid>
 

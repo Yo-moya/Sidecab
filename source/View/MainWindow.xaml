@@ -11,6 +11,8 @@
     TextElement.FontSize="14"
     FontFamily="{materialDesign:MaterialDesignFont}"
     Title="Sidecab" Height="450" Width="800" MinWidth="1" ShowInTaskbar="False"
+    Background="{Binding Settings.KnobBrush}"
+    DockedWidthOrHeight="{Binding Settings.KnobWidth}"
     MouseEnter="AppBarWindow_MouseEnter" MouseDown="AppBarWindow_MouseDown">
 
 </appbar:AppBarWindow>
