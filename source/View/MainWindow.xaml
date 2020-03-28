@@ -9,10 +9,12 @@
     mc:Ignorable="d"
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     FontFamily="{materialDesign:MaterialDesignFont}"
+    Background="{DynamicResource MaterialDesignPaper}"
     Title="Sidecab" Height="450" Width="800" MinWidth="1" ShowInTaskbar="False"
-    Background="{Binding Settings.KnobBrush}"
-    DockedWidthOrHeight="{Binding Settings.KnobWidth}"
-    MouseEnter="AppBarWindow_MouseEnter" MouseDown="AppBarWindow_MouseDown">
+    DockedWidthOrHeight="{Binding Settings.KnobWidth}">
+
+    <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{Binding Settings.KnobBrush}" MouseDown="Border_MouseDown"/>
 
 </appbar:AppBarWindow>

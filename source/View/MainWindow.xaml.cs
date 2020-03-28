@@ -76,13 +76,7 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void AppBarWindow_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        //======================================================================
-        private void AppBarWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             OpenTreeWindow();
         }
