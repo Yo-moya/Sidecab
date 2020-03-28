@@ -5,7 +5,6 @@ using System.Windows.Input;
 
 namespace Sidecab.View
 {
-    //==========================================================================
     public partial class FileTree : UserControl
     {
         //======================================================================

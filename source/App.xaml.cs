@@ -19,7 +19,12 @@ namespace Sidecab
         //======================================================================
         protected override void OnDeactivated(System.EventArgs e)
         {
-            (MainWindow as View.MainWindow).CloseTreeWindow();
+            var mainWindow = MainWindow as View.MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.CloseTreeWindow();
+                mainWindow.CloseSettingWindow();
+            }
         }
     }
 }

@@ -35,5 +35,23 @@ namespace Sidecab.View
         {
             Utility.WindowAttributes.HideMinimizeButton(this);
         }
+
+        //======================================================================
+        private void button_KnobColor_Click(object sender, RoutedEventArgs e)
+        {
+            popup_KnobColor.IsOpen = true;
+        }
+
+        //======================================================================
+        private void button_TreeBackgroundColor_Click(object sender, RoutedEventArgs e)
+        {
+            popup_TreeBackgroundColor.IsOpen = true;
+        }
+
+        //======================================================================
+        private void button_TreeFontColor_Click(object sender, RoutedEventArgs e)
+        {
+            popup_TreeFontColor.IsOpen = true;
+        }
     }
 }
