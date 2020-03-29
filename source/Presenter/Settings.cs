@@ -1,5 +1,7 @@
 ﻿
+using System;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Windows.Media;
 
 namespace Sidecab.Presenter
@@ -7,9 +9,43 @@ namespace Sidecab.Presenter
     public class Settings : Base
     {
         //----------------------------------------------------------------------
-        public double KnobWidth
+        public int TreeWidth
+        {
+            get { return _model.TreeWidth; }
+            set
+            {
+                _model.TreeWidth = Math.Max(10, value);
+
+                RaisePropertyChanged(nameof(TreeWidth));
+                RaisePropertyChanged(nameof(TreeWidthAsText));
+            }
+        }
+
+        //----------------------------------------------------------------------
+        public int KnobWidth
         {
             get { return _model.KnobWidth; }
+            set
+            {
+                _model.KnobWidth = Math.Max(1, value);
+
+                RaisePropertyChanged(nameof(KnobWidth));
+                RaisePropertyChanged(nameof(KnobWidthAsText));
+            }
+        }
+
+        //----------------------------------------------------------------------
+        public string TreeWidthAsText
+        {
+            get { return _model.TreeWidth.ToString(); }
+            set { TreeWidth = ConvertTextToNumber(value); }
+        }
+
+        //----------------------------------------------------------------------
+        public string KnobWidthAsText
+        {
+            get { return _model.KnobWidth.ToString(); }
+            set { KnobWidth = ConvertTextToNumber(value); }
         }
 
         //----------------------------------------------------------------------
@@ -46,6 +82,13 @@ namespace Sidecab.Presenter
 
             _model.KnobColor = color;
             RaisePropertyChanged(nameof(KnobBrush));
+        }
+
+        //======================================================================
+        private int ConvertTextToNumber(string text)
+        {
+            text = Regex.Replace(text, @"\D", "");
+            return int.Parse((text == "") ? "0" : text);
         }
 
 

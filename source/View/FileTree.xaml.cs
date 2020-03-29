@@ -27,8 +27,7 @@ namespace Sidecab.View
         //======================================================================
         private void button_Settings_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = App.Current.MainWindow as MainWindow;
-            mainWindow?.OpenSettingWindow();
+            (App.Current.MainWindow as MainWindow)?.OpenSettingWindow();
         }
     }
 }

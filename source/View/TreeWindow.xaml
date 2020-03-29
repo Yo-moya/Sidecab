@@ -5,12 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:lc="clr-namespace:Sidecab.View"
-    xmlns:pr="clr-namespace:Sidecab.Presenter"
     mc:Ignorable="d"
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
     FontFamily="{materialDesign:MaterialDesignFont}"
-    Title="TreeWindow" Height="450" Width="800" WindowStyle="None" ShowInTaskbar="False"
+    Title="TreeWindow" WindowStyle="None" ShowInTaskbar="False"
+    Width="{Binding Settings.TreeWidth, Mode=TwoWay}" d:DesignHeight="450" d:DesignWidth="400"
     Closing="Window_Closing" KeyDown="Window_KeyDown">
 
     <Grid>

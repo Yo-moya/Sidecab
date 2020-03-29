@@ -15,22 +15,21 @@ namespace Sidecab.View
             Topmost = true;
 
             InitializeComponent();
+            DataContext = App.Presenter;
         }
 
         //======================================================================
-        public void Initialize(MainWindow mainWindow)
+        public void SetSizePositionFrom(Window parentWindow)
         {
-            Top    = mainWindow.Top;
-            Left   = mainWindow.Left;
-            Height = mainWindow.Height;
-            Width  = App.Model.Settings.TreeWidth;
+            Top    = parentWindow.Top;
+            Left   = parentWindow.Left;
+            Height = parentWindow.Height;
         }
 
         //======================================================================
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            var mainWindow = App.Current.MainWindow as MainWindow;
-            mainWindow?.NotifyChildWindowClosing(this);
+            (App.Current.MainWindow as MainWindow)?.NotifyChildWindowClosing(this);
         }
 
         //======================================================================

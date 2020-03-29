@@ -15,11 +15,8 @@ namespace Sidecab.View
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = App.Presenter;
-            DockedWidthOrHeight = App.Model.Settings.KnobWidth;
-
             Utility.WindowAttributes.SetAsToolWindow(this);
+            DataContext = App.Presenter;
         }
 
         //======================================================================
@@ -28,7 +25,7 @@ namespace Sidecab.View
             if (TreeWindow == null)
             {
                 TreeWindow = new TreeWindow();
-                TreeWindow.Initialize(this);
+                TreeWindow.SetSizePositionFrom(this);
                 TreeWindow.Show();
             }
         }

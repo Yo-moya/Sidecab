@@ -28,8 +28,7 @@ namespace Sidecab.View
             DataObject.RemovePastingHandler(textBox_TreeWidth, TextBox_Pasting);
             DataObject.RemovePastingHandler(textBox_KnobWidth, TextBox_Pasting);
 
-            var mainWindow = App.Current.MainWindow as MainWindow;
-            mainWindow?.NotifyChildWindowClosing(this);
+            (App.Current.MainWindow as MainWindow)?.NotifyChildWindowClosing(this);
         }
 
         //======================================================================
@@ -50,51 +49,68 @@ namespace Sidecab.View
         //======================================================================
         private void button_KnobColor_Click(object sender, RoutedEventArgs e)
         {
+            (App.Current.MainWindow as MainWindow)?.CloseTreeWindow();
             popup_KnobColor.IsOpen = true;
         }
 
         //======================================================================
         private void TextBox_Pasting(object sender, DataObjectPastingEventArgs e)
         {
-            var textBox = sender as TextBox;
-            if (textBox == null) return;
-
             var pasted = e.SourceDataObject.GetData(DataFormats.UnicodeText) as string;
             if (pasted == null) return;
 
-            var selected = textBox.SelectionStart;
-
-            var newText = Regex.Replace(pasted, @"\D", "");
-            var allText = textBox.Text
-                .Remove(textBox.SelectionStart, textBox.SelectionLength)
-                .Insert(textBox.SelectionStart, newText);
-
-            e.CancelCommand();
-            e.Handled = true;
-
-            textBox.Text = allText;
-            textBox.SelectionStart = selected + newText.Length;
-            textBox.SelectionLength = 0;
+            if (CorrectInputText(sender, pasted))
+            {
+                e.CancelCommand();
+                e.Handled = true;
+            }
         }
 
         //======================================================================
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
+            if (CorrectInputText(sender, e.Text))
+            {
+                e.Handled = true;
+            }
+        }
+
+        //======================================================================
+        private bool CorrectInputText(object sender, string input)
+        {
             var textBox = sender as TextBox;
-            if (textBox == null) return;
+            if (textBox == null) return false;
 
-            var selected = textBox.SelectionStart;
+            var selection = textBox.SelectionStart;
 
-            var newText = Regex.Replace(e.Text, @"\D", "");
-            var allText = textBox.Text
+            var corrected = Regex.Replace(input, @"\D", "");
+            var wholeText = textBox.Text
                 .Remove(textBox.SelectionStart, textBox.SelectionLength)
-                .Insert(textBox.SelectionStart, newText);
+                .Insert(textBox.SelectionStart, corrected);
 
-            e.Handled = true;
-
-            textBox.Text = allText;
-            textBox.SelectionStart = selected + newText.Length;
+            textBox.Text = wholeText;
+            textBox.SelectionStart = selection + corrected.Length;
             textBox.SelectionLength = 0;
+
+            return true;
+        }
+
+        //======================================================================
+        private void KnobEditBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            (App.Current.MainWindow as MainWindow)?.CloseTreeWindow();
+        }
+
+        //======================================================================
+        private void TreeEditBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var ui = sender as UIElement;
+            if (ui == null) return;
+
+            (App.Current.MainWindow as MainWindow)?.OpenTreeWindow();
+
+            Focus();
+            ui.Focus();
         }
     }
 }
