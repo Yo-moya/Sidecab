@@ -71,6 +71,12 @@ namespace Sidecab.Presenter
         }
 
         //======================================================================
+        public void Save()
+        {
+            _model.Save();
+        }
+
+        //======================================================================
         private void KnobColor_Changed(object sender, PropertyChangedEventArgs e)
         {
             Color color;

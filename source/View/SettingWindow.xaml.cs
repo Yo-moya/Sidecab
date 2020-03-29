@@ -28,6 +28,8 @@ namespace Sidecab.View
             DataObject.RemovePastingHandler(textBox_TreeWidth, TextBox_Pasting);
             DataObject.RemovePastingHandler(textBox_KnobWidth, TextBox_Pasting);
 
+            (DataContext as Presenter.Settings)?.Save();
+
             (App.Current.MainWindow as MainWindow)?.NotifyChildWindowClosing(this);
         }
 

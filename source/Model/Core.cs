@@ -6,7 +6,7 @@ namespace Sidecab.Model
 {
     public class Core
     {
-        public Settings Settings { get; private set; }
+        public Settings Settings { get { return _settings; } }
         public Directory RootDirectory { get; private set; }
         public List<Drive> DriveList { get; private set; }
 
@@ -15,7 +15,7 @@ namespace Sidecab.Model
         public Core()
         {
             UpdateDriveList();
-            Settings = new Settings();
+            _settings = Settings.Load() ?? new Settings();
         }
 
         //======================================================================
@@ -54,6 +54,7 @@ namespace Sidecab.Model
         }
 
 
+        private Settings _settings;
         private List<Directory> _rootDirectoryList;
     }
 }
