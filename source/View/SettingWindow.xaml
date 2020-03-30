@@ -11,7 +11,7 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     FontFamily="{materialDesign:MaterialDesignFont}"
     Background="{DynamicResource MaterialDesignPaper}"
-    Title="Setting" Height="350" Width="450" MinHeight="300" MinWidth="400"
+    Title="Settings" Height="350" Width="450" MinHeight="300" MinWidth="400"
     WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False"
     Closing="Window_Closing" KeyDown="Window_KeyDown" SourceInitialized="Window_SourceInitialized">
 

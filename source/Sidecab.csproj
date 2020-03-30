@@ -6,12 +6,22 @@
     <UseWPF>true</UseWPF>
     <Authors>Motoya Yoshizne</Authors>
     <Product />
-    <RepositoryUrl>https://github.com/MotoyaYoshizne/Sidecab</RepositoryUrl>
+    <RepositoryUrl></RepositoryUrl>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <PackageProjectUrl>https://github.com/MotoyaYoshizne/Sidecab</PackageProjectUrl>
+    <PackageIcon>Icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

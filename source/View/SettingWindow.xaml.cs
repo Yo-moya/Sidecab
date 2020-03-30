@@ -45,6 +45,7 @@ namespace Sidecab.View
         //======================================================================
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
+            Utility.WindowAttributes.HideTitleBarIcon  (this);
             Utility.WindowAttributes.HideMinimizeButton(this);
         }
 
