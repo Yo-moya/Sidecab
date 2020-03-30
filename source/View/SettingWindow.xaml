@@ -37,10 +37,12 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Position"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch" GotFocus="KnobEditBox_GotFocus"/>
+            <ComboBox x:Name="comboBox_Position" Grid.Row="0" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding PositionSelector.List}" SelectedItem="{Binding PositionSelector.Current}" GotFocus="KnobEditBox_GotFocus"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Display"/>
-            <ComboBox Grid.Row="1" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch" GotFocus="KnobEditBox_GotFocus"/>
+            <ComboBox x:Name="comboBox_Display" Grid.Row="1" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding DisplaySelector.List}" SelectedItem="{Binding DisplaySelector.Current}" GotFocus="KnobEditBox_GotFocus"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Tree Width"/>
             <TextBox x:Name="textBox_TreeWidth" Grid.Row="2" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"

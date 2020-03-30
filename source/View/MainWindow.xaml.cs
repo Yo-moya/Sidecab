@@ -20,12 +20,13 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        public void OpenTreeWindow()
+        public void OpenTreeWindow(bool activate = true)
         {
             if (TreeWindow == null)
             {
                 TreeWindow = new TreeWindow();
                 TreeWindow.SetSizePositionFrom(this);
+                TreeWindow.ShowActivated = activate;
                 TreeWindow.Show();
             }
         }

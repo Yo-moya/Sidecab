@@ -7,9 +7,26 @@ namespace Sidecab.Model
 {
     public class Settings
     {
-        public int   KnobWidth { get; set; } = 10;
-        public int   TreeWidth { get; set; } = 300;
+        public int KnobWidth { get; set; } = 10;
+        public int TreeWidth { get; set; } = 300;
+
+        public DockPosition DockPosition { get; set; } = DockPosition.Left;
         public Color KnobColor { get; set; } = Colors.Orange;
+
+        //----------------------------------------------------------------------
+        public int DisplayIndex
+        {
+            get { return _displayIndex; }
+            set
+            {
+                using (var monitors = WpfAppBar.MonitorInfo.GetAllMonitors().GetEnumerator())
+                {
+                    int count = 0;
+                    while (monitors.MoveNext()) { count++; }
+                    if (_displayIndex >= count) { _displayIndex = count - 1; }
+                }
+            }
+        }
 
         //----------------------------------------------------------------------
         private static string SettingFilePath
@@ -50,8 +67,8 @@ namespace Sidecab.Model
             {
                 using (var file = new StreamWriter(SettingFilePath))
                 {
-                    var json = new JsonSerializer();
-                    json.Serialize(new JsonTextWriter(file), this);
+                    var str = JsonConvert.SerializeObject(this, Formatting.Indented);
+                    file.Write(str);
                 }
             }
             //------------------------------------------------------------------
@@ -60,5 +77,15 @@ namespace Sidecab.Model
             }
             //------------------------------------------------------------------
         }
+
+
+        private int _displayIndex = 0;
+    }
+
+    //==========================================================================
+    public enum DockPosition
+    {
+        Left ,
+        Right,
     }
 }

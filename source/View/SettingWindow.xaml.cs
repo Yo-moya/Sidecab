@@ -107,13 +107,7 @@ namespace Sidecab.View
         //======================================================================
         private void TreeEditBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            var ui = sender as UIElement;
-            if (ui == null) return;
-
-            (App.Current.MainWindow as MainWindow)?.OpenTreeWindow();
-
-            Focus();
-            ui.Focus();
+            (App.Current.MainWindow as MainWindow)?.OpenTreeWindow(activate : false);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿
 using System.ComponentModel;
-using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace Sidecab.Presenter
 {
@@ -19,7 +19,7 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        public DriveSelector DriveSelector
+        public Selector<Drive> DriveSelector
         {
             get { return _driveSelector; }
         }
@@ -31,7 +31,10 @@ namespace Sidecab.Presenter
             _model = model;
             _settings = new Settings(model.Settings);
 
-            _driveSelector = new DriveSelector(model.DriveList);
+            var drives = new List<Drive>(model.DriveList.Count);
+            foreach (var d in model.DriveList) { drives.Add(new Drive(d)); }
+
+            _driveSelector = new Selector<Drive>(drives);
             _driveSelector.PropertyChanged += Drive_Changed;
 
             _rootDirectory = new Directory(model.RootDirectory);
@@ -40,14 +43,14 @@ namespace Sidecab.Presenter
         //======================================================================
         private void Drive_Changed(object sender, PropertyChangedEventArgs e)
         {
-            _model.SelectDrive(_driveSelector.CurrentDrive.DriveLetter);
+            _model.SelectDrive(_driveSelector.Current.DriveLetter);
             RaisePropertyChanged(nameof(RootDirectory));
         }
 
 
         private Model.Core _model;
         private Settings _settings;
-        private DriveSelector _driveSelector;
+        private Selector<Drive> _driveSelector;
         private Directory _rootDirectory;
     }
 }

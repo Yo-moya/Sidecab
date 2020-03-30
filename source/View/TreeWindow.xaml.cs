@@ -24,6 +24,11 @@ namespace Sidecab.View
             Top    = parentWindow.Top;
             Left   = parentWindow.Left;
             Height = parentWindow.Height;
+
+            if (App.Model.Settings.DockPosition == Model.DockPosition.Right)
+            {
+                Left -= App.Model.Settings.TreeWidth - App.Model.Settings.KnobWidth;
+            }
         }
 
         //======================================================================

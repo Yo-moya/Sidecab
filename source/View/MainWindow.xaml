@@ -13,7 +13,7 @@
     FontFamily="{materialDesign:MaterialDesignFont}"
     Background="{DynamicResource MaterialDesignPaper}"
     Title="Sidecab" Height="450" Width="800" MinWidth="1" ShowInTaskbar="False"
-    DockedWidthOrHeight="{Binding Settings.KnobWidth}">
+    Monitor="{Binding Settings.DisplayToDock}" DockMode="{Binding Settings.DockPosition}" DockedWidthOrHeight="{Binding Settings.KnobWidth}">
 
     <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{Binding Settings.KnobBrush}" MouseDown="Border_MouseDown"/>
 
