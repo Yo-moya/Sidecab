@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Sidecab.Presenter
 {
@@ -9,25 +10,19 @@ namespace Sidecab.Presenter
         public string Name { get { return _model.Name; } }
 
         //----------------------------------------------------------------------
-        public List<Directory> Children
+        public ObservableCollection<Directory> Children
         {
             get
             {
-                //--------------------------------------------------------------
-                var subdirMd = _model.ListSubdirectories();
-                if (subdirMd != null)
+                var source = _model.GetChildren();
+                _children.Clear();
+
+                foreach (var child in source)
                 {
-                    var subdirPr = new List<Directory>(subdirMd.Count);
-                    foreach (var dirMd in subdirMd)
-                    {
-                        subdirPr.Add(new Directory(dirMd));
-                    }
-
-                    return subdirPr;
+                    _children.Add(new Directory(child));
                 }
-                //--------------------------------------------------------------
 
-                return null;
+                return _children;
             }
         }
 
@@ -36,6 +31,19 @@ namespace Sidecab.Presenter
         public Directory(Model.Directory model)
         {
             _model = model;
+            _model.ChildrenUpdated += OnChildrenUpdated;
+        }
+
+        //======================================================================
+        ~Directory()
+        {
+            _model.ChildrenUpdated -= OnChildrenUpdated;
+        }
+
+        //======================================================================
+        public void ListSubdirectories(bool listSubSubdirectories)
+        {
+            _model.ListSubdirectories(listSubSubdirectories);
         }
 
         //======================================================================
@@ -45,6 +53,14 @@ namespace Sidecab.Presenter
         }
 
 
-        private Model.Directory _model;
+        //======================================================================
+        void OnChildrenUpdated()
+        {
+            RaisePropertyChanged(nameof(Children));
+        }
+
+
+        protected Model.Directory _model;
+        private ObservableCollection<Directory> _children = new ObservableCollection<Directory>();
     }
 }

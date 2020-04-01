@@ -8,11 +8,7 @@ namespace Sidecab.Presenter
     //==========================================================================
     public class Selector<T> : Base where T : class
     {
-        //----------------------------------------------------------------------
-        public ObservableCollection<T> List
-        {
-            get { return _list; }
-        }
+        public ObservableCollection<T> List { get; private set; }
 
         //----------------------------------------------------------------------
         public T Current
@@ -28,11 +24,11 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public int Index
         {
-            get { return _list.IndexOf(_current); }
+            get { return List.IndexOf(_current); }
             set
             {
-                int index = Math.Min(Math.Max(0, value), _list.Count - 1);
-                _current = _list[index];
+                int index = Math.Min(Math.Max(0, value), List.Count - 1);
+                _current = List[index];
             }
         }
 
@@ -40,12 +36,11 @@ namespace Sidecab.Presenter
         //======================================================================
         public Selector(IEnumerable<T> source)
         {
-            _list = new ObservableCollection<T>(source);
-            _current = _list[0];
+            List = new ObservableCollection<T>(source);
+            _current = List[0];
         }
 
 
-        private ObservableCollection<T> _list;
         private T _current;
     }
 }

@@ -16,6 +16,7 @@ namespace Sidecab.View
             DataContext = App.Presenter;
         }
 
+
         //======================================================================
         private T FindParent<T>(DependencyObject child) where T : DependencyObject
         {
@@ -57,6 +58,12 @@ namespace Sidecab.View
                 var directory = treeView_Directories.SelectedItem as Presenter.Directory;
                 if (directory != null) { directory.Open(); }
             }
+        }
+
+        //======================================================================
+        private void treeView_Directories_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            (e.NewValue as Presenter.Directory)?.ListSubdirectories(listSubSubdirectories : true);
         }
     }
 }

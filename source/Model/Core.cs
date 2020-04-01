@@ -1,60 +1,34 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.IO;
 
 namespace Sidecab.Model
 {
     public class Core
     {
-        public Settings Settings { get { return _settings; } }
-        public Directory RootDirectory { get; private set; }
-        public List<Drive> DriveList { get; private set; }
+        public Settings Settings { get; private set; }
+        public List<Root> RootLocations { get; private set; }
+        public Root CurrentRoot { get; private set; }
 
 
         //======================================================================
         public Core()
         {
-            UpdateDriveList();
-            _settings = Settings.Load() ?? new Settings();
+            Settings = Settings.Load() ?? new Settings();
+            RootLocations = Root.EnumerateDrives();
+            CurrentRoot = (RootLocations.Count > 0) ? RootLocations[0] : null;
         }
 
         //======================================================================
-        public void SelectDrive(string driveLetter)
+        public void SetRoot(string path)
         {
-            for (int i = 0; i < DriveList.Count; i++)
+            foreach (var root in RootLocations)
             {
-                if (DriveList[i].DriveLetter == driveLetter)
+                if (root.Path == path)
                 {
-                    RootDirectory = _rootDirectoryList[i];
+                    CurrentRoot = root;
                     break;
                 }
             }
         }
-
-        //======================================================================
-        private void UpdateDriveList()
-        {
-            var drives = DriveInfo.GetDrives();
-
-            DriveList = new List<Drive>(drives.Length);
-            _rootDirectoryList = new List<Directory>(drives.Length);
-
-            //------------------------------------------------------------------
-            foreach(var d in drives)
-            {
-                if (d.IsReady)
-                {
-                    DriveList.Add(new Drive(d));
-                    _rootDirectoryList.Add(new Directory(d.Name));
-                }
-            }
-            //------------------------------------------------------------------
-
-            RootDirectory = _rootDirectoryList[0];
-        }
-
-
-        private Settings _settings;
-        private List<Directory> _rootDirectoryList;
     }
 }

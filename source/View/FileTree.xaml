@@ -28,14 +28,14 @@
         </Grid.ColumnDefinitions>
 
         <Button x:Name="button_Settings" Grid.Row="0" Grid.Column="0" Margin="4" Padding="8,8" Focusable="False" Style="{DynamicResource MaterialDesignFlatButton}" Click="button_Settings_Click">
-            <materialDesign:PackIcon Kind="Cog" Height="{Binding Height, ElementName=comboBox_DriveSelector}" Width="{Binding Height, RelativeSource={RelativeSource Self}}"/>
+            <materialDesign:PackIcon Kind="Cog" Height="{Binding Height, ElementName=comboBox_RootSelector}" Width="{Binding Height, RelativeSource={RelativeSource Self}}"/>
         </Button>
 
-        <ComboBox x:Name="comboBox_DriveSelector" Grid.Row="0" Grid.Column="1" Margin="4,4,16,4" HorizontalAlignment="Stretch"
-            ItemsSource="{Binding DriveSelector.List}" SelectedItem="{Binding DriveSelector.Current}" DisplayMemberPath="Caption" Focusable="False"/>
+        <ComboBox x:Name="comboBox_RootSelector" Grid.Row="0" Grid.Column="1" Margin="4,4,16,4" HorizontalAlignment="Stretch"
+            ItemsSource="{Binding RootLocations.List}" SelectedItem="{Binding RootLocations.Current}" DisplayMemberPath="SelectorCaption" Focusable="False"/>
 
-        <TreeView x:Name="treeView_Directories" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ItemsSource="{Binding RootDirectory.Children}"
-            PreviewMouseDoubleClick="treeView_Directories_PreviewMouseDoubleClick" PreviewMouseLeftButtonUp="treeView_Directories_PreviewMouseLeftButtonUp">
+        <TreeView x:Name="treeView_Directories" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+            ItemsSource="{Binding RootLocations.Current.Children}" PreviewMouseDoubleClick="treeView_Directories_PreviewMouseDoubleClick" PreviewMouseLeftButtonUp="treeView_Directories_PreviewMouseLeftButtonUp" SelectedItemChanged="treeView_Directories_SelectedItemChanged">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="pr:Directory" ItemsSource="{Binding Children}">
                     <TextBlock Text="{Binding Name}" VerticalAlignment="Stretch" Margin="0"/>
