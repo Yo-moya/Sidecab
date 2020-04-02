@@ -13,7 +13,7 @@ namespace Sidecab.View
         public FileTree()
         {
             InitializeComponent();
-            DataContext = App.Presenter;
+            this.DataContext = App.Presenter;
         }
 
 
@@ -39,6 +39,19 @@ namespace Sidecab.View
         }
 
         //======================================================================
+        private void treeView_Directories_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var clicked = FindParent<TreeViewItem>(e.OriginalSource as DependencyObject);
+            if (clicked != null)
+            {
+                e.Handled = true;
+
+                var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
+                if (directory != null) { directory.Open(); }
+            }
+        }
+
+        //======================================================================
         private void treeView_Directories_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is ToggleButton) return;
@@ -48,22 +61,40 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void treeView_Directories_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void treeView_Directories_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var clicked = FindParent<TreeViewItem>(e.OriginalSource as DependencyObject);
-            if (clicked != null)
+            if (clicked == null)
             {
                 e.Handled = true;
-
-                var directory = treeView_Directories.SelectedItem as Presenter.Directory;
-                if (directory != null) { directory.Open(); }
+                return;
             }
+
+            clicked.IsSelected = true;
         }
 
         //======================================================================
         private void treeView_Directories_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             (e.NewValue as Presenter.Directory)?.ListSubdirectories(listSubSubdirectories : true);
+        }
+
+        //======================================================================
+        private void manuItem_Root_Click(object sender, RoutedEventArgs e)
+        {
+            var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
+            if (directory == null) return;
+
+            App.Presenter.SetPinnedDirectory(directory);
+        }
+
+        //======================================================================
+        private void menuItem_Open_Click(object sender, RoutedEventArgs e)
+        {
+            var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
+            if (directory == null) return;
+
+            directory.Open();
         }
     }
 }

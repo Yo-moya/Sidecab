@@ -13,10 +13,10 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public T Current
         {
-            get { return _current; }
+            get { return this.current; }
             set
             {
-                _current = value;
+                this.current = value;
                 RaisePropertyChanged();
             }
         }
@@ -24,11 +24,11 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public int Index
         {
-            get { return List.IndexOf(_current); }
+            get { return List.IndexOf(this.current); }
             set
             {
-                int index = Math.Min(Math.Max(0, value), List.Count - 1);
-                _current = List[index];
+                int index = Math.Min(Math.Max(0, value), this.List.Count - 1);
+                this.current = List[index];
             }
         }
 
@@ -36,11 +36,11 @@ namespace Sidecab.Presenter
         //======================================================================
         public Selector(IEnumerable<T> source)
         {
-            List = new ObservableCollection<T>(source);
-            _current = List[0];
+            this.List = new ObservableCollection<T>(source);
+            this.current = this.List[0];
         }
 
 
-        private T _current;
+        private T current;
     }
 }

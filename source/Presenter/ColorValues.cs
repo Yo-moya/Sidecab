@@ -8,10 +8,10 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public byte R
         {
-            get { return _r; }
+            get { return this.r; }
             set
             {
-                _r = value;
+                this.r = value;
                 RaisePropertyChanged();
             }
         }
@@ -19,10 +19,10 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public byte G
         {
-            get { return _g; }
+            get { return this.g; }
             set
             {
-                _g = value;
+                this.g = value;
                 RaisePropertyChanged();
             }
         }
@@ -30,10 +30,10 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public byte B
         {
-            get { return _b; }
+            get { return this.b; }
             set
             {
-                _b = value;
+                this.b = value;
                 RaisePropertyChanged();
             }
         }
@@ -42,14 +42,14 @@ namespace Sidecab.Presenter
         //======================================================================
         public ColorValues(Color color)
         {
-            _r = color.R;
-            _g = color.G;
-            _b = color.B;
+            this.r = color.R;
+            this.g = color.G;
+            this.b = color.B;
         }
 
 
-        private byte _r = 255;
-        private byte _g = 255;
-        private byte _b = 255;
+        private byte r = 255;
+        private byte g = 255;
+        private byte b = 255;
     }
 }

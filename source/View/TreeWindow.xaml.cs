@@ -10,24 +10,24 @@ namespace Sidecab.View
         //======================================================================
         public TreeWindow()
         {
-            WindowStyle = WindowStyle.None;
-            ResizeMode = ResizeMode.NoResize;
-            Topmost = true;
+            this.WindowStyle = WindowStyle.None;
+            this.ResizeMode = ResizeMode.NoResize;
+            this.Topmost = true;
 
             InitializeComponent();
-            DataContext = App.Presenter;
+            this.DataContext = App.Presenter;
         }
 
         //======================================================================
         public void SetSizePositionFrom(Window parentWindow)
         {
-            Top    = parentWindow.Top;
-            Left   = parentWindow.Left;
-            Height = parentWindow.Height;
+            this.Top    = parentWindow.Top;
+            this.Left   = parentWindow.Left;
+            this.Height = parentWindow.Height;
 
             if (App.Model.Settings.DockPosition == Model.DockPosition.Right)
             {
-                Left -= App.Model.Settings.TreeWidth - App.Model.Settings.KnobWidth;
+                this.Left -= App.Model.Settings.TreeWidth - App.Model.Settings.KnobWidth;
             }
         }
 

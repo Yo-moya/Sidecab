@@ -27,10 +27,13 @@ namespace Sidecab.Model
             var location = System.IO.Path.GetDirectoryName(path);
             if (location == null) { location = path; }
 
-            Path = path;
-            Name = path.Substring(location.Length);
+            this.Path = path;
+            this.Name = path.Substring(location.Length);
 
-            if (Name.StartsWith('\\')) { Name = Name.Substring(1); }
+            if (this.Name.StartsWith('\\'))
+            {
+                this.Name = this.Name.Substring(1);
+            }
         }
 
         //======================================================================
@@ -44,38 +47,30 @@ namespace Sidecab.Model
         {
             List<Directory> children = null;
 
-            //------------------------------------------------------------------
-            try
+            lock (this.subdirectories)
             {
-                Monitor.Enter(_subdirectories);
-                children = new List<Directory>(_subdirectories);
+                children = new List<Directory>(this.subdirectories);
             }
-            //------------------------------------------------------------------
-            finally
-            {
-                Monitor.Exit(_subdirectories);
-            }
-            //------------------------------------------------------------------
 
             return children;
         }
 
         //======================================================================
-        public async void ListSubdirectories(bool listSubSubdirectories = false)
+        public void SetChildren(List<Directory> source)
         {
-            await _semaphore.WaitAsync();
+            lock (this.subdirectories)
+            {
+                this.subdirectories = source;
+            }
+        }
 
-            //------------------------------------------------------------------
-            try
+        //======================================================================
+        public void ListSubdirectories(bool listSubSubdirectories = false)
+        {
+            if ((Path.Length > 0) && Monitor.TryEnter(listingSubdirectories))
             {
                 EnumerateSubdirectories(listSubSubdirectories);
             }
-            //------------------------------------------------------------------
-            finally
-            {
-                _semaphore.Release();
-            }
-            //------------------------------------------------------------------
         }
 
         //======================================================================
@@ -86,9 +81,9 @@ namespace Sidecab.Model
                 //--------------------------------------------------------------
                 try
                 {
-                    var dirInfo = new System.IO.DirectoryInfo(Path);
+                    var dirInfo = new System.IO.DirectoryInfo(this.Path);
                     var subdirInfoList = dirInfo.GetDirectories();
-                    _subdirectories = new List<Directory>(subdirInfoList.Length);
+                    this.subdirectories = new List<Directory>(subdirInfoList.Length);
 
                     BuildSubdirectoryList(subdirInfoList, listSubSubdirectories);
                 }
@@ -107,35 +102,25 @@ namespace Sidecab.Model
             foreach (var dirInfo in directoryInfoSource)
             {
                 if (dirInfo.Attributes.HasFlag(FileAttributes.System)) continue;
-                bool isLocked = false;
 
                 //----------------------------------------------------------
-                try
+                lock (this.subdirectories)
                 {
                     var subdir = new Directory(dirInfo.FullName);
-                    subdir._parent = this;
+                    subdir.parent = this;
 
-                    Monitor.Enter(_subdirectories, ref isLocked);
                     if (listSubSubdirectories) { subdir.ListSubdirectories(); }
-                    _subdirectories.Add(subdir);
+                    this.subdirectories.Add(subdir);
                 }
                 //----------------------------------------------------------
-                catch
-                {
-                }
-                //----------------------------------------------------------
-                finally
-                {
-                    if (isLocked) { Monitor.Exit(_subdirectories); }
-                    ChildrenUpdated?.Invoke();
-                }
-                //----------------------------------------------------------
+
+                this.ChildrenUpdated?.Invoke();
             }
         }
 
 
-        private Directory _parent;
-        private SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
-        private List<Directory> _subdirectories = new List<Directory>();
+        private Directory parent;
+        private object listingSubdirectories = new Object();
+        private List<Directory> subdirectories = new List<Directory>();
     }
 }

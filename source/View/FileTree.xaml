@@ -32,15 +32,33 @@
         </Button>
 
         <ComboBox x:Name="comboBox_RootSelector" Grid.Row="0" Grid.Column="1" Margin="4,4,16,4" HorizontalAlignment="Stretch"
-            ItemsSource="{Binding RootLocations.List}" SelectedItem="{Binding RootLocations.Current}" DisplayMemberPath="SelectorCaption" Focusable="False"/>
+            ItemsSource="{Binding Root.List}" SelectedItem="{Binding Root.Current}" DisplayMemberPath="SelectorCaption" Focusable="False"/>
 
         <TreeView x:Name="treeView_Directories" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
-            ItemsSource="{Binding RootLocations.Current.Children}" PreviewMouseDoubleClick="treeView_Directories_PreviewMouseDoubleClick" PreviewMouseLeftButtonUp="treeView_Directories_PreviewMouseLeftButtonUp" SelectedItemChanged="treeView_Directories_SelectedItemChanged">
+            ItemsSource="{Binding Root.Current.Children}" SelectedItemChanged="treeView_Directories_SelectedItemChanged"
+            PreviewMouseDoubleClick="treeView_Directories_PreviewMouseDoubleClick" PreviewMouseLeftButtonUp="treeView_Directories_PreviewMouseLeftButtonUp" PreviewMouseRightButtonUp="treeView_Directories_PreviewMouseRightButtonUp">
+
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="pr:Directory" ItemsSource="{Binding Children}">
                     <TextBlock Text="{Binding Name}" VerticalAlignment="Stretch" Margin="0"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
+
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="manuItem_Root" Header="Pin as a root folder" Click="manuItem_Root_Click">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="Pin"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="menuItem_Open" Header="Open in Explorer" Click="menuItem_Open_Click">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="FolderOpen"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+
         </TreeView>
 
     </Grid>

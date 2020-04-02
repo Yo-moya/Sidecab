@@ -1,34 +1,31 @@
 ﻿
+using System;
 using System.Collections.Generic;
 
 namespace Sidecab.Model
 {
     public class Core
     {
-        public Settings Settings { get; private set; }
-        public List<Root> RootLocations { get; private set; }
-        public Root CurrentRoot { get; private set; }
+        public event Action RootListChanged;
+
+        public Settings   Settings { get; private set; }
+        public List<Root> RootList { get; private set; }
 
 
         //======================================================================
         public Core()
         {
-            Settings = Settings.Load() ?? new Settings();
-            RootLocations = Root.EnumerateDrives();
-            CurrentRoot = (RootLocations.Count > 0) ? RootLocations[0] : null;
+            this.Settings = Settings.Load() ?? new Settings();
+            this.RootList = Root.EnumerateDrives();
         }
 
         //======================================================================
-        public void SetRoot(string path)
+        public void SetPinnedDirectory(Directory directory)
         {
-            foreach (var root in RootLocations)
-            {
-                if (root.Path == path)
-                {
-                    CurrentRoot = root;
-                    break;
-                }
-            }
+            this.RootList.RemoveAll(r => r.IsDrive == false);
+            this.RootList.Add(new Root(directory));
+
+            this.RootListChanged?.Invoke();
         }
     }
 }

@@ -15,21 +15,20 @@ namespace Sidecab.View
         {
             InitializeComponent();
 
-            DataObject.AddPastingHandler(textBox_TreeWidth, TextBox_Pasting);
-            DataObject.AddPastingHandler(textBox_KnobWidth, TextBox_Pasting);
+            DataObject.AddPastingHandler(this.textBox_TreeWidth, this.TextBox_Pasting);
+            DataObject.AddPastingHandler(this.textBox_KnobWidth, this.TextBox_Pasting);
 
-            DataContext = App.Presenter.Settings;
-            popup_KnobColor.DataContext = App.Presenter.Settings.KnobColor;
+            this.DataContext = App.Presenter.Settings;
+            this.popup_KnobColor.DataContext = App.Presenter.Settings.KnobColor;
         }
 
         //======================================================================
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            DataObject.RemovePastingHandler(textBox_TreeWidth, TextBox_Pasting);
-            DataObject.RemovePastingHandler(textBox_KnobWidth, TextBox_Pasting);
+            DataObject.RemovePastingHandler(this.textBox_TreeWidth, this.TextBox_Pasting);
+            DataObject.RemovePastingHandler(this.textBox_KnobWidth, this.TextBox_Pasting);
 
-            (DataContext as Presenter.Settings)?.Save();
-
+            (this.DataContext as Presenter.Settings)?.Save();
             (App.Current.MainWindow as MainWindow)?.NotifyChildWindowClosing(this);
         }
 
@@ -53,7 +52,7 @@ namespace Sidecab.View
         private void button_KnobColor_Click(object sender, RoutedEventArgs e)
         {
             (App.Current.MainWindow as MainWindow)?.CloseTreeWindow();
-            popup_KnobColor.IsOpen = true;
+            this.popup_KnobColor.IsOpen = true;
         }
 
         //======================================================================

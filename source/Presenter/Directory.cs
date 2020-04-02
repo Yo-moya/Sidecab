@@ -6,23 +6,23 @@ namespace Sidecab.Presenter
 {
     public class Directory : Base
     {
-        public string Path { get { return _model.Path; } }
-        public string Name { get { return _model.Name; } }
+        public string Path { get { return this.model.Path; } }
+        public string Name { get { return this.model.Name; } }
 
         //----------------------------------------------------------------------
         public ObservableCollection<Directory> Children
         {
             get
             {
-                var source = _model.GetChildren();
-                _children.Clear();
+                var source = this.model.GetChildren();
+                this.children.Clear();
 
                 foreach (var child in source)
                 {
-                    _children.Add(new Directory(child));
+                    this.children.Add(new Directory(child));
                 }
 
-                return _children;
+                return this.children;
             }
         }
 
@@ -30,37 +30,43 @@ namespace Sidecab.Presenter
         //======================================================================
         public Directory(Model.Directory model)
         {
-            _model = model;
-            _model.ChildrenUpdated += OnChildrenUpdated;
+            this.model = model;
+            this.model.ChildrenUpdated += this.OnChildrenUpdated;
         }
 
         //======================================================================
         ~Directory()
         {
-            _model.ChildrenUpdated -= OnChildrenUpdated;
+            this.model.ChildrenUpdated -= this.OnChildrenUpdated;
         }
 
         //======================================================================
         public void ListSubdirectories(bool listSubSubdirectories)
         {
-            _model.ListSubdirectories(listSubSubdirectories);
+            this.model.ListSubdirectories(listSubSubdirectories);
         }
 
         //======================================================================
         public void Open()
         {
-            _model.Open();
+            this.model.Open();
+        }
+
+        //======================================================================
+        public Model.Directory ExposeModel()
+        {
+            return this.model;
         }
 
 
         //======================================================================
-        void OnChildrenUpdated()
+        private void OnChildrenUpdated()
         {
-            RaisePropertyChanged(nameof(Children));
+            RaisePropertyChanged(nameof(this.Children));
         }
 
 
-        protected Model.Directory _model;
-        private ObservableCollection<Directory> _children = new ObservableCollection<Directory>();
+        protected Model.Directory model;
+        private ObservableCollection<Directory> children = new ObservableCollection<Directory>();
     }
 }

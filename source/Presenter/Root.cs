@@ -8,9 +8,14 @@ namespace Sidecab.Presenter
         {
             get
             {
-                var driveLetter = _model.Path.Substring(0, _model.Path.IndexOf(@"\"));
-                var interval = ((_model.Path.Length - driveLetter.Length) > 1) ? " ../ " : " ";
-                return driveLetter + interval + _model.Name;
+                var isDrive = (this.model as Model.Root)?.IsDrive ?? false;
+                if (isDrive)
+                {
+                    var driveLetter = this.model.Path.Substring(0, this.model.Path.IndexOf(@"\"));
+                    return driveLetter + " [ " + this.model.Name + " ]";
+                }
+
+                return "/ " + this.model.Name;
             }
         }
 

@@ -16,20 +16,24 @@ namespace Sidecab.Model
         //----------------------------------------------------------------------
         public int DisplayIndex
         {
-            get { return _displayIndex; }
+            get { return this.displayIndex; }
             set
             {
                 using (var monitors = WpfAppBar.MonitorInfo.GetAllMonitors().GetEnumerator())
                 {
-                    int count = 0;
-                    while (monitors.MoveNext()) { count++; }
-                    if (_displayIndex >= count) { _displayIndex = count - 1; }
+                    int monitorCount = 0;
+                    while (monitors.MoveNext()) { monitorCount++; }
+
+                    if (this.displayIndex >= monitorCount)
+                    {
+                        this.displayIndex = monitorCount - 1;
+                    }
                 }
             }
         }
 
         //----------------------------------------------------------------------
-        private static string SettingFilePath
+        private static string SaveFilePath
         {
             get
             {
@@ -44,7 +48,7 @@ namespace Sidecab.Model
             //------------------------------------------------------------------
             try
             {
-                using (var file = new StreamReader(SettingFilePath))
+                using (var file = new StreamReader(Settings.SaveFilePath))
                 {
                     var json = new JsonSerializer();
                     return json.Deserialize<Settings>(new JsonTextReader(file));
@@ -65,7 +69,7 @@ namespace Sidecab.Model
             //------------------------------------------------------------------
             try
             {
-                using (var file = new StreamWriter(SettingFilePath))
+                using (var file = new StreamWriter(Settings.SaveFilePath))
                 {
                     var str = JsonConvert.SerializeObject(this, Formatting.Indented);
                     file.Write(str);
@@ -79,7 +83,7 @@ namespace Sidecab.Model
         }
 
 
-        private int _displayIndex = 0;
+        private int displayIndex = 0;
     }
 
     //==========================================================================

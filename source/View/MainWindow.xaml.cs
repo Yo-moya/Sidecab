@@ -16,41 +16,41 @@ namespace Sidecab.View
         {
             InitializeComponent();
             Utility.WindowAttributes.SetAsToolWindow(this);
-            DataContext = App.Presenter;
+            this.DataContext = App.Presenter;
         }
 
         //======================================================================
         public void OpenTreeWindow(bool activate = true)
         {
-            if (TreeWindow == null)
+            if (this.TreeWindow == null)
             {
-                TreeWindow = new TreeWindow();
-                TreeWindow.SetSizePositionFrom(this);
-                TreeWindow.ShowActivated = activate;
-                TreeWindow.Show();
+                this.TreeWindow = new TreeWindow();
+                this.TreeWindow.SetSizePositionFrom(this);
+                this.TreeWindow.ShowActivated = activate;
+                this.TreeWindow.Show();
             }
         }
 
         //======================================================================
         public void CloseTreeWindow()
         {
-            TreeWindow?.Close();
+            this.TreeWindow?.Close();
         }
 
         //======================================================================
         public void OpenSettingWindow()
         {
-            if (SettingWindow == null)
+            if (this.SettingWindow == null)
             {
-                SettingWindow = new SettingWindow();
-                SettingWindow.Show();
+                this.SettingWindow = new SettingWindow();
+                this.SettingWindow.Show();
             }
         }
 
         //======================================================================
         public void CloseSettingWindow()
         {
-            SettingWindow?.Close();
+            this.SettingWindow?.Close();
         }
 
         //======================================================================
@@ -59,15 +59,15 @@ namespace Sidecab.View
             if (child == null) return;
 
             //------------------------------------------------------------------
-            if (child == TreeWindow)
+            if (child == this.TreeWindow)
             {
-                TreeWindow = null;
+                this.TreeWindow = null;
                 return;
             }
             //------------------------------------------------------------------
-            if (child == SettingWindow)
+            if (child == this.SettingWindow)
             {
-                SettingWindow = null;
+                this.SettingWindow = null;
                 return;
             }
             //------------------------------------------------------------------

@@ -12,10 +12,10 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public int TreeWidth
         {
-            get { return _model.TreeWidth; }
+            get { return this.model.TreeWidth; }
             set
             {
-                _model.TreeWidth = Math.Max(10, value);
+                this.model.TreeWidth = Math.Max(10, value);
 
                 RaisePropertyChanged(nameof(TreeWidth));
                 RaisePropertyChanged(nameof(TreeWidthAsText));
@@ -25,13 +25,13 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public int KnobWidth
         {
-            get { return _model.KnobWidth; }
+            get { return this.model.KnobWidth; }
             set
             {
-                _model.KnobWidth = Math.Max(1, value);
+                this.model.KnobWidth = Math.Max(1, value);
 
-                RaisePropertyChanged(nameof(KnobWidth));
-                RaisePropertyChanged(nameof(KnobWidthAsText));
+                RaisePropertyChanged(nameof(this.KnobWidth));
+                RaisePropertyChanged(nameof(this.KnobWidthAsText));
             }
         }
 
@@ -43,7 +43,7 @@ namespace Sidecab.Presenter
                 int index = 0;
                 foreach (var m in WpfAppBar.MonitorInfo.GetAllMonitors())
                 {
-                    if (index == _model.DisplayIndex) return m;
+                    if (index == this.model.DisplayIndex) return m;
                     index++;
                 }
 
@@ -56,7 +56,7 @@ namespace Sidecab.Presenter
         {
             get
             {
-                return (_model.DockPosition == Model.DockPosition.Left)
+                return (this.model.DockPosition == Model.DockPosition.Left)
                     ? WpfAppBar.AppBarDockMode.Left : WpfAppBar.AppBarDockMode.Right;
             }
         }
@@ -64,7 +64,7 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public SolidColorBrush KnobBrush
         {
-            get { return new SolidColorBrush(_model.KnobColor); }
+            get { return new SolidColorBrush(this.model.KnobColor); }
         }
 
         //----------------------------------------------------------------------
@@ -74,14 +74,14 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public string TreeWidthAsText
         {
-            get { return _model.TreeWidth.ToString(); }
+            get { return this.model.TreeWidth.ToString(); }
             set { TreeWidth = ConvertTextToNumber(value); }
         }
 
         //----------------------------------------------------------------------
         public string KnobWidthAsText
         {
-            get { return _model.KnobWidth.ToString(); }
+            get { return this.model.KnobWidth.ToString(); }
             set { KnobWidth = ConvertTextToNumber(value); }
         }
 
@@ -90,10 +90,10 @@ namespace Sidecab.Presenter
         {
             get
             {
-                _positionSelector.Index =
-                    _positionSelector.List.IndexOf(_model.DockPosition.ToString());
+                this.positionSelector.Index =
+                    this.positionSelector.List.IndexOf(this.model.DockPosition.ToString());
 
-                return _positionSelector;
+                return this.positionSelector;
             }
         }
 
@@ -102,8 +102,8 @@ namespace Sidecab.Presenter
         {
             get
             {
-                _displaySelector.Current = _displaySelector.List[_model.DisplayIndex];
-                return _displaySelector;
+                this.displaySelector.Current = this.displaySelector.List[this.model.DisplayIndex];
+                return this.displaySelector;
             }
         }
 
@@ -111,10 +111,10 @@ namespace Sidecab.Presenter
         //======================================================================
         public Settings(Model.Settings model)
         {
-            _model = model;
+            this.model = model;
 
-            KnobColor = new ColorValues(model.KnobColor);
-            KnobColor.PropertyChanged += KnobColor_Changed;
+            this.KnobColor = new ColorValues(model.KnobColor);
+            this.KnobColor.PropertyChanged += this.KnobColor_Changed;
 
             var positions = new List<string>
             {
@@ -122,8 +122,8 @@ namespace Sidecab.Presenter
                 Model.DockPosition.Right.ToString(),
             };
 
-            _positionSelector = new Selector<string>(positions);
-            _positionSelector.PropertyChanged += Position_Changed;
+            this.positionSelector = new Selector<string>(positions);
+            this.positionSelector.PropertyChanged += Position_Changed;
 
             var displays = new List<string>();
 
@@ -137,21 +137,21 @@ namespace Sidecab.Presenter
                 }
             }
 
-            _displaySelector = new Selector<string>(displays);
-            _displaySelector.PropertyChanged += Display_Changed;
+            this.displaySelector = new Selector<string>(displays);
+            this.displaySelector.PropertyChanged += this.Display_Changed;
         }
 
         //======================================================================
         public void Save()
         {
-            _model.Save();
+            this.model.Save();
         }
 
         //======================================================================
         private void Display_Changed(object sender, PropertyChangedEventArgs e)
         {
-            _model.DisplayIndex = _displaySelector.Index;
-            RaisePropertyChanged(nameof(DisplayToDock));
+            this.model.DisplayIndex = this.displaySelector.Index;
+            RaisePropertyChanged(nameof(this.DisplayToDock));
         }
 
         //======================================================================
@@ -159,10 +159,10 @@ namespace Sidecab.Presenter
         {
             foreach (var pos in Enum.GetValues(typeof(Model.DockPosition)))
             {
-                if (_positionSelector.Current == pos.ToString())
+                if (this.positionSelector.Current == pos.ToString())
                 {
-                    _model.DockPosition = (Model.DockPosition)pos;
-                    RaisePropertyChanged(nameof(DockPosition));
+                    this.model.DockPosition = (Model.DockPosition)pos;
+                    RaisePropertyChanged(nameof(this.DockPosition));
                     return;
                 }
             }
@@ -174,13 +174,13 @@ namespace Sidecab.Presenter
         {
             Color color;
 
-            color.R = KnobColor.R;
-            color.G = KnobColor.G;
-            color.B = KnobColor.B;
+            color.R = this.KnobColor.R;
+            color.G = this.KnobColor.G;
+            color.B = this.KnobColor.B;
             color.A = 255;
 
-            _model.KnobColor = color;
-            RaisePropertyChanged(nameof(KnobBrush));
+            this.model.KnobColor = color;
+            RaisePropertyChanged(nameof(this.KnobBrush));
         }
 
         //======================================================================
@@ -191,8 +191,8 @@ namespace Sidecab.Presenter
         }
 
 
-        private Model.Settings _model;
-        private Selector<string> _displaySelector;
-        private Selector<string> _positionSelector;
+        private Model.Settings model;
+        private Selector<string> displaySelector;
+        private Selector<string> positionSelector;
     }
 }
