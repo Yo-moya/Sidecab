@@ -18,6 +18,7 @@ Acknowledgements
 ---
 * [Material Design In XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 * [WpfAppBar](https://github.com/mgaffigan/WpfAppBar)
+* [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
 
 License
 ---
