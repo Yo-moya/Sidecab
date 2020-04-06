@@ -16,9 +16,8 @@ How to use
 
 Acknowledgements
 ---
-[Material Design In XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
-
-[WpfAppBar](https://github.com/mgaffigan/WpfAppBar)
+* [Material Design In XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
+* [WpfAppBar](https://github.com/mgaffigan/WpfAppBar)
 
 License
 ---
