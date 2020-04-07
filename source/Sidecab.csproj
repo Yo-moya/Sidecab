@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net48</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <Authors>Motoya Yoshizne</Authors>
     <Product />
-    <RepositoryUrl></RepositoryUrl>
+    <RepositoryUrl>https://github.com/MotoyaYoshizne/Sidecab</RepositoryUrl>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <PackageProjectUrl>https://github.com/MotoyaYoshizne/Sidecab</PackageProjectUrl>
     <PackageIcon>Icon.png</PackageIcon>

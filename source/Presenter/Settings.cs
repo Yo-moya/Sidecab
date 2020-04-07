@@ -172,7 +172,7 @@ namespace Sidecab.Presenter
         //======================================================================
         private void KnobColor_Changed(object sender, PropertyChangedEventArgs e)
         {
-            Color color;
+            Color color = new Color();
 
             color.R = this.KnobColor.R;
             color.G = this.KnobColor.G;

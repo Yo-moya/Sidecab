@@ -30,7 +30,7 @@ namespace Sidecab.Model
             this.Path = path;
             this.Name = path.Substring(location.Length);
 
-            if (this.Name.StartsWith('\\'))
+            if (this.Name.StartsWith("\\"))
             {
                 this.Name = this.Name.Substring(1);
             }
