@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.IO;
 using System.Windows.Media;
 using Newtonsoft.Json;
@@ -21,13 +22,9 @@ namespace Sidecab.Model
             {
                 using (var monitors = WpfAppBar.MonitorInfo.GetAllMonitors().GetEnumerator())
                 {
-                    int monitorCount = 0;
-                    while (monitors.MoveNext()) { monitorCount++; }
-
-                    if (this.displayIndex >= monitorCount)
-                    {
-                        this.displayIndex = monitorCount - 1;
-                    }
+                    int count = 0;
+                    while (monitors.MoveNext()) { count++; }
+                    this.displayIndex = Math.Max(0, Math.Min(count - 1, value));
                 }
             }
         }
