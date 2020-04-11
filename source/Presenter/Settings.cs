@@ -15,11 +15,17 @@ namespace Sidecab.Presenter
             get { return this.model.TreeWidth; }
             set
             {
-                this.model.TreeWidth = Math.Max(10, value);
+                this.model.TreeWidth = Math.Max(TreeMinWidth, value);
 
                 RaisePropertyChanged(nameof(TreeWidth));
                 RaisePropertyChanged(nameof(TreeWidthAsText));
             }
+        }
+
+        //----------------------------------------------------------------------
+        public int TreeMinWidth
+        {
+            get { return 100; }
         }
 
         //----------------------------------------------------------------------

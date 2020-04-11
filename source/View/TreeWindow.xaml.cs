@@ -1,6 +1,7 @@
 ﻿
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using System.ComponentModel;
 
 namespace Sidecab.View
@@ -15,7 +16,9 @@ namespace Sidecab.View
             this.Topmost = true;
 
             InitializeComponent();
+
             this.DataContext = App.Presenter;
+            App.Presenter.Settings.PropertyChanged += SettingWidth_Changed;
         }
 
         //======================================================================
@@ -32,6 +35,18 @@ namespace Sidecab.View
         }
 
         //======================================================================
+        private void SettingWidth_Changed(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Presenter.Settings.TreeWidth))
+            {
+                var storyboard = TryFindResource("ShowingAnim") as Storyboard;
+                if (storyboard != null) { storyboard.Stop(); }
+
+                Width = App.Presenter.Settings.TreeWidth;
+            }
+        }
+
+        //======================================================================
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             (App.Current.MainWindow as MainWindow)?.NotifyChildWindowClosing(this);
@@ -43,6 +58,16 @@ namespace Sidecab.View
             if (e.Key == Key.Escape)
             {
                 Close();
+            }
+        }
+
+        //======================================================================
+        private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                var storyboard = TryFindResource("ShowingAnim") as Storyboard;
+                if (storyboard != null) { storyboard.Begin(); }
             }
         }
     }
