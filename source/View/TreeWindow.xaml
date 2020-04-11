@@ -11,7 +11,7 @@
     FontFamily="{materialDesign:MaterialDesignFont}"
     Title="TreeWindow" WindowStyle="None" ShowInTaskbar="False"
     Width="{Binding Settings.TreeWidth, Mode=TwoWay}" d:DesignHeight="450" d:DesignWidth="400"
-    Closing="Window_Closing" KeyDown="Window_KeyDown">
+    Closing="Window_Closing" KeyDown="Window_KeyDown" RenderTransformOrigin="0.5,0.5">
 
     <Grid>
 

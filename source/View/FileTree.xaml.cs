@@ -1,7 +1,9 @@
 ﻿
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 using System.Windows.Media;
 using System.Windows.Input;
 
@@ -14,6 +16,10 @@ namespace Sidecab.View
         {
             InitializeComponent();
             this.DataContext = App.Presenter;
+
+            var doubleClickTime = Utility.SystemAttributes.GetDoubleClickTime();
+            this.clickTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)doubleClickTime);
+            this.clickTimer.Tick += clickTimer_Tick;
         }
 
 
@@ -30,6 +36,12 @@ namespace Sidecab.View
             //------------------------------------------------------------------
 
             return parent as T;
+        }
+
+        //======================================================================
+        private void clickTimer_Tick(object sender, EventArgs e)
+        {
+            this.clickTimer.Stop();
         }
 
         //======================================================================
@@ -55,9 +67,14 @@ namespace Sidecab.View
         private void treeView_Directories_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is ToggleButton) return;
+            if (clickTimer.IsEnabled) return;
 
             var clicked = FindParent<TreeViewItem>(e.OriginalSource as DependencyObject);
-            if (clicked != null) { clicked.IsExpanded = !clicked.IsExpanded; }
+            if (clicked != null)
+            {
+                clickTimer.Start();
+                clicked.IsExpanded = !clicked.IsExpanded;
+            }
         }
 
         //======================================================================
@@ -96,5 +113,8 @@ namespace Sidecab.View
 
             directory.Open();
         }
+
+
+        private DispatcherTimer clickTimer = new DispatcherTimer();
     }
 }
