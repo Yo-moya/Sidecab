@@ -8,7 +8,7 @@ namespace Sidecab.View
     public partial class MainWindow
     {
         TreeWindow TreeWindow = null;
-        SettingWindow SettingWindow = null;
+        SettingsWindow SettingsWindow = null;
 
 
         //======================================================================
@@ -38,19 +38,19 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        public void OpenSettingWindow()
+        public void OpenSettingsWindow()
         {
-            if (this.SettingWindow == null)
+            if (this.SettingsWindow == null)
             {
-                this.SettingWindow = new SettingWindow();
-                this.SettingWindow.Show();
+                this.SettingsWindow = new SettingsWindow();
+                this.SettingsWindow.Show();
             }
         }
 
         //======================================================================
         public void CloseSettingWindow()
         {
-            this.SettingWindow?.Close();
+            this.SettingsWindow?.Close();
         }
 
         //======================================================================
@@ -65,9 +65,9 @@ namespace Sidecab.View
                 return;
             }
             //------------------------------------------------------------------
-            if (child == this.SettingWindow)
+            if (child == this.SettingsWindow)
             {
-                this.SettingWindow = null;
+                this.SettingsWindow = null;
                 return;
             }
             //------------------------------------------------------------------

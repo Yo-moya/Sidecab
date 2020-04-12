@@ -8,10 +8,10 @@ using System.Windows.Input;
 
 namespace Sidecab.View
 {
-    public partial class SettingWindow : Window
+    public partial class SettingsWindow : Window
     {
         //======================================================================
-        public SettingWindow()
+        public SettingsWindow()
         {
             InitializeComponent();
 

@@ -45,9 +45,26 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void button_Settings_Click(object sender, RoutedEventArgs e)
+        private void button_AppMenu_Click(object sender, RoutedEventArgs e)
         {
-            (App.Current.MainWindow as MainWindow)?.OpenSettingWindow();
+            var menu = FindResource("contextMenu_App") as ContextMenu;
+            if (menu != null)
+            {
+                menu.PlacementTarget = this.button_AppMenu;
+                menu.IsOpen = true;
+            }
+        }
+
+        //======================================================================
+        private void manuItem_Settings_Click(object sender, RoutedEventArgs e)
+        {
+            (App.Current.MainWindow as MainWindow)?.OpenSettingsWindow();
+        }
+
+        //======================================================================
+        private void menuItem_CloseApp_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.Shutdown();
         }
 
         //======================================================================
