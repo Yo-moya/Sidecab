@@ -110,7 +110,7 @@ namespace Sidecab.View
         //======================================================================
         private void treeView_Directories_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            (e.NewValue as Presenter.Directory)?.ListSubdirectories(listSubSubdirectories : true);
+            (e.NewValue as Presenter.Directory)?.EnumerateSubdirectories();
         }
 
         //======================================================================

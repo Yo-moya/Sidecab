@@ -6,22 +6,21 @@ namespace Sidecab.Model
 {
     public class Root : Directory
     {
-        public bool IsDrive { get; private set; }
+        public bool IsDrive { get; private set; } = false;
+        public string Label { get; private set; } = "";
 
         //======================================================================
         public Root(Directory directory) : base(directory.Path)
         {
-            IsDrive = false;
             this.SetChildren(directory.GetChildren());
         }
 
         //======================================================================
         public Root(DriveInfo info)
         {
-            IsDrive = true;
-
-            this.Path = info.Name;
-            this.Name = info.VolumeLabel;
+            this.Label = info.VolumeLabel;
+            this.Name = info.Name.Substring(0, 2);
+            this.IsDrive = true;
         }
 
 

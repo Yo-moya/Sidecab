@@ -41,9 +41,9 @@ namespace Sidecab.Presenter
         }
 
         //======================================================================
-        public void ListSubdirectories(bool listSubSubdirectories)
+        public void EnumerateSubdirectories()
         {
-            this.model.ListSubdirectories(listSubSubdirectories);
+            this.model.EnumerateSubdirectories();
         }
 
         //======================================================================

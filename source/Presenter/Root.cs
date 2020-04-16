@@ -8,14 +8,16 @@ namespace Sidecab.Presenter
         {
             get
             {
-                var isDrive = (this.model as Model.Root)?.IsDrive ?? false;
-                if (isDrive)
+                var root = this.model as Model.Root;
+                if (root != null)
                 {
-                    var driveLetter = this.model.Path.Substring(0, this.model.Path.IndexOf(@"\"));
-                    return driveLetter + " [ " + this.model.Name + " ]";
+                    if (root.IsDrive)
+                    {
+                        return root.Name + " [ " + root.Label + " ]";
+                    }
                 }
 
-                return "/ " + this.model.Name;
+                return "/ " + this.Name;
             }
         }
 
@@ -23,7 +25,7 @@ namespace Sidecab.Presenter
         //======================================================================
         public Root(Model.Root model) : base(model)
         {
-            ListSubdirectories(listSubSubdirectories : true);
+            EnumerateSubdirectories();
         }
     }
 }
