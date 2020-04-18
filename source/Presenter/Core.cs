@@ -44,7 +44,7 @@ namespace Sidecab.Presenter
         private void RefreshList()
         {
             var rootList = new List<Root>(this.model.RootList.Count);
-            foreach (var loc in this.model.RootList) { rootList.Add(new Root(loc)); }
+            foreach (var r in this.model.RootList) { rootList.Add(new Root(r)); }
 
             Root = new Selector<Root>(rootList);
         }

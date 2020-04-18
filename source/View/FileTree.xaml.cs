@@ -110,25 +110,22 @@ namespace Sidecab.View
         //======================================================================
         private void treeView_Directories_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            (e.NewValue as Presenter.Directory)?.EnumerateSubdirectories();
+            var directory = e.NewValue as Presenter.Directory;
+            directory?.EnumerateSubdirectories();
         }
 
         //======================================================================
         private void manuItem_Root_Click(object sender, RoutedEventArgs e)
         {
             var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-            if (directory == null) return;
-
-            App.Presenter.SetPinnedDirectory(directory);
+            if (directory != null) { App.Presenter.SetPinnedDirectory(directory); }
         }
 
         //======================================================================
         private void menuItem_Open_Click(object sender, RoutedEventArgs e)
         {
             var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-            if (directory == null) return;
-
-            directory.Open();
+            directory?.Open();
         }
 
 

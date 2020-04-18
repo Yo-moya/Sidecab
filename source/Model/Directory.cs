@@ -8,11 +8,23 @@ using System.Threading.Tasks;
 
 namespace Sidecab.Model
 {
+    //==========================================================================
     public class Directory
     {
-        public event Action ChildrenUpdated;
+        //----------------------------------------------------------------------
+        public enum UpdateType
+        {
+            New,
+            Add,
+        }
 
+        public delegate void ChildrenUpdateHandler(UpdateType updateType);
+        public event ChildrenUpdateHandler ChildrenUpdated;
+
+        public bool HasSomeSubdirectories { get; private set; } = false;
         public string Name { get; protected set; } = "";
+
+        //----------------------------------------------------------------------
         public string Path
         {
             get
@@ -21,11 +33,23 @@ namespace Sidecab.Model
             }
         }
 
-
-        //======================================================================
-        protected Directory()
+        //-----------------------------------------------------------------------
+        public List<Directory> Subdirectories
         {
+            get
+            {
+                lock (this.subdirectories)
+                {
+                    return this.subdirectories;
+                }
+            }
+
+            protected set
+            {
+                this.subdirectories = value;
+            }
         }
+
 
         //======================================================================
         public Directory(string path, Directory parent = null)
@@ -39,85 +63,78 @@ namespace Sidecab.Model
         }
 
         //======================================================================
+        protected Directory()
+        {
+        }
+
+        //======================================================================
         public void Open()
         {
             Process.Start("explorer.exe", Path);
         }
 
         //======================================================================
-        public List<Directory> GetChildren()
-        {
-            List<Directory> children = null;
-
-            lock (this.subdirectories)
-            {
-                children = new List<Directory>(this.subdirectories);
-            }
-
-            return children;
-        }
-
-        //======================================================================
-        public void SetChildren(List<Directory> source)
-        {
-            lock (this.subdirectories)
-            {
-                this.subdirectories = source;
-            }
-        }
-
-        //======================================================================
         public async void EnumerateSubdirectories()
         {
             var path = this.Path;
+            if (path.Length == 0) return;
 
-            if ((path.Length > 0) && Monitor.TryEnter(semaphoreForListing))
+            //------------------------------------------------------------------
+            if (Monitor.TryEnter(this.semaphoreForEnumeration)) await Task.Run(() =>
             {
-                await Task.Run(() =>
+                lock (this.subdirectories)
                 {
-                    var info = new DirectoryInfo(path);
-                    UpdateSubdirectoryList(info.GetDirectories());
-                });
-            }
-        }
+                    if (this.subdirectories.Count > 0) return;
+                    this.subdirectories = new List<Directory>();
+                }
 
-        //======================================================================
-        private void UpdateSubdirectoryList(DirectoryInfo[] subdirectoryInfo)
-        {
-            //------------------------------------------------------------------
-            lock (this.subdirectories)
-            {
-                this.subdirectories = new List<Directory>(subdirectoryInfo.Length);
-            }
-            //------------------------------------------------------------------
-
-            foreach (var info in subdirectoryInfo)
-            {
                 //--------------------------------------------------------------
                 try
                 {
-                    if (info.Attributes.HasFlag(FileAttributes.System)  == false)
+                    var dirInfo = new DirectoryInfo(path);
+                    foreach(var subdirInfo in dirInfo.EnumerateDirectories())
                     {
-                        lock (this.subdirectories)
-                        {
-                            var subdir = new Directory(info.FullName, this);
-                            this.subdirectories.Add(subdir);
-                        }
-
-                        this.ChildrenUpdated?.Invoke();
+                        ProcessSubdirectory(subdirInfo);
                     }
                 }
                 //--------------------------------------------------------------
                 catch
                 {
+                    return;
                 }
                 //--------------------------------------------------------------
+            });
+            //------------------------------------------------------------------
+        }
+
+        //======================================================================
+        private void ProcessSubdirectory(DirectoryInfo directoryInfo)
+        {
+            Directory subdir;
+
+            //------------------------------------------------------------------
+            try
+            {
+                if (directoryInfo.Attributes.HasFlag(FileAttributes.System)) return;
+                subdir = new Directory(directoryInfo.FullName, this);
+
+                subdir.HasSomeSubdirectories =
+                    directoryInfo.EnumerateDirectories().GetEnumerator().MoveNext();
             }
+            //------------------------------------------------------------------
+            catch
+            {
+                return;
+            }
+            //------------------------------------------------------------------
+
+            lock (this.subdirectories) { this.subdirectories.Add(subdir); }
+            this.ChildrenUpdated?.Invoke(UpdateType.Add);
         }
 
 
         private Directory parentDirectory;
         private List<Directory> subdirectories = new List<Directory>();
-        private object semaphoreForListing = new Object();
+        private object semaphoreForEnumeration = new Object();
     }
 }

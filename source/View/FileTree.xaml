@@ -51,11 +51,11 @@
             ItemsSource="{Binding Root.List}" SelectedItem="{Binding Root.Current}" DisplayMemberPath="SelectorCaption" Focusable="False"/>
 
         <TreeView x:Name="treeView_Directories" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
-            ItemsSource="{Binding Root.Current.Children}" SelectedItemChanged="treeView_Directories_SelectedItemChanged"
+            ItemsSource="{Binding Root.Current.Subdirectories}" SelectedItemChanged="treeView_Directories_SelectedItemChanged"
             PreviewMouseDoubleClick="treeView_Directories_PreviewMouseDoubleClick" PreviewMouseLeftButtonUp="treeView_Directories_PreviewMouseLeftButtonUp" PreviewMouseRightButtonUp="treeView_Directories_PreviewMouseRightButtonUp">
 
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="pr:Directory" ItemsSource="{Binding Children}">
+                <HierarchicalDataTemplate DataType="pr:Directory" ItemsSource="{Binding Subdirectories}">
                     <TextBlock Text="{Binding Name}" VerticalAlignment="Stretch" Margin="0"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>

@@ -12,7 +12,7 @@ namespace Sidecab.Model
         //======================================================================
         public Root(Directory directory) : base(directory.Path)
         {
-            this.SetChildren(directory.GetChildren());
+            this.Subdirectories = directory.Subdirectories;
         }
 
         //======================================================================
