@@ -7,13 +7,14 @@ namespace Sidecab.Presenter
     public class Directory : Base
     {
         public string Path { get { return this.model.Path; } }
+        public bool HasSomeSubdirectories { get { return this.model.HasSomeSubdirectories; } }
 
         //----------------------------------------------------------------------
         public string Name
         {
             get
             {
-                return this.model?.Name ?? "...";
+                return this.model?.Name ?? "";
             }
         }
 
@@ -58,9 +59,10 @@ namespace Sidecab.Presenter
         }
 
         //======================================================================
-        public void EnumerateSubdirectories()
+        public void CollectSubdirectories()
         {
-            this.model.EnumerateSubdirectories();
+            this.subdirectories = null;
+            this.model.CollectSubdirectories(true);
         }
 
         //======================================================================

@@ -17,7 +17,7 @@ namespace Sidecab.Presenter
             set
             {
                 this.current = value;
-                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(Current));
             }
         }
 

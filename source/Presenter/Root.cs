@@ -9,12 +9,10 @@ namespace Sidecab.Presenter
             get
             {
                 var root = this.model as Model.Root;
-                if (root != null)
+                if (root.IsDrive)
                 {
-                    if (root.IsDrive)
-                    {
-                        return root.Name + " [ " + root.Label + " ]";
-                    }
+                    // 'Name' contains drive letter
+                    return root.Name + " [ " + root.Label + " ]";
                 }
 
                 return "/ " + this.Name;
@@ -25,7 +23,7 @@ namespace Sidecab.Presenter
         //======================================================================
         public Root(Model.Root model) : base(model)
         {
-            EnumerateSubdirectories();
+            CollectSubdirectories();
         }
     }
 }

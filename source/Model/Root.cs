@@ -9,11 +9,6 @@ namespace Sidecab.Model
         public bool IsDrive { get; private set; } = false;
         public string Label { get; private set; } = "";
 
-        //======================================================================
-        public Root(Directory directory) : base(directory.Path)
-        {
-            this.Subdirectories = directory.Subdirectories;
-        }
 
         //======================================================================
         public Root(DriveInfo info)
@@ -23,6 +18,13 @@ namespace Sidecab.Model
             this.IsDrive = true;
         }
 
+        // Copy directory as a root
+        //======================================================================
+        public Root(Directory directory) : base(directory.Path, directory.ParentDirectory)
+        {
+            this.Name = directory.Name;
+            this.Subdirectories = directory.Subdirectories;
+        }
 
         //======================================================================
         public static List<Root> EnumerateDrives()

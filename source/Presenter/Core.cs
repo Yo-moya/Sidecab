@@ -1,4 +1,5 @@
 ﻿
+using System.ComponentModel;
 using System.Collections.Generic;
 
 namespace Sidecab.Presenter
@@ -6,47 +7,52 @@ namespace Sidecab.Presenter
     public class Core : Base
     {
         public Settings Settings { get; private set; }
-        public Selector<Root> Root { get; private set; }
+        public Selector<Root> RootSelector { get; private set; }
 
 
         //======================================================================
         public Core(Model.Core model)
         {
             this.model = model;
-            this.model.RootListChanged += this.OnRootListChanged;
+            this.model.RootListChanged += RefreshRoot;
 
             Settings = new Settings(this.model.Settings);
-            RefreshList();
+            RefreshRoot();
         }
 
         //======================================================================
         ~Core()
         {
-            this.model.RootListChanged -= this.OnRootListChanged;
+            this.model.RootListChanged -= RefreshRoot;
         }
 
         //======================================================================
-        public void SetPinnedDirectory(Directory directory)
+        public void SetRootDirectory(Directory directory)
         {
-            this.model.SetPinnedDirectory(directory.ExposeModel());
-            this.Root.Current = this.Root.List[this.Root.List.Count - 1];
+            this.model.SetRootDirectory(directory.ExposeModel());
+            this.RootSelector.Current = this.RootSelector.List[this.RootSelector.List.Count - 1];
         }
 
 
         //======================================================================
-        private void OnRootListChanged()
+        private void OnRootChanged(object sender, PropertyChangedEventArgs e)
         {
-            RefreshList();
-            RaisePropertyChanged(nameof(Root));
+            if (e.PropertyName == nameof(Selector<Root>.Current))
+            {
+                RootSelector.Current.CollectSubdirectories();
+            }
         }
 
         //======================================================================
-        private void RefreshList()
+        private void RefreshRoot()
         {
             var rootList = new List<Root>(this.model.RootList.Count);
             foreach (var r in this.model.RootList) { rootList.Add(new Root(r)); }
 
-            Root = new Selector<Root>(rootList);
+            this.RootSelector = new Selector<Root>(rootList);
+            this.RootSelector.PropertyChanged += OnRootChanged;
+
+            RaisePropertyChanged(nameof(RootSelector));
         }
 
 

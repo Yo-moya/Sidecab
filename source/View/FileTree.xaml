@@ -48,10 +48,10 @@
         </Button>
 
         <ComboBox x:Name="comboBox_RootSelector" Grid.Row="0" Grid.Column="1" Margin="4,4,16,4" HorizontalAlignment="Stretch"
-            ItemsSource="{Binding Root.List}" SelectedItem="{Binding Root.Current}" DisplayMemberPath="SelectorCaption" Focusable="False"/>
+            ItemsSource="{Binding RootSelector.List}" SelectedItem="{Binding RootSelector.Current}" DisplayMemberPath="SelectorCaption" Focusable="False"/>
 
         <TreeView x:Name="treeView_Directories" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
-            ItemsSource="{Binding Root.Current.Subdirectories}" SelectedItemChanged="treeView_Directories_SelectedItemChanged"
+            ItemsSource="{Binding RootSelector.Current.Subdirectories}" SelectedItemChanged="treeView_Directories_SelectedItemChanged"
             PreviewMouseDoubleClick="treeView_Directories_PreviewMouseDoubleClick" PreviewMouseLeftButtonUp="treeView_Directories_PreviewMouseLeftButtonUp" PreviewMouseRightButtonUp="treeView_Directories_PreviewMouseRightButtonUp">
 
             <TreeView.ItemTemplate>

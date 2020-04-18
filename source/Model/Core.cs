@@ -20,7 +20,7 @@ namespace Sidecab.Model
         }
 
         //======================================================================
-        public void SetPinnedDirectory(Directory directory)
+        public void SetRootDirectory(Directory directory)
         {
             this.RootList.RemoveAll(r => r.IsDrive == false);
             this.RootList.Add(new Root(directory));

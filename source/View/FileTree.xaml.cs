@@ -105,20 +105,23 @@ namespace Sidecab.View
             }
 
             clicked.IsSelected = true;
+
+            var directory = treeView_Directories.SelectedItem as Presenter.Directory;
+            this.manuItem_Root.IsEnabled = directory?.HasSomeSubdirectories ?? false;
         }
 
         //======================================================================
         private void treeView_Directories_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var directory = e.NewValue as Presenter.Directory;
-            directory?.EnumerateSubdirectories();
+            directory?.CollectSubdirectories();
         }
 
         //======================================================================
         private void manuItem_Root_Click(object sender, RoutedEventArgs e)
         {
             var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-            if (directory != null) { App.Presenter.SetPinnedDirectory(directory); }
+            if (directory != null) { App.Presenter.SetRootDirectory(directory); }
         }
 
         //======================================================================

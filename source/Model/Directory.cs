@@ -21,6 +21,7 @@ namespace Sidecab.Model
         public delegate void ChildrenUpdateHandler(UpdateType updateType);
         public event ChildrenUpdateHandler ChildrenUpdated;
 
+        public Directory ParentDirectory  { get; private set; }
         public bool HasSomeSubdirectories { get; private set; } = false;
         public string Name { get; protected set; } = "";
 
@@ -29,7 +30,7 @@ namespace Sidecab.Model
         {
             get
             {
-                return (this.parentDirectory?.Path ?? "") + this.Name + "\\";
+                return (this.ParentDirectory?.Path ?? "") + this.Name + "\\";
             }
         }
 
@@ -59,7 +60,7 @@ namespace Sidecab.Model
             this.Name = (location != null) ? path.Substring(location.Length) : path;
             if (this.Name.StartsWith("\\")) { this.Name = this.Name.Substring(1); }
 
-            this.parentDirectory = parent;
+            this.ParentDirectory = parent;
         }
 
         //======================================================================
@@ -74,7 +75,7 @@ namespace Sidecab.Model
         }
 
         //======================================================================
-        public async void EnumerateSubdirectories()
+        public async void CollectSubdirectories(bool force = false)
         {
             var path = this.Path;
             if (path.Length == 0) return;
@@ -84,7 +85,7 @@ namespace Sidecab.Model
             {
                 lock (this.subdirectories)
                 {
-                    if (this.subdirectories.Count > 0) return;
+                    if ((force == false) && (this.subdirectories.Count > 0)) return;
                     this.subdirectories = new List<Directory>();
                 }
 
@@ -133,7 +134,6 @@ namespace Sidecab.Model
         }
 
 
-        private Directory parentDirectory;
         private List<Directory> subdirectories = new List<Directory>();
         private object semaphoreForEnumeration = new Object();
     }
