@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿
+using System.Windows;
+using System.Diagnostics;
+using System.Reflection;
+using Microsoft.Win32;
 
 namespace Sidecab
 {
@@ -14,6 +18,15 @@ namespace Sidecab
             base.OnStartup(e);
             Model = new Model.Core();
             Presenter = new Presenter.Core(Model);
+
+            SystemEvents.PowerModeChanged += PowerModeChangedEventHandler;
+
+            //------------------------------------------------------------------
+            Exit += (exitEventSender, exitEventSenderArgs) =>
+            {
+                SystemEvents.PowerModeChanged -= PowerModeChangedEventHandler;
+            };
+            //------------------------------------------------------------------
         }
 
         //======================================================================
@@ -24,6 +37,29 @@ namespace Sidecab
             {
                 mainWindow.CloseTreeWindow();
                 mainWindow.CloseSettingWindow();
+            }
+        }
+
+        //======================================================================
+        private void PowerModeChangedEventHandler(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == PowerModes.Resume)
+            {
+                var appPath = Process.GetCurrentProcess().MainModule.FileName;
+
+                //--------------------------------------------------------------
+                var processInfo = new ProcessStartInfo()
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/c timeout /t 1 /nobreak & start " + appPath,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                };
+                //--------------------------------------------------------------
+
+                // Workaround : popupmenus don't appear after resume
+                Process.Start(processInfo);
+                App.Current.Shutdown();
             }
         }
     }

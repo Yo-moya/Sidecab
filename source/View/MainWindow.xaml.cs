@@ -1,7 +1,6 @@
 ﻿
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Sidecab.View
 {
@@ -72,6 +71,7 @@ namespace Sidecab.View
             }
             //------------------------------------------------------------------
         }
+
 
         //======================================================================
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
