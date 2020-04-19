@@ -117,6 +117,7 @@ namespace Sidecab.Presenter
                 this.duration.Start();
             }
 
+            //------------------------------------------------------------------
             var source = new List<Model.Directory>(model.Subdirectories);
             if (source.Count > this.subdirectories.Count)
             {
@@ -125,8 +126,7 @@ namespace Sidecab.Presenter
                     AddSubdirectory(new Directory(source[i]));
                 }
             }
-
-            var e = this.duration.ElapsedMilliseconds;
+            //------------------------------------------------------------------
 
             // To keep step with the expanding animation of the treeview
             var delay = Math.Max(0, 16 - this.duration.ElapsedMilliseconds);

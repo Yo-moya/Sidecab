@@ -18,24 +18,30 @@ namespace Sidecab.View
             InitializeComponent();
 
             this.DataContext = App.Presenter;
-            App.Presenter.Settings.PropertyChanged += SettingWidth_Changed;
+            App.Presenter.Settings.PropertyChanged += OnSettingWidthChanged;
         }
 
         //======================================================================
         public void SetSizePositionFrom(Window parentWindow)
         {
             this.Top    = parentWindow.Top;
-            this.Left   = parentWindow.Left;
             this.Height = parentWindow.Height;
+            this.Width  = App.Presenter.Settings.TreeMinWidth;
 
+            // To slide from screen right
             if (App.Model.Settings.DockPosition == Model.DockPosition.Right)
             {
-                this.Left -= App.Model.Settings.TreeWidth - App.Model.Settings.KnobWidth;
+                this.Left  = horizontalOrigin = parentWindow.Left + parentWindow.Width;
+                this.Left -= App.Presenter.Settings.TreeMinWidth;
+            }
+            else
+            {
+                this.Left = parentWindow.Left;
             }
         }
 
         //======================================================================
-        private void SettingWidth_Changed(object sender, PropertyChangedEventArgs e)
+        private void OnSettingWidthChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Presenter.Settings.TreeWidth))
             {
@@ -47,13 +53,13 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void Window_Closing(object sender, CancelEventArgs e)
+        private void treeWindow_Closing(object sender, CancelEventArgs e)
         {
             (App.Current.MainWindow as MainWindow)?.NotifyChildWindowClosing(this);
         }
 
         //======================================================================
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void treeWindow_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
@@ -62,7 +68,7 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void treeWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool)e.NewValue)
             {
@@ -70,5 +76,17 @@ namespace Sidecab.View
                 if (storyboard != null) { storyboard.Begin(); }
             }
         }
+
+        //======================================================================
+        private void treeWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (App.Model.Settings.DockPosition == Model.DockPosition.Right)
+            {
+                this.Left = horizontalOrigin - this.Width;
+            }
+        }
+
+
+        private double horizontalOrigin = 0;
     }
 }
