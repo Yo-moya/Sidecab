@@ -1,8 +1,8 @@
 ﻿
 using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,8 +14,9 @@ namespace Sidecab.Model
         //----------------------------------------------------------------------
         public enum UpdateType
         {
-            New,
-            Add,
+            Free,
+            Grow,
+            Over,
         }
 
         public delegate void ChildrenUpdateHandler(UpdateType updateType);
@@ -75,7 +76,7 @@ namespace Sidecab.Model
         }
 
         //======================================================================
-        public async void CollectSubdirectories(bool force = false)
+        public async void CollectSubdirectories(bool force)
         {
             var path = this.Path;
             if (path.Length == 0) return;
@@ -86,24 +87,18 @@ namespace Sidecab.Model
                 lock (this.subdirectories)
                 {
                     if ((force == false) && (this.subdirectories.Count > 0)) return;
+
                     this.subdirectories = new List<Directory>();
+                    this.ChildrenUpdated?.Invoke(UpdateType.Free);
                 }
 
-                //--------------------------------------------------------------
-                try
+                var dirInfo = new DirectoryInfo(path);
+                foreach(var subdirInfo in dirInfo.EnumerateDirectories())
                 {
-                    var dirInfo = new DirectoryInfo(path);
-                    foreach(var subdirInfo in dirInfo.EnumerateDirectories())
-                    {
-                        ProcessSubdirectory(subdirInfo);
-                    }
+                    ProcessSubdirectory(subdirInfo);
                 }
-                //--------------------------------------------------------------
-                catch
-                {
-                    return;
-                }
-                //--------------------------------------------------------------
+
+                this.ChildrenUpdated?.Invoke(UpdateType.Over);
             });
             //------------------------------------------------------------------
         }
@@ -130,7 +125,7 @@ namespace Sidecab.Model
             //------------------------------------------------------------------
 
             lock (this.subdirectories) { this.subdirectories.Add(subdir); }
-            this.ChildrenUpdated?.Invoke(UpdateType.Add);
+            this.ChildrenUpdated?.Invoke(UpdateType.Grow);
         }
 
 

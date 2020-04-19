@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -35,6 +38,9 @@ namespace Sidecab.Presenter
             }
         }
 
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        private static extern int StrCmpLogicalW(string x, string y);
+
 
         //======================================================================
         public Directory()
@@ -61,7 +67,6 @@ namespace Sidecab.Presenter
         //======================================================================
         public void CollectSubdirectories()
         {
-            this.subdirectories = null;
             this.model.CollectSubdirectories(true);
         }
 
@@ -81,57 +86,75 @@ namespace Sidecab.Presenter
         //======================================================================
         private void OnChildrenUpdated(Model.Directory.UpdateType updateType)
         {
-            bool raisePropertyChange = false;
-            var source = new List<Model.Directory>(model.Subdirectories);
-
-            if (this.subdirectories == null)
-            {
-                this.subdirectories = new ObservableCollection<Directory>();
-                raisePropertyChange = true;
-            }
-
             switch (updateType)
             {
                 //--------------------------------------------------------------
-                case Model.Directory.UpdateType.New :
+                case Model.Directory.UpdateType.Free :
 
-                    App.Current.Dispatcher.Invoke(() =>
-                    {
-                        foreach (var s in source)
-                        {
-                            this.subdirectories.Add(new Directory(s));
-                        }
-                    });
-
+                    this.subdirectories = new ObservableCollection<Directory>();
+                    RaisePropertyChanged(nameof(Subdirectories));
                     break;
                 //--------------------------------------------------------------
-                case Model.Directory.UpdateType.Add :
+                case Model.Directory.UpdateType.Grow :
 
-                    if (source.Count > this.subdirectories.Count)
-                    {
-                        App.Current.Dispatcher.Invoke(() =>
-                        {
-                            for (int i = this.subdirectories.Count; i < source.Count; i++)
-                            {
-                                this.subdirectories.Add(new Directory(source[i]));
-                            }
-                        });
-                    }
+                    AddSubdirectories();
+                    break;
+                //--------------------------------------------------------------
+                case Model.Directory.UpdateType.Over :
 
-                    // To keep step with the expanding animation of the treeview
-                    System.Threading.Thread.Sleep(16);
+                    this.duration = null;
                     break;
                 //--------------------------------------------------------------
             }
+        }
 
-            if (raisePropertyChange)
+        //======================================================================
+        private void AddSubdirectories()
+        {
+            if (this.duration == null)
             {
-                RaisePropertyChanged(nameof(Subdirectories));
+                this.duration = new Stopwatch();
+                this.duration.Start();
             }
+
+            var source = new List<Model.Directory>(model.Subdirectories);
+            if (source.Count > this.subdirectories.Count)
+            {
+                for (int i = this.subdirectories.Count; i < source.Count; i++)
+                {
+                    AddSubdirectory(new Directory(source[i]));
+                }
+            }
+
+            var e = this.duration.ElapsedMilliseconds;
+
+            // To keep step with the expanding animation of the treeview
+            var delay = Math.Max(0, 16 - this.duration.ElapsedMilliseconds);
+            System.Threading.Thread.Sleep((int)delay);
+
+            this.duration.Reset();
+            this.duration.Start();
+        }
+
+        //======================================================================
+        private void AddSubdirectory(Directory directory)
+        {
+            for (int i = 0; i < this.subdirectories.Count; i++)
+            {
+                var cmp = StrCmpLogicalW(this.subdirectories[i].Name, directory.Name);
+                if (cmp > 0)
+                {
+                    App.Current.Dispatcher.Invoke(() => this.subdirectories.Insert(i, directory));
+                    return;
+                }
+            }
+
+            App.Current.Dispatcher.Invoke(() => this.subdirectories.Add(directory));
         }
 
 
         protected Model.Directory model;
         private ObservableCollection<Directory> subdirectories;
+        private Stopwatch duration;
     }
 }
