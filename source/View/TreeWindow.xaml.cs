@@ -26,18 +26,21 @@ namespace Sidecab.View
         {
             this.Top    = parentWindow.Top;
             this.Height = parentWindow.Height;
-            this.Width  = App.Presenter.Settings.TreeMinWidth;
+            this.Left   = parentWindow.Left;
+            this.Width  = App.Presenter.Settings.TreeWidth;
 
-            // To slide from screen right
-            if (App.Model.Settings.DockPosition == Model.DockPosition.Right)
+            //------------------------------------------------------------------
+            if (App.Model.Settings.DockPosition == Model.DockPosition.Left)
             {
-                this.Left  = horizontalOrigin = parentWindow.Left + parentWindow.Width;
-                this.Left -= App.Presenter.Settings.TreeMinWidth;
+                border_FileTree.RenderTransformOrigin = new Point(0, 0);
             }
+            //------------------------------------------------------------------
             else
             {
-                this.Left = parentWindow.Left;
+                border_FileTree.RenderTransformOrigin = new Point(1, 0);
+                this.Left -= App.Presenter.Settings.TreeWidth - App.Presenter.Settings.KnobWidth;
             }
+            //------------------------------------------------------------------
         }
 
         //======================================================================
@@ -74,15 +77,6 @@ namespace Sidecab.View
             {
                 var storyboard = TryFindResource("ShowingAnim") as Storyboard;
                 if (storyboard != null) { storyboard.Begin(); }
-            }
-        }
-
-        //======================================================================
-        private void treeWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (App.Model.Settings.DockPosition == Model.DockPosition.Right)
-            {
-                this.Left = horizontalOrigin - this.Width;
             }
         }
 

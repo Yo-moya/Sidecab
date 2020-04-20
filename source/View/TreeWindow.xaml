@@ -10,27 +10,35 @@
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
     FontFamily="{materialDesign:MaterialDesignFont}"
-    WindowStyle="None" ShowInTaskbar="False"
-    MinWidth="{Binding Settings.TreeMinWidth}" d:DesignHeight="450" d:DesignWidth="400"
-    Closing="treeWindow_Closing" KeyDown="treeWindow_KeyDown" IsVisibleChanged="treeWindow_IsVisibleChanged" SizeChanged="treeWindow_SizeChanged">
+    WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Background="Transparent"
+    Width="{Binding Settings.TreeWidth}" MinWidth="{Binding Settings.TreeMinWidth}" d:DesignHeight="450" d:DesignWidth="400"
+    Closing="treeWindow_Closing" KeyDown="treeWindow_KeyDown" IsVisibleChanged="treeWindow_IsVisibleChanged">
 
     <Window.Resources>
         <Storyboard x:Key="ShowingAnim" RepeatBehavior="1x">
 
-            <DoubleAnimation Storyboard.TargetName="treeWindow" Storyboard.TargetProperty="Width" Duration="0:0:0.2"
-            From="{Binding Settings.TreeMinWidth}" To="{Binding Settings.TreeWidth}">
+            <DoubleAnimation Storyboard.TargetName="border_FileTree_Scale" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+            Duration="0:0:0.3" From="0.2" To="1.0">
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase Exponent="3" EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <DoubleAnimation Storyboard.TargetName="fileTree_Body" Storyboard.TargetProperty="Opacity"
+            Duration="0:0:0.4" From="0.0" To="1.0">
+                <DoubleAnimation.EasingFunction>
+                    <ExponentialEase Exponent="6" EasingMode="EaseIn"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
 
         </Storyboard>
     </Window.Resources>
 
-    <Grid>
-
-        <lc:FileTree/>
-
-    </Grid>
+    <Border x:Name="border_FileTree" Padding="0" Background="{DynamicResource MaterialDesignPaper}">
+        <Border.RenderTransform>
+            <ScaleTransform x:Name="border_FileTree_Scale" ScaleX="1" ScaleY="1"/>
+        </Border.RenderTransform>
+        <lc:FileTree x:Name="fileTree_Body" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    </Border>
 
 </Window>
