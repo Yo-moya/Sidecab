@@ -56,6 +56,7 @@ namespace Sidecab.Model
         //======================================================================
         public Directory(string path, Directory parent = null)
         {
+            if (path.EndsWith("\\")) { path = path.Substring(0, path.Length - 1); }
             var location = System.IO.Path.GetDirectoryName(path);
 
             this.Name = (location != null) ? path.Substring(location.Length) : path;
@@ -87,10 +88,10 @@ namespace Sidecab.Model
                 lock (this.subdirectories)
                 {
                     if ((force == false) && (this.subdirectories.Count > 0)) return;
-
                     this.subdirectories = new List<Directory>();
-                    this.ChildrenUpdated?.Invoke(UpdateType.Free);
                 }
+
+                this.ChildrenUpdated?.Invoke(UpdateType.Free);
 
                 var dirInfo = new DirectoryInfo(path);
                 foreach(var subdirInfo in dirInfo.EnumerateDirectories())

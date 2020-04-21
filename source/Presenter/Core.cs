@@ -17,7 +17,9 @@ namespace Sidecab.Presenter
             this.model.RootListChanged += RefreshRoot;
 
             Settings = new Settings(this.model.Settings);
+
             RefreshRoot();
+            RootSelector.Current.CollectSubdirectories();
         }
 
         //======================================================================
@@ -30,7 +32,18 @@ namespace Sidecab.Presenter
         public void SetRootDirectory(Directory directory)
         {
             this.model.SetRootDirectory(directory.ExposeModel());
-            this.RootSelector.Current = this.RootSelector.List[this.RootSelector.List.Count - 1];
+
+            //------------------------------------------------------------------
+            var newRootPath = directory.Path;
+            foreach (var r in this.RootSelector.List)
+            {
+                if (r.Path == newRootPath)
+                {
+                    this.RootSelector.Current = r;
+                    return;
+                }
+            }
+            //------------------------------------------------------------------
         }
 
 

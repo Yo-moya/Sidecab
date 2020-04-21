@@ -22,8 +22,6 @@ namespace Sidecab.Model
         //======================================================================
         public Root(Directory directory) : base(directory.Path, directory.ParentDirectory)
         {
-            this.Name = directory.Name;
-            this.Subdirectories = directory.Subdirectories;
         }
 
         //======================================================================

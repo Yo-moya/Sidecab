@@ -23,7 +23,6 @@ namespace Sidecab.Presenter
         //======================================================================
         public Root(Model.Root model) : base(model)
         {
-            CollectSubdirectories();
         }
     }
 }

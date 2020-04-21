@@ -118,12 +118,12 @@ namespace Sidecab.Presenter
             }
 
             //------------------------------------------------------------------
-            var source = new List<Model.Directory>(model.Subdirectories);
-            if (source.Count > this.subdirectories.Count)
+            var modelCouunt = model.Subdirectories.Count;
+            if (modelCouunt >  this.subdirectories.Count)
             {
-                for (int i = this.subdirectories.Count; i < source.Count; i++)
+                for (int i = this.subdirectories.Count; i < modelCouunt; i++)
                 {
-                    AddSubdirectory(new Directory(source[i]));
+                    AddSubdirectory(new Directory(model.Subdirectories[i]));
                 }
             }
             //------------------------------------------------------------------
