@@ -1,7 +1,6 @@
 ﻿
 using System.Windows;
 using System.Diagnostics;
-using System.Reflection;
 using Microsoft.Win32;
 
 namespace Sidecab
@@ -51,7 +50,7 @@ namespace Sidecab
                 var processInfo = new ProcessStartInfo()
                 {
                     FileName = "cmd.exe",
-                    Arguments = "/c timeout /t 1 /nobreak & start " + appPath,
+                    Arguments = "/c timeout /t 2 /nobreak & start " + appPath,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
                 };

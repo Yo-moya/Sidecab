@@ -30,7 +30,7 @@ namespace Sidecab.View
             this.Width  = App.Presenter.Settings.TreeWidth;
 
             //------------------------------------------------------------------
-            if (App.Model.Settings.DockPosition == Model.DockPosition.Left)
+            if (App.Presenter.Settings.DockPosition == DockPosition.Left)
             {
                 border_FileTree.RenderTransformOrigin = new Point(0, 0);
             }
@@ -79,8 +79,5 @@ namespace Sidecab.View
                 if (storyboard != null) { storyboard.Begin(); }
             }
         }
-
-
-        private double horizontalOrigin = 0;
     }
 }

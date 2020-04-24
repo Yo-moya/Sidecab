@@ -82,11 +82,4 @@ namespace Sidecab.Model
 
         private int displayIndex = 0;
     }
-
-    //==========================================================================
-    public enum DockPosition
-    {
-        Left ,
-        Right,
-    }
 }

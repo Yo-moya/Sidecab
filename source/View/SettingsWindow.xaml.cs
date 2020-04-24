@@ -19,7 +19,6 @@ namespace Sidecab.View
             DataObject.AddPastingHandler(this.textBox_KnobWidth, this.TextBox_Pasting);
 
             this.DataContext = App.Presenter.Settings;
-            this.popup_KnobColor.DataContext = App.Presenter.Settings.KnobColor;
         }
 
         //======================================================================

@@ -56,7 +56,7 @@
             <Button x:Name="button_KnobColor"  Grid.Row="4" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 Padding="4,4" Height="25" Background="{Binding KnobBrush}" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="False" Click="button_KnobColor_Click"/>
 
-            <Popup x:Name="popup_KnobColor" Placement="Bottom" PlacementTarget="{Binding ElementName=button_KnobColor}" StaysOpen="False">
+            <Popup x:Name="popup_KnobColor" Placement="Bottom" DataContext="{Binding KnobColor}" PlacementTarget="{Binding ElementName=button_KnobColor}" StaysOpen="False">
                 <lc:ColorPicker/>
             </Popup>
 

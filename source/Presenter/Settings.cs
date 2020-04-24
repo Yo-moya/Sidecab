@@ -42,6 +42,20 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
+        public int DisplayIndex
+        {
+            get
+            {
+                return this.model.DisplayIndex;
+            }
+
+            set
+            {
+                this.model.DisplayIndex = value;
+            }
+        }
+
+        //----------------------------------------------------------------------
         public WpfAppBar.MonitorInfo DisplayToDock
         {
             get
@@ -58,12 +72,11 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        public WpfAppBar.AppBarDockMode DockPosition
+        public DockPosition DockPosition
         {
             get
             {
-                return (this.model.DockPosition == Model.DockPosition.Left)
-                    ? WpfAppBar.AppBarDockMode.Left : WpfAppBar.AppBarDockMode.Right;
+                return this.model.DockPosition;
             }
         }
 
@@ -124,8 +137,8 @@ namespace Sidecab.Presenter
 
             var positions = new List<string>
             {
-                Model.DockPosition.Left .ToString(),
-                Model.DockPosition.Right.ToString(),
+                DockPosition.Left .ToString(),
+                DockPosition.Right.ToString(),
             };
 
             this.positionSelector = new Selector<string>(positions);
@@ -163,12 +176,12 @@ namespace Sidecab.Presenter
         //======================================================================
         private void Position_Changed(object sender, PropertyChangedEventArgs e)
         {
-            foreach (var pos in Enum.GetValues(typeof(Model.DockPosition)))
+            foreach (var pos in Enum.GetValues(typeof(DockPosition)))
             {
                 if (this.positionSelector.Current == pos.ToString())
                 {
-                    this.model.DockPosition = (Model.DockPosition)pos;
-                    RaisePropertyChanged(nameof(this.DockPosition));
+                    this.model.DockPosition = (DockPosition)pos;
+                    RaisePropertyChanged(nameof(Settings.DockPosition));
                     return;
                 }
             }
