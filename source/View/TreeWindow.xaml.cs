@@ -17,7 +17,7 @@ namespace Sidecab.View
 
             InitializeComponent();
 
-            this.DataContext = App.Presenter;
+            this.DataContext = App.Presenter.Settings;
             App.Presenter.Settings.PropertyChanged += OnSettingWidthChanged;
         }
 
@@ -30,7 +30,7 @@ namespace Sidecab.View
             this.Width  = App.Presenter.Settings.TreeWidth;
 
             //------------------------------------------------------------------
-            if (App.Presenter.Settings.DockPosition == DockPosition.Left)
+            if (App.Presenter.Settings.DockPosition == Data.DockPosition.Left)
             {
                 border_FileTree.RenderTransformOrigin = new Point(0, 0);
             }

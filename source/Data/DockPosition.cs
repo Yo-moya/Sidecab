@@ -1,5 +1,5 @@
 ﻿
-namespace Sidecab
+namespace Sidecab.Data
 {
     //==========================================================================
     public enum DockPosition

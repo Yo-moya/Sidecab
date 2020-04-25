@@ -18,7 +18,7 @@ namespace Sidecab.View
             DataObject.AddPastingHandler(this.textBox_TreeWidth, this.TextBox_Pasting);
             DataObject.AddPastingHandler(this.textBox_KnobWidth, this.TextBox_Pasting);
 
-            this.DataContext = App.Presenter.Settings;
+            this.DataContext = new Presenter.SettingsWindow();
         }
 
         //======================================================================
@@ -27,7 +27,7 @@ namespace Sidecab.View
             DataObject.RemovePastingHandler(this.textBox_TreeWidth, this.TextBox_Pasting);
             DataObject.RemovePastingHandler(this.textBox_KnobWidth, this.TextBox_Pasting);
 
-            (this.DataContext as Presenter.Settings)?.Save();
+            App.Presenter.Settings.Save();
             (App.Current.MainWindow as MainWindow)?.NotifyChildWindowClosing(this);
         }
 

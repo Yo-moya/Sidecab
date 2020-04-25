@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 namespace Sidecab.Presenter
 {
     //==========================================================================
-    public class Selector<T> : Base where T : class
+    public class Selector<T> : Utility.NoticeableVariables where T : class
     {
         public ObservableCollection<T> List { get; private set; }
 
@@ -17,7 +17,7 @@ namespace Sidecab.Presenter
             set
             {
                 this.current = value;
-                RaisePropertyChanged(nameof(Current));
+                RaisePropertyChanged(nameof(this.Current));
             }
         }
 
@@ -28,7 +28,7 @@ namespace Sidecab.Presenter
             set
             {
                 int index = Math.Min(Math.Max(0, value), this.List.Count - 1);
-                this.current = List[index];
+                this.Current = List[index];
             }
         }
 

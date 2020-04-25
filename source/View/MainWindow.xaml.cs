@@ -15,7 +15,7 @@ namespace Sidecab.View
         {
             InitializeComponent();
             Utility.WindowAttributes.SetAsToolWindow(this);
-            this.DataContext = App.Presenter;
+            this.DataContext = new Presenter.MainWindow();
         }
 
         //======================================================================

@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Sidecab.Presenter
+namespace Sidecab.Utility
 {
-    public class Base : INotifyPropertyChanged
+    public class NoticeableVariables : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,13 +1,10 @@
 ﻿
-using System;
 using System.Collections.Generic;
 
 namespace Sidecab.Model
 {
     public class Core
     {
-        public event Action RootListChanged;
-
         public Settings   Settings { get; private set; }
         public List<Root> RootList { get; private set; }
 
@@ -24,8 +21,6 @@ namespace Sidecab.Model
         {
             this.RootList.RemoveAll(r => r.IsDrive == false);
             this.RootList.Add(new Root(directory));
-
-            this.RootListChanged?.Invoke();
         }
     }
 }

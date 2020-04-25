@@ -4,30 +4,23 @@ using System.Collections.Generic;
 
 namespace Sidecab.Presenter
 {
-    public class FileTree : Base
+    public class FileTree : Utility.NoticeableVariables
     {
         public Selector<Root> RootSelector { get; private set; }
 
 
         //======================================================================
-        public FileTree(Model.Core model)
+        public FileTree()
         {
-            App.Model.RootListChanged += RefreshRoot;
-
-            RefreshRoot();
-            RootSelector.Current.CollectSubdirectories();
-        }
-
-        //======================================================================
-        ~FileTree()
-        {
-            App.Model.RootListChanged -= RefreshRoot;
+            RefreshRootSelector();
+            this.RootSelector.Current.CollectSubdirectories();
         }
 
         //======================================================================
         public void SetRootDirectory(Directory directory)
         {
             App.Model.SetRootDirectory(directory.ExposeModel());
+            RefreshRootSelector();
 
             //------------------------------------------------------------------
             var newRootPath = directory.Path;
@@ -48,23 +41,20 @@ namespace Sidecab.Presenter
         {
             if (e.PropertyName == nameof(Selector<Root>.Current))
             {
-                RootSelector.Current.CollectSubdirectories();
+                this.RootSelector.Current.CollectSubdirectories();
             }
         }
 
         //======================================================================
-        private void RefreshRoot()
+        private void RefreshRootSelector()
         {
-            var rootList = new List<Root>(this.model.RootList.Count);
-            foreach (var r in this.model.RootList) { rootList.Add(new Root(r)); }
+            var rootList = new List<Root>(App.Model.RootList.Count);
+            foreach (var r in App.Model.RootList) { rootList.Add(new Root(r)); }
 
             this.RootSelector = new Selector<Root>(rootList);
             this.RootSelector.PropertyChanged += OnRootChanged;
 
-            RaisePropertyChanged(nameof(RootSelector));
+            RaisePropertyChanged(nameof(this.RootSelector));
         }
-
-
-        private Model.Core model;
     }
 }

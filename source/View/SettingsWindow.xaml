@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:lc="clr-namespace:Sidecab.View"
+    xmlns:view="clr-namespace:Sidecab.View"
     mc:Ignorable="d"
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
@@ -36,13 +36,13 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Position"/>
-            <ComboBox x:Name="comboBox_Position" Grid.Row="0" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding PositionSelector.List}" SelectedItem="{Binding PositionSelector.Current}" GotFocus="KnobEditBox_GotFocus"/>
-
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Display"/>
             <ComboBox x:Name="comboBox_Display" Grid.Row="1" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding DisplaySelector.List}" SelectedItem="{Binding DisplaySelector.Current}" GotFocus="KnobEditBox_GotFocus"/>
+                ItemsSource="{Binding DisplayIndexSelector.List}" SelectedItem="{Binding DisplayIndexSelector.Current}" GotFocus="KnobEditBox_GotFocus"/>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Position"/>
+            <ComboBox x:Name="comboBox_Position" Grid.Row="0" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding DockPositionSelector.List}" SelectedItem="{Binding DockPositionSelector.Current}" GotFocus="KnobEditBox_GotFocus"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Tree Width"/>
             <TextBox x:Name="textBox_TreeWidth" Grid.Row="2" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
@@ -54,10 +54,10 @@
 
             <TextBlock Grid.Row="4" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Knob Color"/>
             <Button x:Name="button_KnobColor"  Grid.Row="4" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                Padding="4,4" Height="25" Background="{Binding KnobBrush}" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="False" Click="button_KnobColor_Click"/>
+                Padding="4,4" Height="25" Background="{Binding Settings.KnobBrush}" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="False" Click="button_KnobColor_Click"/>
 
-            <Popup x:Name="popup_KnobColor" Placement="Bottom" DataContext="{Binding KnobColor}" PlacementTarget="{Binding ElementName=button_KnobColor}" StaysOpen="False">
-                <lc:ColorPicker/>
+            <Popup x:Name="popup_KnobColor" Placement="Bottom" DataContext="{Binding Settings.KnobColor}" PlacementTarget="{Binding ElementName=button_KnobColor}" StaysOpen="False">
+                <view:ColorPicker/>
             </Popup>
 
         </Grid>

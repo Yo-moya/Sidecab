@@ -1,9 +1,9 @@
 ﻿
 using System.Windows.Media;
 
-namespace Sidecab.Presenter
+namespace Sidecab.Data
 {
-    public class ColorValues : Base
+    public class ColorValues : Utility.NoticeableVariables
     {
         //----------------------------------------------------------------------
         public byte R

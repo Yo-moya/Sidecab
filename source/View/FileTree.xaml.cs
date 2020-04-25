@@ -15,7 +15,7 @@ namespace Sidecab.View
         public FileTree()
         {
             InitializeComponent();
-            this.DataContext = App.Presenter;
+            this.DataContext = new Presenter.FileTree();
 
             var doubleClickTime = Utility.SystemAttributes.GetDoubleClickTime();
             this.clickTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)doubleClickTime);
@@ -76,7 +76,7 @@ namespace Sidecab.View
                 e.Handled = true;
 
                 var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-                if (directory != null) { directory.Open(); }
+                directory?.Open();
             }
         }
 
@@ -121,7 +121,7 @@ namespace Sidecab.View
         private void manuItem_Root_Click(object sender, RoutedEventArgs e)
         {
             var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-            if (directory != null) { App.Presenter.SetRootDirectory(directory); }
+            if (directory != null) { (this.DataContext as Presenter.FileTree)?.SetRootDirectory(directory); }
         }
 
         //======================================================================

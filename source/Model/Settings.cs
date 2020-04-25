@@ -8,10 +8,10 @@ namespace Sidecab.Model
 {
     public class Settings
     {
-        public int KnobWidth { get; set; } = 10;
+        public int KnobWidth { get; set; } =  10;
         public int TreeWidth { get; set; } = 300;
 
-        public DockPosition DockPosition { get; set; } = DockPosition.Left;
+        public Data.DockPosition DockPosition { get; set; } = Data.DockPosition.Left;
         public Color KnobColor { get; set; } = Colors.Orange;
 
         //----------------------------------------------------------------------

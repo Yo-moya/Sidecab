@@ -4,8 +4,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:lc="clr-namespace:Sidecab.View"
-    xmlns:pr="clr-namespace:Sidecab.Presenter"
+    xmlns:presenter="clr-namespace:Sidecab.Presenter"
     mc:Ignorable="d"
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
@@ -61,7 +60,7 @@
             SelectedItemChanged="treeView_Directories_SelectedItemChanged" PreviewMouseDoubleClick="treeView_Directories_PreviewMouseDoubleClick" PreviewMouseLeftButtonUp="treeView_Directories_PreviewMouseLeftButtonUp" PreviewMouseRightButtonUp="treeView_Directories_PreviewMouseRightButtonUp">
 
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="pr:Directory" ItemsSource="{Binding Subdirectories}">
+                <HierarchicalDataTemplate DataType="presenter:Directory" ItemsSource="{Binding Subdirectories}">
                     <TextBlock Text="{Binding Name}" VerticalAlignment="Stretch" Margin="0"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>

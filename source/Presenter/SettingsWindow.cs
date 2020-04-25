@@ -1,62 +1,90 @@
 ﻿
+using System;
+using System.ComponentModel;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Sidecab.Presenter
 {
-    public class SettingsWindow : Base
+    public class SettingsWindow : Utility.NoticeableVariables
     {
+        public Settings Settings { get { return App.Presenter.Settings; } }
+
         //----------------------------------------------------------------------
         public string TreeWidthAsText
         {
-            get { return App.Presenter.Settings.TreeWidth.ToString(); }
-            set { App.Presenter.Settings.TreeWidth = ConvertTextToNumber(value); }
+            get { return this.Settings.TreeWidth.ToString(); }
+            set { this.Settings.TreeWidth = ConvertTextToNumber(value); }
         }
 
         //----------------------------------------------------------------------
         public string KnobWidthAsText
         {
-            get { return App.Presenter.Settings.KnobWidth.ToString(); }
-            set { App.Presenter.Settings.KnobWidth = ConvertTextToNumber(value); }
+            get { return this.Settings.KnobWidth.ToString(); }
+            set { this.Settings.KnobWidth = ConvertTextToNumber(value); }
         }
 
         //----------------------------------------------------------------------
-        public WpfAppBar.MonitorInfo DisplayToDock
+        public Selector<string> DisplayIndexSelector
         {
             get
             {
-                int index = 0;
-                foreach (var m in WpfAppBar.MonitorInfo.GetAllMonitors())
+                this.displayIndexSelector.Current =
+                    this.displayIndexSelector.List[this.Settings.DisplayIndex];
+
+                return this.displayIndexSelector;
+            }
+        }
+
+        //----------------------------------------------------------------------
+        public Selector<string> DockPositionSelector
+        {
+            get
+            {
+                this.dockPositionSelector.Index =
+                    this.dockPositionSelector.List.IndexOf(this.Settings.DockPosition.ToString());
+
+                return this.dockPositionSelector;
+            }
+        }
+
+
+        //======================================================================
+        public SettingsWindow()
+        {
+            var displayIndexList = new List<string>();
+            var dockPositionList = new List<string>();
+
+            //------------------------------------------------------------------
+            using (var monitors = WpfAppBar.MonitorInfo.GetAllMonitors().GetEnumerator())
+            {
+                int count = 0;
+                while (monitors.MoveNext())
                 {
-                    if (index == App.Model.Settings.DisplayIndex) return m;
-                    index++;
+                    count++;
+                    displayIndexList.Add("Display " + count.ToString());
                 }
-
-                return null;
             }
-        }
-
-        //----------------------------------------------------------------------
-        public Selector<string> PositionSelector
-        {
-            get
+            //------------------------------------------------------------------
+            foreach (var dockPos in Enum.GetValues(typeof(Data.DockPosition)))
             {
-                this.positionSelector.Index =
-                    this.positionSelector.List.IndexOf(App.Presenter.Settings.DockPosition.ToString());
-
-                return this.positionSelector;
+                dockPositionList.Add(dockPos.ToString());
             }
+            //------------------------------------------------------------------
+
+            this.displayIndexSelector = new Selector<string>(displayIndexList);
+            this.displayIndexSelector.PropertyChanged += this.OnDisplayIndexChanged;
+
+            this.dockPositionSelector = new Selector<string>(dockPositionList);
+            this.dockPositionSelector.PropertyChanged += this.OnDockPositionChanged;
         }
 
-        //----------------------------------------------------------------------
-        public Selector<string> DisplaySelector
+        //======================================================================
+        ~SettingsWindow()
         {
-            get
-            {
-                this.displaySelector.Current = this.displaySelector.List[App.Presenter.Settings.DisplayIndex];
-                return this.displaySelector;
-            }
+            this.displayIndexSelector.PropertyChanged -= this.OnDisplayIndexChanged;
+            this.dockPositionSelector.PropertyChanged -= this.OnDockPositionChanged;
         }
-
 
         //======================================================================
         private int ConvertTextToNumber(string text)
@@ -65,8 +93,27 @@ namespace Sidecab.Presenter
             return int.Parse((text == "") ? "0" : text);
         }
 
+        //======================================================================
+        private void OnDisplayIndexChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.Settings.DisplayIndex = this.displayIndexSelector.Index;
+        }
 
-        private Selector<string>  displaySelector;
-        private Selector<string> positionSelector;
+        //======================================================================
+        private void OnDockPositionChanged(object sender, PropertyChangedEventArgs e)
+        {
+            foreach (var dockPos in Enum.GetValues(typeof(Data.DockPosition)))
+            {
+                if (this.dockPositionSelector.Current == dockPos.ToString())
+                {
+                    this.Settings.DockPosition = (Data.DockPosition)dockPos;
+                    return;
+                }
+            }
+        }
+
+
+        private Selector<string> displayIndexSelector;
+        private Selector<string> dockPositionSelector;
     }
 }

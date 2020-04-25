@@ -5,7 +5,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:appbar="clr-namespace:WpfAppBar"
-    xmlns:lc="clr-namespace:Sidecab.View"
     mc:Ignorable="d"
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
@@ -13,7 +12,7 @@
     FontFamily="{materialDesign:MaterialDesignFont}"
     Background="{DynamicResource MaterialDesignPaper}"
     Title="Sidecab" Height="450" Width="800" MinWidth="1" ShowInTaskbar="False"
-    Monitor="{Binding Settings.DisplayToDock}" DockMode="{Binding Settings.DockPosition}" DockedWidthOrHeight="{Binding Settings.KnobWidth}">
+    Monitor="{Binding DisplayToDock}" DockMode="{Binding DockMode}" DockedWidthOrHeight="{Binding Settings.KnobWidth}">
 
     <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{Binding Settings.KnobBrush}" MouseDown="Border_MouseDown"/>
 

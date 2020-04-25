@@ -5,13 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:lc="clr-namespace:Sidecab.View"
+    xmlns:view="clr-namespace:Sidecab.View"
     mc:Ignorable="d"
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
     FontFamily="{materialDesign:MaterialDesignFont}"
     WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Background="Transparent"
-    Width="{Binding Settings.TreeWidth}" MinWidth="{Binding Settings.TreeMinWidth}" d:DesignHeight="450" d:DesignWidth="400"
+    Width="{Binding TreeWidth}" MinWidth="{Binding TreeMinWidth}" d:DesignHeight="450" d:DesignWidth="400"
     Closing="treeWindow_Closing" KeyDown="treeWindow_KeyDown" IsVisibleChanged="treeWindow_IsVisibleChanged">
 
     <Window.Resources>
@@ -38,7 +38,7 @@
         <Border.RenderTransform>
             <ScaleTransform x:Name="border_FileTree_Scale" ScaleX="1" ScaleY="1"/>
         </Border.RenderTransform>
-        <lc:FileTree x:Name="fileTree_Body" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <view:FileTree x:Name="fileTree_Body" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Border>
 
 </Window>
