@@ -107,7 +107,7 @@ namespace Sidecab.View
             clicked.IsSelected = true;
 
             var directory = treeView_Directories.SelectedItem as Presenter.Directory;
-            this.manuItem_Root.IsEnabled = directory?.HasSomeSubdirectories ?? false;
+            this.manuItem_PinToRoot.IsEnabled = directory?.HasSomeSubdirectories ?? false;
         }
 
         //======================================================================
@@ -118,17 +118,24 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void manuItem_Root_Click(object sender, RoutedEventArgs e)
+        private void manuItem_PinToRoot_Click(object sender, RoutedEventArgs e)
         {
             var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
             if (directory != null) { (this.DataContext as Presenter.FileTree)?.SetRootDirectory(directory); }
         }
 
         //======================================================================
-        private void menuItem_Open_Click(object sender, RoutedEventArgs e)
+        private void menuItem_OpenFolder_Click(object sender, RoutedEventArgs e)
         {
             var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
             directory?.Open();
+        }
+
+        //======================================================================
+        private void manuItem_CopyPath_Click(object sender, RoutedEventArgs e)
+        {
+            var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
+            directory?.CopyPath();
         }
 
 

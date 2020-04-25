@@ -77,6 +77,12 @@ namespace Sidecab.Presenter
         }
 
         //======================================================================
+        public void CopyPath()
+        {
+            this.model.CopyPath();
+        }
+
+        //======================================================================
         public Model.Directory ExposeModel()
         {
             return this.model;

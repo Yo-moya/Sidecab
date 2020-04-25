@@ -67,14 +67,19 @@
 
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem x:Name="manuItem_Root" Header="Pin as a root folder" Click="manuItem_Root_Click">
+                    <MenuItem x:Name="manuItem_PinToRoot" Header="Pin to root" Click="manuItem_PinToRoot_Click">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Pin"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="menuItem_Open" Header="Open in Explorer" Click="menuItem_Open_Click">
+                    <MenuItem x:Name="menuItem_OpenFolder" Header="Open in Explorer" Click="menuItem_OpenFolder_Click">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="FolderOpen"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="manuItem_CopyPath" Header="Copy as path" Click="manuItem_CopyPath_Click">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="ClipboardOutline"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </ContextMenu>

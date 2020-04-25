@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.IO;
+using System.Windows;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading;
@@ -74,6 +75,12 @@ namespace Sidecab.Model
         public void Open()
         {
             Process.Start("explorer.exe", Path);
+        }
+
+        //======================================================================
+        public void CopyPath()
+        {
+            Clipboard.SetText(this.Path);
         }
 
         //======================================================================
