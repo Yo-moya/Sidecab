@@ -35,7 +35,7 @@ namespace Sidecab
             if (mainWindow != null)
             {
                 mainWindow.CloseFileTreeWindow();
-                mainWindow.CloseSettingWindow();
+                mainWindow.CloseSettingsWindow();
             }
         }
 

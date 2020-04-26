@@ -12,13 +12,13 @@
     FontFamily="{materialDesign:MaterialDesignFont}"
     WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Background="Transparent"
     Width="{Binding TreeWidth}" MinWidth="{Binding TreeMinWidth}" d:DesignHeight="450" d:DesignWidth="400"
-    Closing="treeWindow_Closing" KeyDown="treeWindow_KeyDown" IsVisibleChanged="treeWindow_IsVisibleChanged">
+    Closing="treeWindow_Closing" KeyDown="treeWindow_KeyDown">
 
     <Window.Resources>
-        <Storyboard x:Key="ShowingAnim" RepeatBehavior="1x">
+        <Storyboard x:Key="animToShow" RepeatBehavior="1x">
 
             <DoubleAnimation Storyboard.TargetName="border_FileTree_Scale" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
-            Duration="0:0:0.3" From="0.2" To="1.0">
+            Duration="0:0:0.3" From ="0.2" To="1.0">
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase Exponent="3" EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -28,6 +28,23 @@
             Duration="0:0:0.4" From="0.0" To="1.0">
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase Exponent="6" EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+        </Storyboard>
+        <Storyboard x:Key="animToHide" RepeatBehavior="1x" Completed="animToHide_Completed">
+
+            <DoubleAnimation Storyboard.TargetName="border_FileTree_Scale" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+            Duration="0:0:0.2" From ="1.0" To="0.2">
+                <DoubleAnimation.EasingFunction>
+                    <ExponentialEase Exponent="3" EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <DoubleAnimation Storyboard.TargetName="fileTree_Body" Storyboard.TargetProperty="Opacity"
+            Duration="0:0:0.1" From="1.0" To="0.0">
+                <DoubleAnimation.EasingFunction>
+                    <ExponentialEase Exponent="6" EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
 

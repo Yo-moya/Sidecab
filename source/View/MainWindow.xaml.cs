@@ -24,16 +24,16 @@ namespace Sidecab.View
             if (this.FileTreeWindow == null)
             {
                 this.FileTreeWindow = new FileTreeWindow();
-                this.FileTreeWindow.ShowActivated = activate;
-                this.FileTreeWindow.SetSizePositionFrom(this);
-                this.FileTreeWindow.Show();
             }
+
+            this.FileTreeWindow.ShowActivated = activate;
+            this.FileTreeWindow.ShowWithAnimation(this);
         }
 
         //======================================================================
         public void CloseFileTreeWindow()
         {
-            this.FileTreeWindow?.Close();
+            this.FileTreeWindow?.HideWithAnimation();
         }
 
         //======================================================================
@@ -47,29 +47,31 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        public void CloseSettingWindow()
+        public void CloseSettingsWindow()
         {
             this.SettingsWindow?.Close();
         }
 
         //======================================================================
-        public void NotifyChildWindowClosing(Window child)
+        public bool NotifyChildWindowClosing(Window child)
         {
-            if (child == null) return;
+            if (child != null)
+            {
+                //--------------------------------------------------------------
+                if (child == this.FileTreeWindow)
+                {
+                    return false;
+                }
+                //--------------------------------------------------------------
+                if (child == this.SettingsWindow)
+                {
+                    this.SettingsWindow = null;
+                    return true;
+                }
+                //--------------------------------------------------------------
+            }
 
-            //------------------------------------------------------------------
-            if (child == this.FileTreeWindow)
-            {
-                this.FileTreeWindow = null;
-                return;
-            }
-            //------------------------------------------------------------------
-            if (child == this.SettingsWindow)
-            {
-                this.SettingsWindow = null;
-                return;
-            }
-            //------------------------------------------------------------------
+            return false;
         }
 
 
