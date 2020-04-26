@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace Sidecab.Presenter
 {
-    public class Directory : Utility.NoticeableVariables
+    public class Directory : Utility.ObserverableObject
     {
         public string Path { get { return this.model.Path; } }
         public bool HasSomeSubdirectories { get { return this.model.HasSomeSubdirectories; } }

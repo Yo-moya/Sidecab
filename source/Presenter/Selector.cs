@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 namespace Sidecab.Presenter
 {
     //==========================================================================
-    public class Selector<T> : Utility.NoticeableVariables where T : class
+    public class Selector<T> : Utility.ObserverableObject where T : class
     {
         public ObservableCollection<T> List { get; private set; }
 

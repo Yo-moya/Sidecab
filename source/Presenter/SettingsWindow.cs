@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Sidecab.Presenter
 {
-    public class SettingsWindow : Utility.NoticeableVariables
+    public class SettingsWindow : Utility.ObserverableObject
     {
         public Settings Settings { get { return App.Presenter.Settings; } }
 

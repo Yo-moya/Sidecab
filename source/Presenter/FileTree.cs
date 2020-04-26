@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Sidecab.Presenter
 {
-    public class FileTree : Utility.NoticeableVariables
+    public class FileTree : Utility.ObserverableObject
     {
         public Selector<Root> RootSelector { get; private set; }
 

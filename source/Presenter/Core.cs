@@ -1,7 +1,7 @@
 ﻿
 namespace Sidecab.Presenter
 {
-    public class Core : Utility.NoticeableVariables
+    public class Core : Utility.ObserverableObject
     {
         public Settings Settings { get; private set; }
 
