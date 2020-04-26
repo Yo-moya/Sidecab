@@ -55,13 +55,18 @@ namespace Sidecab.Model
 
 
         //======================================================================
-        public Directory(string path, Directory parent = null)
+        public Directory(DirectoryInfo info, Directory parent = null)
         {
+            var path = info.FullName;
+
             if (path.EndsWith("\\")) { path = path.Substring(0, path.Length - 1); }
             var location = System.IO.Path.GetDirectoryName(path);
 
             this.Name = (location != null) ? path.Substring(location.Length) : path;
             if (this.Name.StartsWith("\\")) { this.Name = this.Name.Substring(1); }
+
+            this.HasSomeSubdirectories =
+                info.EnumerateDirectories().GetEnumerator().MoveNext();
 
             this.ParentDirectory = parent;
         }
@@ -120,10 +125,7 @@ namespace Sidecab.Model
             try
             {
                 if (directoryInfo.Attributes.HasFlag(FileAttributes.System)) return;
-                subdir = new Directory(directoryInfo.FullName, this);
-
-                subdir.HasSomeSubdirectories =
-                    directoryInfo.EnumerateDirectories().GetEnumerator().MoveNext();
+                subdir = new Directory(directoryInfo, this);
             }
             //------------------------------------------------------------------
             catch

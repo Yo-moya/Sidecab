@@ -20,7 +20,8 @@ namespace Sidecab.Model
 
         // Copy directory as a root
         //======================================================================
-        public Root(Directory directory) : base(directory.Path, directory.ParentDirectory)
+        public Root(Directory directory)
+            : base(new DirectoryInfo(directory.Path), directory.ParentDirectory)
         {
         }
 
