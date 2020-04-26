@@ -6,10 +6,10 @@ using System.ComponentModel;
 
 namespace Sidecab.View
 {
-    public partial class TreeWindow : Window
+    public partial class FileTreeWindow : Window
     {
         //======================================================================
-        public TreeWindow()
+        public FileTreeWindow()
         {
             this.WindowStyle = WindowStyle.None;
             this.ResizeMode = ResizeMode.NoResize;

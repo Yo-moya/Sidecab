@@ -34,7 +34,7 @@ namespace Sidecab
             var mainWindow = MainWindow as View.MainWindow;
             if (mainWindow != null)
             {
-                mainWindow.CloseTreeWindow();
+                mainWindow.CloseFileTreeWindow();
                 mainWindow.CloseSettingWindow();
             }
         }

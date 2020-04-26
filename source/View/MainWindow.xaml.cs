@@ -6,7 +6,7 @@ namespace Sidecab.View
 {
     public partial class MainWindow
     {
-        TreeWindow TreeWindow = null;
+        FileTreeWindow FileTreeWindow = null;
         SettingsWindow SettingsWindow = null;
 
 
@@ -19,21 +19,21 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        public void OpenTreeWindow(bool activate = true)
+        public void OpenFileTreeWindow(bool activate = true)
         {
-            if (this.TreeWindow == null)
+            if (this.FileTreeWindow == null)
             {
-                this.TreeWindow = new TreeWindow();
-                this.TreeWindow.SetSizePositionFrom(this);
-                this.TreeWindow.ShowActivated = activate;
-                this.TreeWindow.Show();
+                this.FileTreeWindow = new FileTreeWindow();
+                this.FileTreeWindow.ShowActivated = activate;
+                this.FileTreeWindow.SetSizePositionFrom(this);
+                this.FileTreeWindow.Show();
             }
         }
 
         //======================================================================
-        public void CloseTreeWindow()
+        public void CloseFileTreeWindow()
         {
-            this.TreeWindow?.Close();
+            this.FileTreeWindow?.Close();
         }
 
         //======================================================================
@@ -58,9 +58,9 @@ namespace Sidecab.View
             if (child == null) return;
 
             //------------------------------------------------------------------
-            if (child == this.TreeWindow)
+            if (child == this.FileTreeWindow)
             {
-                this.TreeWindow = null;
+                this.FileTreeWindow = null;
                 return;
             }
             //------------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace Sidecab.View
         //======================================================================
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            OpenTreeWindow();
+            OpenFileTreeWindow();
         }
     }
 }
