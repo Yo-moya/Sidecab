@@ -11,6 +11,12 @@ namespace Sidecab.View
 {
     public partial class FileTree : UserControl
     {
+        //----------------------------------------------------------------------
+        public Presenter.FileTree Presenter
+        {
+            get { return this.DataContext as Presenter.FileTree; }
+        }
+
         //======================================================================
         public FileTree()
         {
@@ -21,6 +27,9 @@ namespace Sidecab.View
             this.clickTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)doubleClickTime);
             this.clickTimer.Tick += clickTimer_Tick;
         }
+
+
+        private DispatcherTimer clickTimer = new DispatcherTimer();
 
 
         //======================================================================
@@ -121,7 +130,7 @@ namespace Sidecab.View
         private void manuItem_PinToRoot_Click(object sender, RoutedEventArgs e)
         {
             var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-            if (directory != null) { (this.DataContext as Presenter.FileTree)?.SetRootDirectory(directory); }
+            if (directory != null) { this.Presenter.SetRootDirectory(directory); }
         }
 
         //======================================================================
@@ -137,8 +146,5 @@ namespace Sidecab.View
             var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
             directory?.CopyPath();
         }
-
-
-        private DispatcherTimer clickTimer = new DispatcherTimer();
     }
 }

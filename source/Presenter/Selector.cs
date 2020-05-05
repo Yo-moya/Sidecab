@@ -1,5 +1,4 @@
 ﻿
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -27,17 +26,34 @@ namespace Sidecab.Presenter
             get { return List.IndexOf(this.current); }
             set
             {
-                int index = Math.Min(Math.Max(0, value), this.List.Count - 1);
-                this.Current = List[index];
+                if ((value < 0) || (value >= this.List.Count))
+                {
+                    this.Current = null;
+                    return;
+                }
+
+                this.Current = this.List[value];
             }
         }
 
 
         //======================================================================
+        public Selector()
+        {
+            this.List = new ObservableCollection<T>();
+        }
+
+        //======================================================================
         public Selector(IEnumerable<T> source)
         {
+            SetList(source);
+            this.current = ((this.List.Count > 0) ? this.List[0] : null);
+        }
+
+        //======================================================================
+        public void SetList(IEnumerable<T> source)
+        {
             this.List = new ObservableCollection<T>(source);
-            this.current = this.List[0];
         }
 
 

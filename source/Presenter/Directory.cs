@@ -94,18 +94,19 @@ namespace Sidecab.Presenter
             switch (updateType)
             {
                 //--------------------------------------------------------------
-                case Model.Directory.UpdateType.Free :
+                case Model.Directory.UpdateType.Initialize :
 
                     this.subdirectories = new ObservableCollection<Directory>();
                     RaisePropertyChanged(nameof(Subdirectories));
                     break;
                 //--------------------------------------------------------------
-                case Model.Directory.UpdateType.Grow :
+                case Model.Directory.UpdateType.Growing :
 
                     AddSubdirectories();
+                    RaisePropertyChanged(nameof(Subdirectories));
                     break;
                 //--------------------------------------------------------------
-                case Model.Directory.UpdateType.Over :
+                case Model.Directory.UpdateType.Finished :
 
                     this.duration = null;
                     break;

@@ -15,9 +15,9 @@ namespace Sidecab.Model
         //----------------------------------------------------------------------
         public enum UpdateType
         {
-            Free,
-            Grow,
-            Over,
+            Initialize,
+            Growing   ,
+            Finished  ,
         }
 
         public delegate void ChildrenUpdateHandler(UpdateType updateType);
@@ -103,7 +103,7 @@ namespace Sidecab.Model
                     this.subdirectories = new List<Directory>();
                 }
 
-                this.ChildrenUpdated?.Invoke(UpdateType.Free);
+                this.ChildrenUpdated?.Invoke(UpdateType.Initialize);
 
                 var dirInfo = new DirectoryInfo(path);
                 foreach(var subdirInfo in dirInfo.EnumerateDirectories())
@@ -111,7 +111,7 @@ namespace Sidecab.Model
                     ProcessSubdirectory(subdirInfo);
                 }
 
-                this.ChildrenUpdated?.Invoke(UpdateType.Over);
+                this.ChildrenUpdated?.Invoke(UpdateType.Finished);
             });
             //------------------------------------------------------------------
         }
@@ -135,7 +135,7 @@ namespace Sidecab.Model
             //------------------------------------------------------------------
 
             lock (this.subdirectories) { this.subdirectories.Add(subdir); }
-            this.ChildrenUpdated?.Invoke(UpdateType.Grow);
+            this.ChildrenUpdated?.Invoke(UpdateType.Growing);
         }
 
 

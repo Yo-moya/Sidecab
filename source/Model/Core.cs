@@ -17,6 +17,12 @@ namespace Sidecab.Model
         }
 
         //======================================================================
+        public void RefreshRootList()
+        {
+            this.RootList = Root.EnumerateDrives();
+        }
+
+        //======================================================================
         public void SetRootDirectory(Directory directory)
         {
             this.RootList.RemoveAll(r => r.IsDrive == false);
