@@ -98,6 +98,12 @@ namespace Sidecab.View
             var clicked = FindParent<TreeViewItem>(e.OriginalSource as DependencyObject);
             if (clicked != null)
             {
+                if (clicked.IsExpanded == false)
+                {
+                    var directory = clicked.DataContext as Presenter.Directory;
+                    directory?.CollectSubdirectories();
+                }
+
                 clickTimer.Start();
                 clicked.IsExpanded = !clicked.IsExpanded;
             }
@@ -117,13 +123,6 @@ namespace Sidecab.View
 
             var directory = treeView_Directories.SelectedItem as Presenter.Directory;
             this.manuItem_PinToRoot.IsEnabled = directory?.HasSomeSubdirectories ?? false;
-        }
-
-        //======================================================================
-        private void treeView_Directories_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            var directory = e.NewValue as Presenter.Directory;
-            directory?.CollectSubdirectories();
         }
 
         //======================================================================
