@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.ComponentModel;
 
@@ -14,7 +15,6 @@ namespace Sidecab.View
         {
             this.WindowStyle = WindowStyle.None;
             this.ResizeMode = ResizeMode.NoResize;
-            this.Topmost = true;
 
             InitializeComponent();
 
@@ -45,6 +45,9 @@ namespace Sidecab.View
 
             var storyboard = TryFindResource("animToShow") as Storyboard;
             if (storyboard != null) { storyboard.Begin(); }
+
+            // Calling Hide() makes the window inactive, so avoid it.
+            App.Current.MainWindow.Visibility = Visibility.Collapsed;
 
             Show();
         }
@@ -91,6 +94,7 @@ namespace Sidecab.View
         //======================================================================
         private void animToHide_Completed(object sender, EventArgs e)
         {
+            App.Current.MainWindow.Show();
             Hide();
         }
     }
