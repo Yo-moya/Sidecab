@@ -71,11 +71,11 @@ namespace Sidecab.View
         //======================================================================
         private void treeWindow_Closing(object sender, CancelEventArgs e)
         {
-            // true if the MainWindow is gone
-            var canClose = (App.Current.MainWindow as MainWindow)
-                ?.NotifyChildWindowClosing(this) ?? true;
+            // Colse this window if the MainWindow is lost
+            var result = (App.Current.MainWindow as MainWindow)
+                ?.NotifyChildWindowClosing(this) ?? MainWindow.WindowBehaviorRestriction.CanClose;
 
-            if (canClose == false)
+            if (result == MainWindow.WindowBehaviorRestriction.CanNotClose)
             {
                 e.Cancel = true;
                 HideWithAnimation();

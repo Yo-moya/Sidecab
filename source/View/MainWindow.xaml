@@ -14,6 +14,6 @@
     Title="Sidecab" Height="450" Width="800" MinWidth="1" ShowInTaskbar="False"
     Monitor="{Binding DisplayToDock}" DockMode="{Binding DockMode}" DockedWidthOrHeight="{Binding Settings.KnobWidth}">
 
-    <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{Binding Settings.KnobBrush}" MouseDown="Border_MouseDown"/>
+    <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{Binding Settings.KnobBrush}" MouseDown="border_MouseDown"/>
 
 </appbar:AppBarWindow>

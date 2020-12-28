@@ -25,7 +25,7 @@ namespace Sidecab.Utility
             var helper = new WindowInteropHelper(window);
 
             SendMessage(helper.Handle, WM_SETICON, new IntPtr(1), IntPtr.Zero);
-            SendMessage(helper.Handle, WM_SETICON,   IntPtr.Zero, IntPtr.Zero);
+            SendMessage(helper.Handle, WM_SETICON, IntPtr.Zero  , IntPtr.Zero);
 
             var style = GetWindowLongPtr(helper.Handle, GWL.EXSTYLE);
             style = new IntPtr(style.ToInt64() | WS_EX_DLGMODALFRAME);
@@ -62,17 +62,15 @@ namespace Sidecab.Utility
             int x, int y, int width, int height, uint flags);
 
 
-        private const uint WM_SETICON = 0x0080;
-
+        private const uint WM_SETICON          = 0x0080;
+        private const uint SWP_NOMOVE          = 0x0002;
+        private const uint SWP_NOSIZE          = 0x0001;
+        private const uint SWP_NOZORDER        = 0x0004;
+        private const uint SWP_FRAMECHANGED    = 0x0020;
         private const long WS_EX_DLGMODALFRAME = 0x00000001L;
         private const long WS_EX_TOPMOST       = 0x00000008L;
         private const long WS_MAXIMIZEBOX      = 0x00010000L;
         private const long WS_MINIMIZEBOX      = 0x00020000L;
-
-        private const uint SWP_NOMOVE       = 0x0002;
-        private const uint SWP_NOSIZE       = 0x0001;
-        private const uint SWP_NOZORDER     = 0x0004;
-        private const uint SWP_FRAMECHANGED = 0x0020;
 
         //----------------------------------------------------------------------
         private enum GWL : int

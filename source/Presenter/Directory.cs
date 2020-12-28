@@ -160,6 +160,7 @@ namespace Sidecab.Presenter
 
 
         protected Model.Directory model;
+
         private ObservableCollection<Directory> subdirectories;
         private Stopwatch duration;
     }

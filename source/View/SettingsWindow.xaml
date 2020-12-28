@@ -13,7 +13,7 @@
     Background="{DynamicResource MaterialDesignPaper}"
     Title="Settings" Height="350" Width="450" MinHeight="300" MinWidth="400"
     WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False"
-    Closing="Window_Closing" KeyDown="Window_KeyDown" SourceInitialized="Window_SourceInitialized">
+    Closing="window_Closing" KeyDown="window_KeyDown" SourceInitialized="window_SourceInitialized">
 
     <Window.Resources>
         <Thickness x:Key="CaptionMargin" Left="32" Top="8" Right="16" Bottom="8"/>
@@ -38,19 +38,19 @@
 
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Display"/>
             <ComboBox x:Name="comboBox_Display" Grid.Row="1" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding DisplayIndexSelector.List}" SelectedItem="{Binding DisplayIndexSelector.Current}" GotFocus="KnobEditBox_GotFocus"/>
+                ItemsSource="{Binding DisplayIndexSelector.List}" SelectedItem="{Binding DisplayIndexSelector.Current}" GotFocus="knobEditBox_GotFocus"/>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Position"/>
             <ComboBox x:Name="comboBox_Position" Grid.Row="0" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding DockPositionSelector.List}" SelectedItem="{Binding DockPositionSelector.Current}" GotFocus="KnobEditBox_GotFocus"/>
+                ItemsSource="{Binding DockPositionSelector.List}" SelectedItem="{Binding DockPositionSelector.Current}" GotFocus="knobEditBox_GotFocus"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Tree Width"/>
             <TextBox x:Name="textBox_TreeWidth" Grid.Row="2" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                TextAlignment="Right" InputMethod.IsInputMethodEnabled="False" Text="{Binding TreeWidthAsText, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="TextBox_PreviewTextInput" GotFocus="TreeEditBox_GotFocus"/>
+                TextAlignment="Right" InputMethod.IsInputMethodEnabled="False" Text="{Binding TreeWidthAsText, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="textBox_PreviewTextInput" GotFocus="treeEditBox_GotFocus"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Knob Width"/>
             <TextBox x:Name="textBox_KnobWidth" Grid.Row="3" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                TextAlignment="Right" InputMethod.IsInputMethodEnabled="False" Text="{Binding KnobWidthAsText, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="TextBox_PreviewTextInput" GotFocus="KnobEditBox_GotFocus"/>
+                TextAlignment="Right" InputMethod.IsInputMethodEnabled="False" Text="{Binding KnobWidthAsText, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="textBox_PreviewTextInput" GotFocus="knobEditBox_GotFocus"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Knob Color"/>
             <Button x:Name="button_KnobColor"  Grid.Row="4" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"

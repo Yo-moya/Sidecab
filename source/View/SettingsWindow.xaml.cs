@@ -15,65 +15,10 @@ namespace Sidecab.View
         {
             InitializeComponent();
 
-            DataObject.AddPastingHandler(this.textBox_TreeWidth, this.TextBox_Pasting);
-            DataObject.AddPastingHandler(this.textBox_KnobWidth, this.TextBox_Pasting);
+            DataObject.AddPastingHandler(this.textBox_TreeWidth, this.textBox_Pasting);
+            DataObject.AddPastingHandler(this.textBox_KnobWidth, this.textBox_Pasting);
 
             this.DataContext = new Presenter.SettingsWindow();
-        }
-
-        //======================================================================
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            DataObject.RemovePastingHandler(this.textBox_TreeWidth, this.TextBox_Pasting);
-            DataObject.RemovePastingHandler(this.textBox_KnobWidth, this.TextBox_Pasting);
-
-            App.Presenter.Settings.Save();
-            (App.Current.MainWindow as MainWindow)?.NotifyChildWindowClosing(this);
-        }
-
-        //======================================================================
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                Close();
-            }
-        }
-
-        //======================================================================
-        private void Window_SourceInitialized(object sender, EventArgs e)
-        {
-            Utility.WindowAttributes.HideTitleBarIcon  (this);
-            Utility.WindowAttributes.HideMinimizeButton(this);
-        }
-
-        //======================================================================
-        private void button_KnobColor_Click(object sender, RoutedEventArgs e)
-        {
-            (App.Current.MainWindow as MainWindow)?.CloseFileTreeWindow();
-            this.popup_KnobColor.IsOpen = true;
-        }
-
-        //======================================================================
-        private void TextBox_Pasting(object sender, DataObjectPastingEventArgs e)
-        {
-            var pasted = e.SourceDataObject.GetData(DataFormats.UnicodeText) as string;
-            if (pasted == null) return;
-
-            if (CorrectInputText(sender, pasted))
-            {
-                e.CancelCommand();
-                e.Handled = true;
-            }
-        }
-
-        //======================================================================
-        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (CorrectInputText(sender, e.Text))
-            {
-                e.Handled = true;
-            }
         }
 
         //======================================================================
@@ -96,14 +41,78 @@ namespace Sidecab.View
             return true;
         }
 
+
         //======================================================================
-        private void KnobEditBox_GotFocus(object sender, RoutedEventArgs e)
+        private void window_Closing(object sender, CancelEventArgs e)
+        {
+            DataObject.RemovePastingHandler(this.textBox_TreeWidth, this.textBox_Pasting);
+            DataObject.RemovePastingHandler(this.textBox_KnobWidth, this.textBox_Pasting);
+
+            App.Presenter.Settings.Save();
+
+            // Colse this window if the MainWindow is lost
+            var result = (App.Current.MainWindow as MainWindow)
+                ?.NotifyChildWindowClosing(this) ?? MainWindow.WindowBehaviorRestriction.CanClose;
+
+            if (result == MainWindow.WindowBehaviorRestriction.CanNotClose)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        //======================================================================
+        private void window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
+        }
+
+        //======================================================================
+        private void window_SourceInitialized(object sender, EventArgs e)
+        {
+            Utility.WindowAttributes.HideTitleBarIcon  (this);
+            Utility.WindowAttributes.HideMinimizeButton(this);
+        }
+
+        //======================================================================
+        private void button_KnobColor_Click(object sender, RoutedEventArgs e)
+        {
+            (App.Current.MainWindow as MainWindow)?.CloseFileTreeWindow();
+            this.popup_KnobColor.IsOpen = true;
+        }
+
+        //======================================================================
+        private void textBox_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            var pasted = e.SourceDataObject.GetData(DataFormats.UnicodeText) as string;
+            if (pasted == null) return;
+
+            if (CorrectInputText(sender, pasted))
+            {
+                e.CancelCommand();
+                e.Handled = true;
+            }
+        }
+
+        //======================================================================
+        private void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (CorrectInputText(sender, e.Text))
+            {
+                e.Handled = true;
+            }
+        }
+
+        //======================================================================
+        private void knobEditBox_GotFocus(object sender, RoutedEventArgs e)
         {
             (App.Current.MainWindow as MainWindow)?.CloseFileTreeWindow();
         }
 
         //======================================================================
-        private void TreeEditBox_GotFocus(object sender, RoutedEventArgs e)
+        private void treeEditBox_GotFocus(object sender, RoutedEventArgs e)
         {
             (App.Current.MainWindow as MainWindow)?.OpenFileTreeWindow(activate : false);
         }

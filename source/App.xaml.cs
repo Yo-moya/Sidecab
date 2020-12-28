@@ -15,6 +15,7 @@ namespace Sidecab
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
             Model = new Model.Core();
             Presenter = new Presenter.Core(Model);
 
@@ -56,7 +57,7 @@ namespace Sidecab
                 };
                 //--------------------------------------------------------------
 
-                // Workaround : popupmenus don't appear after resume
+                // Workaround : popupmenus don't appear after system resume
                 Process.Start(processInfo);
                 App.Current.Shutdown();
             }

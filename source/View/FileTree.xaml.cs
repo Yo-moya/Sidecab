@@ -6,6 +6,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 using System.Windows.Media;
 using System.Windows.Input;
+using System.ComponentModel;
 
 namespace Sidecab.View
 {
@@ -21,11 +22,19 @@ namespace Sidecab.View
         public FileTree()
         {
             InitializeComponent();
-            this.DataContext = new Presenter.FileTree();
 
-            var doubleClickTime = Utility.SystemAttributes.GetDoubleClickTime();
-            this.clickTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)doubleClickTime);
-            this.clickTimer.Tick += clickTimer_Tick;
+            var isDesignTime = (bool)(DesignerProperties.IsInDesignModeProperty
+                .GetMetadata(typeof(DependencyObject)).DefaultValue);
+
+            // To avoid "Object reference not set to an instance of an object"
+            if (isDesignTime == false)
+            {
+                this.DataContext = new Presenter.FileTree();
+
+                var doubleClickTime = Utility.SystemAttributes.GetDoubleClickTime();
+                this.clickTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)doubleClickTime);
+                this.clickTimer.Tick += clickTimer_Tick;
+            }
         }
 
 

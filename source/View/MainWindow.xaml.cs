@@ -10,10 +10,19 @@ namespace Sidecab.View
         SettingsWindow SettingsWindow = null;
 
 
+        //----------------------------------------------------------------------
+        public enum WindowBehaviorRestriction
+        {
+            CanClose   ,
+            CanNotClose,
+        }
+
+
         //======================================================================
         public MainWindow()
         {
             InitializeComponent();
+
             Utility.WindowAttributes.SetAsToolWindow(this);
             this.DataContext = new Presenter.MainWindow();
         }
@@ -53,30 +62,30 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        public bool NotifyChildWindowClosing(Window child)
+        public WindowBehaviorRestriction NotifyChildWindowClosing(Window child)
         {
             if (child != null)
             {
                 //--------------------------------------------------------------
                 if (child == this.FileTreeWindow)
                 {
-                    return false;
+                    return WindowBehaviorRestriction.CanNotClose;
                 }
                 //--------------------------------------------------------------
                 if (child == this.SettingsWindow)
                 {
                     this.SettingsWindow = null;
-                    return true;
+                    return WindowBehaviorRestriction.CanClose;
                 }
                 //--------------------------------------------------------------
             }
 
-            return false;
+            return WindowBehaviorRestriction.CanNotClose;
         }
 
 
         //======================================================================
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        private void border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             OpenFileTreeWindow();
         }
