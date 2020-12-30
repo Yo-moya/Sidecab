@@ -1,18 +1,18 @@
-﻿
+
 namespace Sidecab.Presenter
 {
-    public class Root : Directory
+    public class TreeRoot : Directory
     {
         //----------------------------------------------------------------------
         public string SelectorCaption
         {
             get
             {
-                var root = this.model as Model.Root;
-                if (root.IsDrive)
+                var drive = this.model as Model.Drive;
+                if (drive != null)
                 {
                     // 'Name' contains drive letter
-                    return root.Name + " [ " + root.Label + " ]";
+                    return drive.Name + " [ " + drive.Label + " ]";
                 }
 
                 return "/ " + this.Name;
@@ -21,7 +21,7 @@ namespace Sidecab.Presenter
 
 
         //======================================================================
-        public Root(Model.Root model) : base(model)
+        public Root(Model.Directory model) : base(model)
         {
         }
     }
