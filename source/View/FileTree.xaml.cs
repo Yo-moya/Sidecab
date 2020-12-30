@@ -131,14 +131,14 @@ namespace Sidecab.View
             clicked.IsSelected = true;
 
             var directory = treeView_Directories.SelectedItem as Presenter.Directory;
-            this.manuItem_PinToRoot.IsEnabled = directory?.HasSomeSubdirectories ?? false;
+            this.manuItem_Pin.IsEnabled = directory?.HasSubdirectories ?? false;
         }
 
         //======================================================================
-        private void manuItem_PinToRoot_Click(object sender, RoutedEventArgs e)
+        private void manuItem_Pin_Click(object sender, RoutedEventArgs e)
         {
             var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-            if (directory != null) { this.Presenter.SetRootDirectory(directory); }
+            if (directory != null) { this.Presenter.AddBookmark(directory); }
         }
 
         //======================================================================

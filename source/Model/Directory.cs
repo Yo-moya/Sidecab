@@ -23,9 +23,10 @@ namespace Sidecab.Model
         public delegate void ChildrenUpdateHandler(UpdateType updateType);
         public event ChildrenUpdateHandler ChildrenUpdated;
 
-        public Directory ParentDirectory  { get; private set; }
-        public bool HasSomeSubdirectories { get; private set; } = false;
+        public Directory ParentDirectory { get; private set; }
+        public bool HasSubdirectories { get; private set; } = false;
         public string Name { get; protected set; } = "";
+        public double Priority { get; private set; } = 1.0;
 
         //----------------------------------------------------------------------
         public string Path
@@ -65,7 +66,7 @@ namespace Sidecab.Model
             this.Name = (location != null) ? path.Substring(location.Length) : path;
             if (this.Name.StartsWith("\\")) { this.Name = this.Name.Substring(1); }
 
-            this.HasSomeSubdirectories =
+            this.HasSubdirectories =
                 info.EnumerateDirectories().GetEnumerator().MoveNext();
 
             this.ParentDirectory = parent;
@@ -80,6 +81,7 @@ namespace Sidecab.Model
         public void Open()
         {
             Process.Start("explorer.exe", Path);
+            Priority = 2;
         }
 
         //======================================================================

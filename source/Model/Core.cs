@@ -1,32 +1,54 @@
 ﻿
+using System.IO;
 using System.Collections.Generic;
 
 namespace Sidecab.Model
 {
     public class Core
     {
-        public Settings   Settings { get; private set; }
-        public List<Root> RootList { get; private set; }
+        public Settings Settings { get; private set; }
 
 
         //======================================================================
         public Core()
         {
             this.Settings = Settings.Load() ?? new Settings();
-            this.RootList = Root.EnumerateDrives();
+            RefreshRootList();
+        }
+
+        //======================================================================
+        public List<Drive> GetDriveList()
+        {
+            return new List<Drive>(this.driveList);
+        }
+
+        //======================================================================
+        public List<Directory> GetBookmarks()
+        {
+            return new List<Directory>(this.bookmarks);
         }
 
         //======================================================================
         public void RefreshRootList()
         {
-            this.RootList = Root.EnumerateDrives();
+            var drives = DriveInfo.GetDrives();
+            this.driveList = new List<Drive>(drives.Length);
+
+            foreach (var d in drives)
+            {
+                if (d.IsReady) { this.driveList.Add(new Drive(d)); }
+            }
         }
 
         //======================================================================
-        public void SetRootDirectory(Directory directory)
+        public void AddBookmark(Directory directory)
         {
-            this.RootList.RemoveAll(r => r.IsDrive == false);
-            this.RootList.Add(new Root(directory));
+            this.bookmarks = new List<Directory>() { directory };
+            // this.bookmarks.Add(directory);
         }
+
+
+        private List<Drive> driveList;
+        private List<Directory> bookmarks = new List<Directory>();
     }
 }

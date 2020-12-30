@@ -1,4 +1,4 @@
-
+﻿
 namespace Sidecab.Presenter
 {
     public class TreeRoot : Directory
@@ -8,20 +8,20 @@ namespace Sidecab.Presenter
         {
             get
             {
-                var drive = this.model as Model.Drive;
+                var drive = this.Model as Model.Drive;
                 if (drive != null)
                 {
                     // 'Name' contains drive letter
                     return drive.Name + " [ " + drive.Label + " ]";
                 }
 
-                return "/ " + this.Name;
+                return "pinned // " + this.Name;
             }
         }
 
 
         //======================================================================
-        public Root(Model.Directory model) : base(model)
+        public TreeRoot(Model.Directory model) : base(model)
         {
         }
     }

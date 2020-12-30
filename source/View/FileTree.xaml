@@ -42,7 +42,7 @@
         </Grid.ColumnDefinitions>
 
         <Button x:Name="button_AppMenu" Grid.Row="0" Grid.Column="0" Margin="4" Padding="4,4" Focusable="False"
-        Style="{DynamicResource MaterialDesignFlatButton}" Click="button_AppMenu_Click">
+            Style="{DynamicResource MaterialDesignFlatButton}" Click="button_AppMenu_Click">
             <materialDesign:PackIcon Kind="Menu" Height="{Binding Height, ElementName=comboBox_RootSelector}" Width="{Binding Height, RelativeSource={RelativeSource Self}}"/>
         </Button>
 
@@ -61,13 +61,13 @@
 
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="presenter:Directory" ItemsSource="{Binding Subdirectories}">
-                    <TextBlock Text="{Binding Name}" VerticalAlignment="Stretch" Margin="0"/>
+                    <TextBlock Text="{Binding Name}" FontSize="{Binding TextFontSize}" VerticalAlignment="Stretch" Margin="0"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
 
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem x:Name="manuItem_PinToRoot" Header="Pin to root" Click="manuItem_PinToRoot_Click">
+                    <MenuItem x:Name="manuItem_Pin" Header="Pin this folder" Click="manuItem_Pin_Click">
                         <MenuItem.Icon>
                             <materialDesign:PackIcon Kind="Pin"/>
                         </MenuItem.Icon>

@@ -8,15 +8,22 @@ namespace Sidecab.Presenter
 {
     public class Directory : Utility.ObserverableObject
     {
-        public string Path { get { return this.model.Path; } }
-        public bool HasSomeSubdirectories { get { return this.model.HasSomeSubdirectories; } }
+        public Model.Directory Model { get; private set; }
+        public string Name { get { return this.Model?.Name ?? ""; } }
+        public string Path { get { return this.Model?.Path ?? ""; } }
+        public bool HasSubdirectories { get { return this.Model?.HasSubdirectories ?? false; } }
 
         //----------------------------------------------------------------------
-        public string Name
+        public double TextFontSize
         {
             get
             {
-                return this.model?.Name ?? "";
+                if (this.Model != null)
+                {
+                    return this.Model.Priority * 14;
+                }
+
+                return 14;
             }
         }
 
@@ -25,9 +32,9 @@ namespace Sidecab.Presenter
         {
             get
             {
-                if (this.model?.HasSomeSubdirectories ?? false)
+                if (this.Model?.HasSubdirectories ?? false)
                 {
-                    if (this.model.Subdirectories.Count == 0)
+                    if (this.Model.Subdirectories.Count == 0)
                     {
                         return new ObservableCollection<Directory> { new Directory() };
                     }
@@ -50,41 +57,36 @@ namespace Sidecab.Presenter
         //======================================================================
         public Directory(Model.Directory model)
         {
-            this.model = model;
-            this.model.ChildrenUpdated += this.OnChildrenUpdated;
+            this.Model = model;
+            this.Model.ChildrenUpdated += this.OnChildrenUpdated;
         }
 
         //======================================================================
         ~Directory()
         {
-            if (this.model != null)
+            if (this.Model != null)
             {
-                this.model.ChildrenUpdated -= this.OnChildrenUpdated;
+                this.Model.ChildrenUpdated -= this.OnChildrenUpdated;
             }
         }
 
         //======================================================================
         public void CollectSubdirectories()
         {
-            this.model.CollectSubdirectories(true);
+            this.Model.CollectSubdirectories(true);
         }
 
         //======================================================================
         public void Open()
         {
-            this.model.Open();
+            this.Model.Open();
+            RaisePropertyChanged(nameof(TextFontSize));
         }
 
         //======================================================================
         public void CopyPath()
         {
-            this.model.CopyPath();
-        }
-
-        //======================================================================
-        public Model.Directory ExposeModel()
-        {
-            return this.model;
+            this.Model.CopyPath();
         }
 
 
@@ -94,19 +96,19 @@ namespace Sidecab.Presenter
             switch (updateType)
             {
                 //--------------------------------------------------------------
-                case Model.Directory.UpdateType.Initialize :
+                case Sidecab.Model.Directory.UpdateType.Initialize :
 
                     this.subdirectories = new ObservableCollection<Directory>();
                     RaisePropertyChanged(nameof(Subdirectories));
                     break;
                 //--------------------------------------------------------------
-                case Model.Directory.UpdateType.Growing :
+                case Sidecab.Model.Directory.UpdateType.Growing :
 
                     AddSubdirectories();
                     RaisePropertyChanged(nameof(Subdirectories));
                     break;
                 //--------------------------------------------------------------
-                case Model.Directory.UpdateType.Finished :
+                case Sidecab.Model.Directory.UpdateType.Finished :
 
                     this.duration = null;
                     break;
@@ -124,12 +126,12 @@ namespace Sidecab.Presenter
             }
 
             //------------------------------------------------------------------
-            var modelCouunt = model.Subdirectories.Count;
-            if (modelCouunt >  this.subdirectories.Count)
+            var modelCount = this.Model.Subdirectories.Count;
+            if (modelCount > this.subdirectories.Count)
             {
-                for (int i = this.subdirectories.Count; i < modelCouunt; i++)
+                for (int i = this.subdirectories.Count; i < modelCount; i++)
                 {
-                    AddSubdirectory(new Directory(model.Subdirectories[i]));
+                    AddSubdirectory(new Directory(this.Model.Subdirectories[i]));
                 }
             }
             //------------------------------------------------------------------
@@ -158,8 +160,6 @@ namespace Sidecab.Presenter
             App.Current.Dispatcher.Invoke(() => this.subdirectories.Add(directory));
         }
 
-
-        protected Model.Directory model;
 
         private ObservableCollection<Directory> subdirectories;
         private Stopwatch duration;

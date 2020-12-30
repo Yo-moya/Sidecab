@@ -6,7 +6,7 @@ namespace Sidecab.Presenter
 {
     public class FileTree : Utility.ObserverableObject
     {
-        public Selector<Root> RootSelector { get; } = new Selector<Root>();
+        public Selector<TreeRoot> RootSelector { get; } = new Selector<TreeRoot>();
 
 
         //======================================================================
@@ -19,39 +19,33 @@ namespace Sidecab.Presenter
         }
 
         //======================================================================
-        public void RefreshRootSelector()
+        public void AddBookmark(Directory directory)
         {
-            var rootList = new List<Root>(App.Model.RootList.Count);
-            foreach (var r in App.Model.RootList) { rootList.Add(new Root(r)); }
+            App.Model.AddBookmark(directory.Model);
+            RefreshRootSelector();
+
+            this.RootSelector.Current = new TreeRoot(directory.Model);
+        }
+
+
+        //======================================================================
+        private void RefreshRootSelector()
+        {
+            var driveList = App.Model.GetDriveList();
+            var bookmarks = App.Model.GetBookmarks();
+
+            var rootList = new List<TreeRoot>(driveList.Count + bookmarks.Count);
+            foreach (var r in driveList) { rootList.Add(new TreeRoot(r)); }
+            foreach (var r in bookmarks) { rootList.Add(new TreeRoot(r)); }
 
             this.RootSelector.SetList(rootList);
             RaisePropertyChanged(nameof(this.RootSelector));
         }
 
         //======================================================================
-        public void SetRootDirectory(Directory directory)
-        {
-            App.Model.SetRootDirectory(directory.ExposeModel());
-            RefreshRootSelector();
-
-            //------------------------------------------------------------------
-            var newRootPath = directory.Path;
-            foreach (var r in this.RootSelector.List)
-            {
-                if (r.Path == newRootPath)
-                {
-                    this.RootSelector.Current = r;
-                    return;
-                }
-            }
-            //------------------------------------------------------------------
-        }
-
-
-        //======================================================================
         private void OnRootChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Selector<Root>.Current))
+            if (e.PropertyName == nameof(Selector<TreeRoot>.Current))
             {
                 this.RootSelector.Current?.CollectSubdirectories();
             }

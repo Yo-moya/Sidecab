@@ -12,10 +12,10 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public T Current
         {
-            get { return this.current; }
+            get { return this.selectedObject; }
             set
             {
-                this.current = value;
+                this.selectedObject = value;
                 RaisePropertyChanged(nameof(this.Current));
             }
         }
@@ -23,7 +23,7 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public int Index
         {
-            get { return List.IndexOf(this.current); }
+            get { return List.IndexOf(this.selectedObject); }
             set
             {
                 if ((value < 0) || (value >= this.List.Count))
@@ -47,7 +47,7 @@ namespace Sidecab.Presenter
         public Selector(IEnumerable<T> source)
         {
             SetList(source);
-            this.current = ((this.List.Count > 0) ? this.List[0] : null);
+            this.selectedObject = ((this.List.Count > 0) ? this.List[0] : null);
         }
 
         //======================================================================
@@ -57,6 +57,6 @@ namespace Sidecab.Presenter
         }
 
 
-        private T current;
+        private T selectedObject = null;
     }
 }
