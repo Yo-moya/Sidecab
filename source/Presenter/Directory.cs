@@ -18,7 +18,7 @@ namespace Sidecab.Presenter
         {
             get
             {
-                if (this.Model != null)
+                if (this.Model is object)
                 {
                     return this.Model.Priority * 14;
                 }
@@ -32,7 +32,7 @@ namespace Sidecab.Presenter
         {
             get
             {
-                if (this.Model?.HasSubdirectories ?? false)
+                if (this.HasSubdirectories)
                 {
                     if (this.Model.Subdirectories.Count == 0)
                     {
@@ -64,7 +64,7 @@ namespace Sidecab.Presenter
         //======================================================================
         ~Directory()
         {
-            if (this.Model != null)
+            if (this.Model is object)
             {
                 this.Model.ChildrenUpdated -= this.OnChildrenUpdated;
             }
@@ -119,7 +119,7 @@ namespace Sidecab.Presenter
         //======================================================================
         private void AddSubdirectories()
         {
-            if (this.duration == null)
+            if (this.duration is null)
             {
                 this.duration = new Stopwatch();
                 this.duration.Start();

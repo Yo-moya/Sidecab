@@ -8,8 +8,7 @@ namespace Sidecab.Presenter
         {
             get
             {
-                var drive = this.Model as Model.Drive;
-                if (drive != null)
+                if (this.Model is Model.Drive drive)
                 {
                     // 'Name' contains drive letter
                     return drive.Name + " [ " + drive.Label + " ]";

@@ -63,7 +63,7 @@ namespace Sidecab.Model
             if (path.EndsWith("\\")) { path = path.Substring(0, path.Length - 1); }
             var location = System.IO.Path.GetDirectoryName(path);
 
-            this.Name = (location != null) ? path.Substring(location.Length) : path;
+            this.Name = (location is null) ? path : path.Substring(location.Length);
             if (this.Name.StartsWith("\\")) { this.Name = this.Name.Substring(1); }
 
             this.HasSubdirectories =

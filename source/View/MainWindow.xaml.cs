@@ -30,7 +30,7 @@ namespace Sidecab.View
         //======================================================================
         public void OpenFileTreeWindow(bool activate = true)
         {
-            if (this.FileTreeWindow == null)
+            if (this.FileTreeWindow is null)
             {
                 this.FileTreeWindow = new FileTreeWindow();
             }
@@ -48,7 +48,7 @@ namespace Sidecab.View
         //======================================================================
         public void OpenSettingsWindow()
         {
-            if (this.SettingsWindow == null)
+            if (this.SettingsWindow is null)
             {
                 this.SettingsWindow = new SettingsWindow();
                 this.SettingsWindow.Show();
@@ -64,7 +64,7 @@ namespace Sidecab.View
         //======================================================================
         public WindowBehaviorRestriction NotifyChildWindowClosing(Window child)
         {
-            if (child != null)
+            if (child is object)
             {
                 //--------------------------------------------------------------
                 if (child == this.FileTreeWindow)
