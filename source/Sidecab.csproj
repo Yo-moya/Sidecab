@@ -4,12 +4,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>netcoreapp3.1;net48</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <Authors>Motoya Yoshizne</Authors>
+    <Authors>YoMoya</Authors>
     <Product />
-    <RepositoryUrl>https://github.com/MotoyaYoshizne/Sidecab</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Yo-moya/Sidecab</RepositoryUrl>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <PackageProjectUrl>https://github.com/MotoyaYoshizne/Sidecab</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Yo-moya/Sidecab</PackageProjectUrl>
     <PackageIcon>Icon.png</PackageIcon>
+    <Company>YoMoya</Company>
   </PropertyGroup>
 
   <ItemGroup>
