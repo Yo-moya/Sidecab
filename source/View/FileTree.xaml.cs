@@ -47,7 +47,7 @@ namespace Sidecab.View
             var parent = child;
 
             //------------------------------------------------------------------
-            while ((parent != null) && (parent is TreeViewItem) == false)
+            while ((parent is object) && ((parent is TreeViewItem) == false))
             {
                 parent = VisualTreeHelper.GetParent(parent);
             }
@@ -65,8 +65,7 @@ namespace Sidecab.View
         //======================================================================
         private void button_AppMenu_Click(object sender, RoutedEventArgs e)
         {
-            var menu = FindResource("contextMenu_App") as ContextMenu;
-            if (menu != null)
+            if (FindResource("contextMenu_App") is ContextMenu menu)
             {
                 menu.PlacementTarget = this.button_AppMenu;
                 menu.IsOpen = true;
@@ -88,8 +87,7 @@ namespace Sidecab.View
         //======================================================================
         private void treeView_Directories_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var clicked = FindParent<TreeViewItem>(e.OriginalSource as DependencyObject);
-            if (clicked != null)
+            if (FindParent<TreeViewItem>(e.OriginalSource as DependencyObject) is TreeViewItem)
             {
                 e.Handled = true;
 
@@ -104,8 +102,7 @@ namespace Sidecab.View
             if (e.OriginalSource is ToggleButton) return;
             if (clickTimer.IsEnabled) return;
 
-            var clicked = FindParent<TreeViewItem>(e.OriginalSource as DependencyObject);
-            if (clicked != null)
+            if (FindParent<TreeViewItem>(e.OriginalSource as DependencyObject) is TreeViewItem clicked)
             {
                 if (clicked.IsExpanded == false)
                 {
@@ -122,7 +119,7 @@ namespace Sidecab.View
         private void treeView_Directories_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var clicked = FindParent<TreeViewItem>(e.OriginalSource as DependencyObject);
-            if (clicked == null)
+            if (clicked is null)
             {
                 e.Handled = true;
                 return;
@@ -137,8 +134,12 @@ namespace Sidecab.View
         //======================================================================
         private void manuItem_Pin_Click(object sender, RoutedEventArgs e)
         {
-            var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-            if (directory != null) { this.Presenter.AddBookmark(directory); }
+            if (this.treeView_Directories.SelectedItem is Presenter.Directory directory)
+            {
+                this.Presenter.AddBookmark(directory);
+            }
+
+            this.Presenter.SelectLastRoot();
         }
 
         //======================================================================

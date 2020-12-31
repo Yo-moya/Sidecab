@@ -7,8 +7,7 @@ namespace Sidecab
 {
     public partial class App : Application
     {
-        public static Model.Core Model { get; private set; }
-        public static Presenter.Core Presenter { get; private set; }
+        public static Presenter.Core Core { get; private set; }
 
 
         //======================================================================
@@ -16,9 +15,7 @@ namespace Sidecab
         {
             base.OnStartup(e);
 
-            Model = new Model.Core();
-            Presenter = new Presenter.Core(Model);
-
+            App.Core = new Presenter.Core();
             SystemEvents.PowerModeChanged += PowerModeChangedEventHandler;
 
             //------------------------------------------------------------------
@@ -32,8 +29,7 @@ namespace Sidecab
         //======================================================================
         protected override void OnDeactivated(System.EventArgs e)
         {
-            var mainWindow = MainWindow as View.MainWindow;
-            if (mainWindow != null)
+            if (this.MainWindow is View.MainWindow mainWindow)
             {
                 mainWindow.CloseFileTreeWindow();
                 mainWindow.CloseSettingsWindow();

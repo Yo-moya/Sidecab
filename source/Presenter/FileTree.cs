@@ -21,18 +21,26 @@ namespace Sidecab.Presenter
         //======================================================================
         public void AddBookmark(Directory directory)
         {
-            App.Model.AddBookmark(directory.Model);
+            App.Core.Model.AddBookmark(directory.Model);
             RefreshRootSelector();
-
-            this.RootSelector.Current = new TreeRoot(directory.Model);
         }
+
+        //======================================================================
+        public void SelectLastRoot()
+        {
+            if (RootSelector.List.Count > 0)
+            {
+                RootSelector.Index = RootSelector.List.Count - 1;
+            }
+        }
+
 
 
         //======================================================================
         private void RefreshRootSelector()
         {
-            var driveList = App.Model.GetDriveList();
-            var bookmarks = App.Model.GetBookmarks();
+            var driveList = App.Core.Model.GetDriveList();
+            var bookmarks = App.Core.Model.GetBookmarks();
 
             var rootList = new List<TreeRoot>(driveList.Count + bookmarks.Count);
             foreach (var r in driveList) { rootList.Add(new TreeRoot(r)); }

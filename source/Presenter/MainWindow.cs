@@ -5,7 +5,7 @@ namespace Sidecab.Presenter
 {
     public class MainWindow : Utility.ObserverableObject
     {
-        public Settings Settings { get { return App.Presenter.Settings; } }
+        public Settings Settings { get { return App.Core.Settings; } }
 
         //----------------------------------------------------------------------
         public WpfAppBar.MonitorInfo DisplayToDock
@@ -17,7 +17,7 @@ namespace Sidecab.Presenter
                 //--------------------------------------------------------------
                 foreach (var m in WpfAppBar.MonitorInfo.GetAllMonitors())
                 {
-                    if (index == this.Settings.DisplayIndex) return m;
+                    if (index == App.Core.Settings.DisplayIndex) return m;
                     index++;
                 }
                 //--------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace Sidecab.Presenter
         {
             get
             {
-                return (this.Settings.DockPosition == Data.DockPosition.Left ?
+                return (App.Core.Settings.DockPosition == Data.DockPosition.Left ?
                     WpfAppBar.AppBarDockMode.Left : WpfAppBar.AppBarDockMode.Right);
             }
         }
@@ -40,13 +40,13 @@ namespace Sidecab.Presenter
         //======================================================================
         public MainWindow()
         {
-            this.Settings.PropertyChanged += OnSettingChanged;
+            App.Core.Settings.PropertyChanged += OnSettingChanged;
         }
 
         //======================================================================
         ~MainWindow()
         {
-            this.Settings.PropertyChanged -= OnSettingChanged;
+            App.Core.Settings.PropertyChanged -= OnSettingChanged;
         }
 
 
@@ -56,11 +56,11 @@ namespace Sidecab.Presenter
             switch (e.PropertyName)
             {
                 //--------------------------------------------------------------
-                case nameof(this.Settings.DisplayIndex) :
+                case nameof(App.Core.Settings.DisplayIndex) :
                     RaisePropertyChanged(nameof(this.DisplayToDock));
                     break;
                 //--------------------------------------------------------------
-                case nameof(this.Settings.DockPosition) :
+                case nameof(App.Core.Settings.DockPosition) :
                     RaisePropertyChanged(nameof(this.DockMode));
                     break;
                 //--------------------------------------------------------------

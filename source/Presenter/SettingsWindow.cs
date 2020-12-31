@@ -8,7 +8,7 @@ namespace Sidecab.Presenter
 {
     public class SettingsWindow : Utility.ObserverableObject
     {
-        public Settings Settings { get { return App.Presenter.Settings; } }
+        public Settings Settings { get { return App.Core.Settings; } }
 
         //----------------------------------------------------------------------
         public string TreeWidthAsText

@@ -18,8 +18,8 @@ namespace Sidecab.View
 
             InitializeComponent();
 
-            this.DataContext = App.Presenter.Settings;
-            App.Presenter.Settings.PropertyChanged += OnSettingWidthChanged;
+            this.DataContext = App.Core.Settings;
+            App.Core.Settings.PropertyChanged += OnSettingWidthChanged;
         }
 
         //======================================================================
@@ -28,10 +28,10 @@ namespace Sidecab.View
             this.Top    = parentWindow.Top;
             this.Height = parentWindow.Height;
             this.Left   = parentWindow.Left;
-            this.Width  = App.Presenter.Settings.TreeWidth;
+            this.Width  = App.Core.Settings.TreeWidth;
 
             //------------------------------------------------------------------
-            if (App.Presenter.Settings.DockPosition == Data.DockPosition.Left)
+            if (App.Core.Settings.DockPosition == Data.DockPosition.Left)
             {
                 this.border_FileTree.RenderTransformOrigin = new Point(0, 0);
             }
@@ -39,12 +39,14 @@ namespace Sidecab.View
             else
             {
                 this.border_FileTree.RenderTransformOrigin = new Point(1, 0);
-                this.Left -= App.Presenter.Settings.TreeWidth - App.Presenter.Settings.KnobWidth;
+                this.Left -= App.Core.Settings.TreeWidth - App.Core.Settings.KnobWidth;
             }
             //------------------------------------------------------------------
 
-            var storyboard = TryFindResource("animToShow") as Storyboard;
-            if (storyboard != null) { storyboard.Begin(); }
+            if (TryFindResource("animToShow") is Storyboard storyboard)
+            {
+                storyboard.Begin();
+            }
 
             // Calling Hide() makes the window inactive, so avoid it.
             App.Current.MainWindow.Visibility = Visibility.Collapsed;
@@ -55,8 +57,10 @@ namespace Sidecab.View
         //======================================================================
         public void HideWithAnimation()
         {
-            var storyboard = TryFindResource("animToHide") as Storyboard;
-            if (storyboard != null) { storyboard.Begin(); }
+            if (TryFindResource("animToHide") is Storyboard storyboard)
+            {
+                storyboard.Begin();
+            }
         }
 
         //======================================================================
@@ -64,14 +68,14 @@ namespace Sidecab.View
         {
             if (e.PropertyName == nameof(Presenter.Settings.TreeWidth))
             {
-                Width = App.Presenter.Settings.TreeWidth;
+                Width = App.Core.Settings.TreeWidth;
             }
         }
 
         //======================================================================
         private void treeWindow_Closing(object sender, CancelEventArgs e)
         {
-            // Colse this window if the MainWindow is lost
+            // Close this window if the MainWindow is lost
             var result = (App.Current.MainWindow as MainWindow)
                 ?.NotifyChildWindowClosing(this) ?? MainWindow.WindowBehaviorRestriction.CanClose;
 

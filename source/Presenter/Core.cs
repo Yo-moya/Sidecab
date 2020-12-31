@@ -3,17 +3,15 @@ namespace Sidecab.Presenter
 {
     public class Core : Utility.ObserverableObject
     {
+        public Model.Core Model { get; private set; }
         public Settings Settings { get; private set; }
 
 
         //======================================================================
-        public Core(Model.Core model)
+        public Core()
         {
-            this.model = model;
-            this.Settings = new Settings(this.model.Settings);
+            this.Model = new Model.Core();
+            this.Settings = new Settings(this.Model.Settings);
         }
-
-
-        private Model.Core model;
     }
 }

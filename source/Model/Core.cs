@@ -13,7 +13,7 @@ namespace Sidecab.Model
         public Core()
         {
             this.Settings = Settings.Load() ?? new Settings();
-            RefreshRootList();
+            RefreshDriveList();
         }
 
         //======================================================================
@@ -29,7 +29,15 @@ namespace Sidecab.Model
         }
 
         //======================================================================
-        public void RefreshRootList()
+        public void AddBookmark(Directory directory)
+        {
+            this.bookmarks = new List<Directory>() { directory };
+            // this.bookmarks.Add(directory);
+        }
+
+
+        //======================================================================
+        private void RefreshDriveList()
         {
             var drives = DriveInfo.GetDrives();
             this.driveList = new List<Drive>(drives.Length);
@@ -38,13 +46,6 @@ namespace Sidecab.Model
             {
                 if (d.IsReady) { this.driveList.Add(new Drive(d)); }
             }
-        }
-
-        //======================================================================
-        public void AddBookmark(Directory directory)
-        {
-            this.bookmarks = new List<Directory>() { directory };
-            // this.bookmarks.Add(directory);
         }
 
 

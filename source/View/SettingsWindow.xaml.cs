@@ -25,7 +25,7 @@ namespace Sidecab.View
         private bool CorrectInputText(object sender, string input)
         {
             var textBox = sender as TextBox;
-            if (textBox == null) return false;
+            if (textBox is null) return false;
 
             var selection = textBox.SelectionStart;
 
@@ -48,7 +48,7 @@ namespace Sidecab.View
             DataObject.RemovePastingHandler(this.textBox_TreeWidth, this.textBox_Pasting);
             DataObject.RemovePastingHandler(this.textBox_KnobWidth, this.textBox_Pasting);
 
-            App.Presenter.Settings.Save();
+            App.Core.Settings.Save();
 
             // Colse this window if the MainWindow is lost
             var result = (App.Current.MainWindow as MainWindow)
@@ -86,13 +86,13 @@ namespace Sidecab.View
         //======================================================================
         private void textBox_Pasting(object sender, DataObjectPastingEventArgs e)
         {
-            var pasted = e.SourceDataObject.GetData(DataFormats.UnicodeText) as string;
-            if (pasted == null) return;
-
-            if (CorrectInputText(sender, pasted))
+            if (e.SourceDataObject.GetData(DataFormats.UnicodeText) is string pasted)
             {
-                e.CancelCommand();
-                e.Handled = true;
+                if (CorrectInputText(sender, pasted))
+                {
+                    e.CancelCommand();
+                    e.Handled = true;
+                }
             }
         }
 
