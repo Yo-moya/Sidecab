@@ -97,10 +97,35 @@ namespace Sidecab.View
         }
 
         //======================================================================
+        private void manuItem_Pin_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.treeView_Directories.SelectedItem is Presenter.Directory directory)
+            {
+                this.Presenter.AddBookmark(directory);
+            }
+
+            this.Presenter.SelectLastRoot();
+        }
+
+        //======================================================================
+        private void menuItem_OpenFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
+            directory?.Open();
+        }
+
+        //======================================================================
+        private void manuItem_CopyPath_Click(object sender, RoutedEventArgs e)
+        {
+            var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
+            directory?.CopyPath();
+        }
+
+        //======================================================================
         private void treeView_Directories_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is ToggleButton) return;
-            if (clickTimer.IsEnabled) return;
+            if (this.clickTimer.IsEnabled) return;
 
             if (FindParent<TreeViewItem>(e.OriginalSource as DependencyObject) is TreeViewItem clicked)
             {
@@ -132,28 +157,19 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void manuItem_Pin_Click(object sender, RoutedEventArgs e)
+        private void treeViewItem_Directories_Expanded(object sender, RoutedEventArgs e)
         {
-            if (this.treeView_Directories.SelectedItem is Presenter.Directory directory)
+            if (this.clickTimer.IsEnabled) return;
+
+            if (sender is TreeViewItem treeViewItem)
             {
-                this.Presenter.AddBookmark(directory);
+                if (treeViewItem.DataContext is Presenter.Directory directory)
+                {
+                    directory.CollectSubdirectories();
+                }
+
+                clickTimer.Start();
             }
-
-            this.Presenter.SelectLastRoot();
-        }
-
-        //======================================================================
-        private void menuItem_OpenFolder_Click(object sender, RoutedEventArgs e)
-        {
-            var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-            directory?.Open();
-        }
-
-        //======================================================================
-        private void manuItem_CopyPath_Click(object sender, RoutedEventArgs e)
-        {
-            var directory = this.treeView_Directories.SelectedItem as Presenter.Directory;
-            directory?.CopyPath();
         }
     }
 }
