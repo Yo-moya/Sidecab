@@ -35,6 +35,19 @@ namespace Sidecab.Model
             // this.bookmarks.Add(directory);
         }
 
+        //======================================================================
+        public void NotifyUsingDirectory(Directory directory)
+        {
+            this.recentDirectories.NotifyDirectory(directory);
+        }
+
+        //======================================================================
+        public double GetDirectoryFreshnessScale(Directory directory)
+        {
+            var value = this.recentDirectories.GetFreshness(directory);
+            return ((double)value) / this.recentDirectories.MaxFreshness;
+        }
+
 
         //======================================================================
         private void RefreshDriveList()
@@ -51,5 +64,6 @@ namespace Sidecab.Model
 
         private List<Drive> driveList;
         private List<Directory> bookmarks = new List<Directory>();
+        private DirectoryHistory recentDirectories = new DirectoryHistory();
     }
 }

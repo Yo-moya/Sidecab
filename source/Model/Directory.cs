@@ -20,13 +20,16 @@ namespace Sidecab.Model
             Finished  ,
         }
 
+
+        public delegate void FreshnessUpdateHandler();
+        public event FreshnessUpdateHandler FreshnessUpdated;
+
         public delegate void ChildrenUpdateHandler(UpdateType updateType);
         public event ChildrenUpdateHandler ChildrenUpdated;
 
         public Directory ParentDirectory { get; private set; }
         public bool HasSubdirectories { get; private set; } = false;
         public string Name { get; protected set; } = "";
-        public double Priority { get; private set; } = 1.0;
 
         //----------------------------------------------------------------------
         public string Path
@@ -81,13 +84,25 @@ namespace Sidecab.Model
         public void Open()
         {
             Process.Start("explorer.exe", Path);
-            Priority = 2;
+            App.Core.Model.NotifyUsingDirectory(this);
         }
 
         //======================================================================
         public void CopyPath()
         {
             Clipboard.SetText(this.Path);
+        }
+
+        //======================================================================
+        public double GetFreshnessScale()
+        {
+            return App.Core.Model.GetDirectoryFreshnessScale(this);
+        }
+
+        //======================================================================
+        public void InvokeFreshnessUpdateEvent()
+        {
+            this.FreshnessUpdated?.Invoke();
         }
 
         //======================================================================
@@ -117,6 +132,7 @@ namespace Sidecab.Model
             });
             //------------------------------------------------------------------
         }
+
 
         //======================================================================
         private void ProcessSubdirectory(DirectoryInfo directoryInfo)

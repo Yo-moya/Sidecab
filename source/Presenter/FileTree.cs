@@ -35,7 +35,6 @@ namespace Sidecab.Presenter
         }
 
 
-
         //======================================================================
         private void RefreshRootSelector()
         {

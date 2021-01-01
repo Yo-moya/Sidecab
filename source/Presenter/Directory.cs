@@ -11,7 +11,6 @@ namespace Sidecab.Presenter
         public Model.Directory Model { get; private set; }
         public string Name { get { return this.Model?.Name ?? ""; } }
         public string Path { get { return this.Model?.Path ?? ""; } }
-        public bool HasSubdirectories { get { return this.Model?.HasSubdirectories ?? false; } }
 
         //----------------------------------------------------------------------
         public double TextFontSize
@@ -20,7 +19,7 @@ namespace Sidecab.Presenter
             {
                 if (this.Model is object)
                 {
-                    return this.Model.Priority * 14;
+                    return 14 + 8.0 * this.Model.GetFreshnessScale();
                 }
 
                 return 14;
@@ -44,6 +43,13 @@ namespace Sidecab.Presenter
             }
         }
 
+        //----------------------------------------------------------------------
+        public bool HasSubdirectories
+        {
+            get { return this.Model?.HasSubdirectories ?? false; }
+        }
+
+
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         private static extern int StrCmpLogicalW(string x, string y);
 
@@ -58,7 +64,9 @@ namespace Sidecab.Presenter
         public Directory(Model.Directory model)
         {
             this.Model = model;
-            this.Model.ChildrenUpdated += this.OnChildrenUpdated;
+
+            this.Model.FreshnessUpdated += this.OnTextFontUpdated;
+            this.Model. ChildrenUpdated += this.OnChildrenUpdated;
         }
 
         //======================================================================
@@ -66,7 +74,8 @@ namespace Sidecab.Presenter
         {
             if (this.Model is object)
             {
-                this.Model.ChildrenUpdated -= this.OnChildrenUpdated;
+                this.Model.FreshnessUpdated -= this.OnTextFontUpdated;
+                this.Model. ChildrenUpdated -= this.OnChildrenUpdated;
             }
         }
 
@@ -80,7 +89,6 @@ namespace Sidecab.Presenter
         public void Open()
         {
             this.Model.Open();
-            RaisePropertyChanged(nameof(TextFontSize));
         }
 
         //======================================================================
@@ -89,6 +97,12 @@ namespace Sidecab.Presenter
             this.Model.CopyPath();
         }
 
+
+        //======================================================================
+        private void OnTextFontUpdated()
+        {
+            RaisePropertyChanged(nameof(TextFontSize));
+        }
 
         //======================================================================
         private void OnChildrenUpdated(Model.Directory.UpdateType updateType)
@@ -110,7 +124,7 @@ namespace Sidecab.Presenter
                 //--------------------------------------------------------------
                 case Sidecab.Model.Directory.UpdateType.Finished :
 
-                    this.duration = null;
+                    this.animationDuration = null;
                     break;
                 //--------------------------------------------------------------
             }
@@ -119,10 +133,10 @@ namespace Sidecab.Presenter
         //======================================================================
         private void AddSubdirectories()
         {
-            if (this.duration is null)
+            if (this.animationDuration is null)
             {
-                this.duration = new Stopwatch();
-                this.duration.Start();
+                this.animationDuration = new Stopwatch();
+                this.animationDuration.Start();
             }
 
             //------------------------------------------------------------------
@@ -137,11 +151,11 @@ namespace Sidecab.Presenter
             //------------------------------------------------------------------
 
             // To keep step with the expanding animation of the treeview
-            var delay = Math.Max(0, 16 - this.duration.ElapsedMilliseconds);
+            var delay = Math.Max(0, 16 - this.animationDuration.ElapsedMilliseconds);
             System.Threading.Thread.Sleep((int)delay);
 
-            this.duration.Reset();
-            this.duration.Start();
+            this.animationDuration.Reset();
+            this.animationDuration.Start();
         }
 
         //======================================================================
@@ -162,6 +176,6 @@ namespace Sidecab.Presenter
 
 
         private ObservableCollection<Directory> subdirectories;
-        private Stopwatch duration;
+        private Stopwatch animationDuration;
     }
 }
