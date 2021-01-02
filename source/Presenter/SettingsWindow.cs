@@ -66,7 +66,7 @@ namespace Sidecab.Presenter
                 }
             }
             //------------------------------------------------------------------
-            foreach (var dockPos in Enum.GetValues(typeof(Data.DockPosition)))
+            foreach (var dockPos in Enum.GetValues(typeof(Type.DockPosition)))
             {
                 dockPositionList.Add(dockPos.ToString());
             }
@@ -102,11 +102,11 @@ namespace Sidecab.Presenter
         //======================================================================
         private void OnDockPositionChanged(object sender, PropertyChangedEventArgs e)
         {
-            foreach (var dockPos in Enum.GetValues(typeof(Data.DockPosition)))
+            foreach (var dockPos in Enum.GetValues(typeof(Type.DockPosition)))
             {
                 if (this.dockPositionSelector.Current == dockPos.ToString())
                 {
-                    this.Settings.DockPosition = (Data.DockPosition)dockPos;
+                    this.Settings.DockPosition = (Type.DockPosition)dockPos;
                     return;
                 }
             }

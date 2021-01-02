@@ -1,7 +1,7 @@
 ﻿
 using System.Windows.Media;
 
-namespace Sidecab.Data
+namespace Sidecab.Type
 {
     public class ColorValues : Utility.ObserverableObject
     {

@@ -31,7 +31,7 @@ namespace Sidecab.View
             this.Width  = App.Core.Settings.TreeWidth;
 
             //------------------------------------------------------------------
-            if (App.Core.Settings.DockPosition == Data.DockPosition.Left)
+            if (App.Core.Settings.DockPosition == Type.DockPosition.Left)
             {
                 this.border_FileTree.RenderTransformOrigin = new Point(0, 0);
             }

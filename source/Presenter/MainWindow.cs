@@ -31,7 +31,7 @@ namespace Sidecab.Presenter
         {
             get
             {
-                return (App.Core.Settings.DockPosition == Data.DockPosition.Left ?
+                return (App.Core.Settings.DockPosition == Type.DockPosition.Left ?
                     WpfAppBar.AppBarDockMode.Left : WpfAppBar.AppBarDockMode.Right);
             }
         }

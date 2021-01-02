@@ -38,11 +38,7 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public int DisplayIndex
         {
-            get
-            {
-                return this.model.DisplayIndex;
-            }
-
+            get { return this.model.DisplayIndex; }
             set
             {
                 this.model.DisplayIndex = value;
@@ -51,13 +47,9 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        public Data.DockPosition DockPosition
+        public Type.DockPosition DockPosition
         {
-            get
-            {
-                return this.model.DockPosition;
-            }
-
+            get { return this.model.DockPosition; }
             set
             {
                 this.model.DockPosition = value;
@@ -72,7 +64,7 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        public Data.ColorValues KnobColor { get; }
+        public Type.ColorValues KnobColor { get; }
 
 
         //======================================================================
@@ -80,14 +72,21 @@ namespace Sidecab.Presenter
         {
             this.model = model;
 
-            this.KnobColor = new Data.ColorValues(model.KnobColor);
+            this.KnobColor = new Type.ColorValues(model.KnobColor);
             this.KnobColor.PropertyChanged += this.KnobColor_Changed;
         }
 
         //======================================================================
-        public void Save()
+        public async void Load()
         {
-            this.model.Save();
+            await this.model.Load();
+            RaiseAllPropertiesChanged();
+        }
+
+        //======================================================================
+        public async void Save()
+        {
+            await this.model.Save();
         }
 
         //======================================================================

@@ -6,13 +6,12 @@ namespace Sidecab.Model
 {
     public class Core
     {
-        public Settings Settings { get; private set; }
+        public Settings Settings { get; private set; } = new Settings();
 
 
         //======================================================================
         public Core()
         {
-            this.Settings = Settings.Load() ?? new Settings();
             RefreshDriveList();
         }
 

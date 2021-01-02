@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using Newtonsoft.Json;
 
@@ -8,23 +9,45 @@ namespace Sidecab.Model
 {
     public class Settings
     {
-        public int KnobWidth { get; set; } =  10;
-        public int TreeWidth { get; set; } = 300;
+        //----------------------------------------------------------------------
+        public int KnobWidth
+        {
+            get { return  this.data.KnobWidth; }
+            set { this.data.KnobWidth = value; }
+        }
 
-        public Data.DockPosition DockPosition { get; set; } = Data.DockPosition.Left;
-        public Color KnobColor { get; set; } = Colors.Orange;
+        //----------------------------------------------------------------------
+        public int TreeWidth
+        {
+            get { return  this.data.TreeWidth; }
+            set { this.data.TreeWidth = value; }
+        }
+
+        //----------------------------------------------------------------------
+        public Type.DockPosition DockPosition
+        {
+            get { return  this.data.DockPosition; }
+            set { this.data.DockPosition = value; }
+        }
+
+        //----------------------------------------------------------------------
+        public Color KnobColor
+        {
+            get { return  this.data.KnobColor; }
+            set { this.data.KnobColor = value; }
+        }
 
         //----------------------------------------------------------------------
         public int DisplayIndex
         {
-            get { return this.displayIndex; }
+            get { return this.data.DisplayIndex; }
             set
             {
                 using (var monitors = WpfAppBar.MonitorInfo.GetAllMonitors().GetEnumerator())
                 {
                     int count = 0;
                     while (monitors.MoveNext()) { count++; }
-                    this.displayIndex = Math.Max(0, Math.Min(count - 1, value));
+                    this.data.DisplayIndex = Math.Max(0, Math.Min(count - 1, value));
                 }
             }
         }
@@ -40,46 +63,62 @@ namespace Sidecab.Model
 
 
         //======================================================================
-        public static Settings Load()
+        public Task Load()
         {
-            //------------------------------------------------------------------
-            try
+            return Task.Run(() =>
             {
-                using (var file = new StreamReader(Settings.SaveFilePath))
+                //--------------------------------------------------------------
+                try
                 {
-                    var json = new JsonSerializer();
-                    return json.Deserialize<Settings>(new JsonTextReader(file));
+                    using (var file = new StreamReader(Settings.SaveFilePath))
+                    {
+                        var json = new JsonSerializer();
+                        this.data = json.Deserialize<Data>(new JsonTextReader(file));
+                    }
                 }
-            }
-            //------------------------------------------------------------------
-            catch
-            {
-            }
-            //------------------------------------------------------------------
-
-            return null;
+                //--------------------------------------------------------------
+                catch
+                {
+                }
+                //--------------------------------------------------------------
+            });
         }
 
         //======================================================================
-        public void Save()
+        public Task Save()
         {
-            //------------------------------------------------------------------
-            try
+            return Task.Run(() =>
             {
-                using (var file = new StreamWriter(Settings.SaveFilePath))
+                //--------------------------------------------------------------
+                try
                 {
-                    var str = JsonConvert.SerializeObject(this, Formatting.Indented);
-                    file.Write(str);
+                    using (var file = new StreamWriter(Settings.SaveFilePath))
+                    {
+                        var str = JsonConvert.SerializeObject(this, Formatting.Indented);
+                        file.Write(str);
+                    }
                 }
-            }
-            //------------------------------------------------------------------
-            catch
-            {
-            }
-            //------------------------------------------------------------------
+                //--------------------------------------------------------------
+                catch
+                {
+                }
+                //--------------------------------------------------------------
+            });
         }
 
 
-        private int displayIndex = 0;
+        private Data data = new Data();
+
+
+        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        private class Data
+        {
+            public int KnobWidth { get; set; } =  10;
+            public int TreeWidth { get; set; } = 300;
+
+            public int DisplayIndex { get; set; } = 0;
+            public Type.DockPosition DockPosition { get; set; } = Type.DockPosition.Left;
+            public Color KnobColor { get; set; } = Colors.Orange;
+        }
     }
 }
