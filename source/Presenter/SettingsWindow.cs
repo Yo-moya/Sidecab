@@ -87,6 +87,13 @@ namespace Sidecab.Presenter
         }
 
         //======================================================================
+        public void RefreshView()
+        {
+            RaiseAllPropertiesChanged();
+        }
+
+
+        //======================================================================
         private int ConvertTextToNumber(string text)
         {
             text = Regex.Replace(text, @"\D", "");

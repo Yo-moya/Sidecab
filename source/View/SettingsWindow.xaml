@@ -13,7 +13,7 @@
     Background="{DynamicResource MaterialDesignPaper}"
     Title="Settings" Height="350" Width="450" MinHeight="300" MinWidth="400"
     WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False"
-    Closing="window_Closing" KeyDown="window_KeyDown" SourceInitialized="window_SourceInitialized">
+    Closing="window_Closing" SourceInitialized="window_SourceInitialized">
 
     <Window.Resources>
         <Thickness x:Key="CaptionMargin" Left="32" Top="8" Right="16" Bottom="8"/>
@@ -38,23 +38,25 @@
 
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Display"/>
             <ComboBox x:Name="comboBox_Display" Grid.Row="1" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding DisplayIndexSelector.List}" SelectedItem="{Binding DisplayIndexSelector.Current}" GotFocus="knobEditBox_GotFocus"/>
+                ItemsSource="{Binding DisplayIndexSelector.List}" SelectedItem="{Binding DisplayIndexSelector.Current}" GotFocus="control_Knob_GotFocus"/>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Position"/>
             <ComboBox x:Name="comboBox_Position" Grid.Row="0" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding DockPositionSelector.List}" SelectedItem="{Binding DockPositionSelector.Current}" GotFocus="knobEditBox_GotFocus"/>
+                ItemsSource="{Binding DockPositionSelector.List}" SelectedItem="{Binding DockPositionSelector.Current}" GotFocus="control_Knob_GotFocus"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Tree Width"/>
             <TextBox x:Name="textBox_TreeWidth" Grid.Row="2" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                TextAlignment="Right" InputMethod.IsInputMethodEnabled="False" Text="{Binding TreeWidthAsText, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="textBox_PreviewTextInput" GotFocus="treeEditBox_GotFocus"/>
+                TextAlignment="Right" InputMethod.IsInputMethodEnabled="False" Text="{Binding TreeWidthAsText, UpdateSourceTrigger=Explicit}"
+                PreviewTextInput="textBox_PreviewTextInput" KeyDown="textBox_KeyDown" GotFocus="control_Tree_GotFocus" LostFocus="textBox_LostFocus"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Knob Width"/>
             <TextBox x:Name="textBox_KnobWidth" Grid.Row="3" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                TextAlignment="Right" InputMethod.IsInputMethodEnabled="False" Text="{Binding KnobWidthAsText, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="textBox_PreviewTextInput" GotFocus="knobEditBox_GotFocus"/>
+                TextAlignment="Right" InputMethod.IsInputMethodEnabled="False" Text="{Binding KnobWidthAsText, UpdateSourceTrigger=Explicit}"
+                PreviewTextInput="textBox_PreviewTextInput" KeyDown="textBox_KeyDown" GotFocus="control_Knob_GotFocus" LostFocus="textBox_LostFocus"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Knob Color"/>
             <Button x:Name="button_KnobColor"  Grid.Row="4" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                Padding="4,4" Height="25" Background="{Binding Settings.KnobBrush}" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="False" Click="button_KnobColor_Click"/>
+                Padding="4,4" Height="25" Background="{Binding Settings.KnobBrush}" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="True" Click="button_KnobColor_Click"/>
 
             <Popup x:Name="popup_KnobColor" Placement="Bottom" DataContext="{Binding Settings.KnobColor}" PlacementTarget="{Binding ElementName=button_KnobColor}" StaysOpen="False">
                 <view:ColorPicker/>

@@ -15,7 +15,7 @@
     Closing="treeWindow_Closing" KeyDown="treeWindow_KeyDown">
 
     <Window.Resources>
-        <Storyboard x:Key="animToShow" RepeatBehavior="1x">
+        <Storyboard x:Key="storyboard_AnimToShow" RepeatBehavior="1x">
 
             <DoubleAnimation Storyboard.TargetName="border_FileTree_Scale" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
             Duration="0:0:0.3" From ="0.2" To="1.0">
@@ -32,7 +32,7 @@
             </DoubleAnimation>
 
         </Storyboard>
-        <Storyboard x:Key="animToHide" RepeatBehavior="1x" Completed="animToHide_Completed">
+        <Storyboard x:Key="storyboard_AnimToHide" RepeatBehavior="1x" Completed="storyboard_AnimToHide_Completed">
 
             <DoubleAnimation Storyboard.TargetName="border_FileTree_Scale" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
             Duration="0:0:0.2" From ="1.0" To="0.2">

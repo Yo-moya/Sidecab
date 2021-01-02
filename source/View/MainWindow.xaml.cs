@@ -6,10 +6,6 @@ namespace Sidecab.View
 {
     public partial class MainWindow
     {
-        FileTreeWindow FileTreeWindow = null;
-        SettingsWindow SettingsWindow = null;
-
-
         //----------------------------------------------------------------------
         public enum WindowBehaviorRestriction
         {
@@ -30,35 +26,35 @@ namespace Sidecab.View
         //======================================================================
         public void OpenFileTreeWindow(bool activate = true)
         {
-            if (this.FileTreeWindow is null)
+            if (this.fileTreeWindow is null)
             {
-                this.FileTreeWindow = new FileTreeWindow();
+                this.fileTreeWindow = new FileTreeWindow();
             }
 
-            this.FileTreeWindow.ShowActivated = activate;
-            this.FileTreeWindow.ShowWithAnimation(this);
+            this.fileTreeWindow.ShowActivated = activate;
+            this.fileTreeWindow.ShowWithAnimation(this);
         }
 
         //======================================================================
         public void CloseFileTreeWindow()
         {
-            this.FileTreeWindow?.HideWithAnimation();
+            this.fileTreeWindow?.HideWithAnimation();
         }
 
         //======================================================================
         public void OpenSettingsWindow()
         {
-            if (this.SettingsWindow is null)
+            if (this.settingsWindow is null)
             {
-                this.SettingsWindow = new SettingsWindow();
-                this.SettingsWindow.Show();
+                this.settingsWindow = new SettingsWindow();
+                this.settingsWindow.Show();
             }
         }
 
         //======================================================================
         public void CloseSettingsWindow()
         {
-            this.SettingsWindow?.Close();
+            this.settingsWindow?.Close();
         }
 
         //======================================================================
@@ -67,14 +63,14 @@ namespace Sidecab.View
             if (child is object)
             {
                 //--------------------------------------------------------------
-                if (child == this.FileTreeWindow)
+                if (child == this.fileTreeWindow)
                 {
                     return WindowBehaviorRestriction.CanNotClose;
                 }
                 //--------------------------------------------------------------
-                if (child == this.SettingsWindow)
+                if (child == this.settingsWindow)
                 {
-                    this.SettingsWindow = null;
+                    this.settingsWindow = null;
                     return WindowBehaviorRestriction.CanClose;
                 }
                 //--------------------------------------------------------------
@@ -82,6 +78,10 @@ namespace Sidecab.View
 
             return WindowBehaviorRestriction.CanNotClose;
         }
+
+
+        FileTreeWindow fileTreeWindow = null;
+        SettingsWindow settingsWindow = null;
 
 
         //======================================================================

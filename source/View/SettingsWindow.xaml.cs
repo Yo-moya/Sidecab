@@ -18,7 +18,9 @@ namespace Sidecab.View
             DataObject.AddPastingHandler(this.textBox_TreeWidth, this.textBox_Pasting);
             DataObject.AddPastingHandler(this.textBox_KnobWidth, this.textBox_Pasting);
 
-            this.DataContext = new Presenter.SettingsWindow();
+            var presenter = new Presenter.SettingsWindow();
+            this.DataContext = presenter;
+            presenter.RefreshView();
         }
 
         //======================================================================
@@ -41,6 +43,16 @@ namespace Sidecab.View
             return true;
         }
 
+        //======================================================================
+        private void UpdateTextBoxSource(object sender)
+        {
+            if (sender is TextBox textBox)
+            {
+                var binding = textBox.GetBindingExpression(TextBox.TextProperty);
+                binding?.UpdateSource();
+            }
+        }
+
 
         //======================================================================
         private void window_Closing(object sender, CancelEventArgs e)
@@ -50,22 +62,13 @@ namespace Sidecab.View
 
             App.Core.Settings.Save();
 
-            // Colse this window if the MainWindow is lost
+            // Close this window if the MainWindow is lost
             var result = (App.Current.MainWindow as MainWindow)
                 ?.NotifyChildWindowClosing(this) ?? MainWindow.WindowBehaviorRestriction.CanClose;
 
             if (result == MainWindow.WindowBehaviorRestriction.CanNotClose)
             {
                 e.Cancel = true;
-            }
-        }
-
-        //======================================================================
-        private void window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                Close();
             }
         }
 
@@ -106,15 +109,42 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void knobEditBox_GotFocus(object sender, RoutedEventArgs e)
+        private void textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                //--------------------------------------------------------------
+                case Key.Escape :
+                {
+                    (this.DataContext as Presenter.SettingsWindow)?.RefreshView();
+                    break;
+                }
+                //--------------------------------------------------------------
+                case Key.Enter :
+                {
+                    UpdateTextBoxSource(sender);
+                    break;
+                }
+                //--------------------------------------------------------------
+            }
+        }
+
+        //======================================================================
+        private void control_Knob_GotFocus(object sender, RoutedEventArgs e)
         {
             (App.Current.MainWindow as MainWindow)?.CloseFileTreeWindow();
         }
 
         //======================================================================
-        private void treeEditBox_GotFocus(object sender, RoutedEventArgs e)
+        private void control_Tree_GotFocus(object sender, RoutedEventArgs e)
         {
             (App.Current.MainWindow as MainWindow)?.OpenFileTreeWindow(activate : false);
+        }
+
+        //======================================================================
+        private void textBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateTextBoxSource(sender);
         }
     }
 }

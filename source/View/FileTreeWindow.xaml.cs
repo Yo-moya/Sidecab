@@ -43,7 +43,7 @@ namespace Sidecab.View
             }
             //------------------------------------------------------------------
 
-            if (TryFindResource("animToShow") is Storyboard storyboard)
+            if (TryFindResource("storyboard_AnimToShow") is Storyboard storyboard)
             {
                 storyboard.Begin();
             }
@@ -57,7 +57,7 @@ namespace Sidecab.View
         //======================================================================
         public void HideWithAnimation()
         {
-            if (TryFindResource("animToHide") is Storyboard storyboard)
+            if (TryFindResource("storyboard_AnimToHide") is Storyboard storyboard)
             {
                 storyboard.Begin();
             }
@@ -96,9 +96,11 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void animToHide_Completed(object sender, EventArgs e)
+        private void storyboard_AnimToHide_Completed(object sender, EventArgs e)
         {
+            App.Current.MainWindow.ShowActivated = false;
             App.Current.MainWindow.Show();
+
             Hide();
         }
     }
