@@ -12,10 +12,16 @@ namespace Sidecab.Presenter
         //======================================================================
         public FileTree()
         {
-            this.RootSelector.PropertyChanged += OnRootChanged;
+            this.RootSelector.PropertyChanged += this.OnRootChanged;
             RefreshRootSelector();
 
             this.RootSelector.Index = 0;
+        }
+
+        //======================================================================
+        ~FileTree()
+        {
+            this.RootSelector.PropertyChanged -= this.OnRootChanged;
         }
 
         //======================================================================

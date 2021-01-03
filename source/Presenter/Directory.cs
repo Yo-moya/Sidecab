@@ -17,12 +17,11 @@ namespace Sidecab.Presenter
         {
             get
             {
-                if (this.Model is object)
-                {
-                    return 14 + 8.0 * this.Model.GetFreshnessScale();
-                }
+                var settings = App.Core.Settings;
+                if (this.Model is null) return settings.TreeFontSize;
 
-                return 14;
+                double gap = Math.Max(0, settings.TreeFontSizeLarge - settings.TreeFontSize);
+                return gap * this.Model.GetFreshnessScale() + settings.TreeFontSize;
             }
         }
 

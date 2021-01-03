@@ -24,6 +24,20 @@ namespace Sidecab.Model
         }
 
         //----------------------------------------------------------------------
+        public int TreeFontSize
+        {
+            get { return  this.data.TreeFontSize; }
+            set { this.data.TreeFontSize = value; }
+        }
+
+        //----------------------------------------------------------------------
+        public int TreeFontSizeLarge
+        {
+            get { return  this.data.TreeFontSizeLarge; }
+            set { this.data.TreeFontSizeLarge = value; }
+        }
+
+        //----------------------------------------------------------------------
         public Type.DockPosition DockPosition
         {
             get { return  this.data.DockPosition; }
@@ -115,6 +129,9 @@ namespace Sidecab.Model
         {
             public int KnobWidth { get; set; } =  10;
             public int TreeWidth { get; set; } = 300;
+
+            public int TreeFontSize { get; set; } = 14;
+            public int TreeFontSizeLarge { get; set; } = 20;
 
             public int DisplayIndex { get; set; } = 0;
             public Type.DockPosition DockPosition { get; set; } = Type.DockPosition.Left;

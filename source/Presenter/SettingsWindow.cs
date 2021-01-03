@@ -25,6 +25,20 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
+        public string TreeFontSizeAsText
+        {
+            get { return this.Settings.TreeFontSize.ToString(); }
+            set { this.Settings.TreeFontSize = ConvertTextToNumber(value); }
+        }
+
+        //----------------------------------------------------------------------
+        public string TreeFontSizeLargeAsText
+        {
+            get { return this.Settings.TreeFontSizeLarge.ToString(); }
+            set { this.Settings.TreeFontSizeLarge = ConvertTextToNumber(value); }
+        }
+
+        //----------------------------------------------------------------------
         public Selector<string> DisplayIndexSelector
         {
             get
@@ -52,6 +66,8 @@ namespace Sidecab.Presenter
         //======================================================================
         public SettingsWindow()
         {
+            this.Settings.PropertyChanged += this.OnSettingChanged;
+
             var displayIndexList = new List<string>();
             var dockPositionList = new List<string>();
 
@@ -82,6 +98,7 @@ namespace Sidecab.Presenter
         //======================================================================
         ~SettingsWindow()
         {
+            this.Settings.PropertyChanged -= this.OnSettingChanged;
             this.displayIndexSelector.PropertyChanged -= this.OnDisplayIndexChanged;
             this.dockPositionSelector.PropertyChanged -= this.OnDockPositionChanged;
         }
@@ -98,6 +115,16 @@ namespace Sidecab.Presenter
         {
             text = Regex.Replace(text, @"\D", "");
             return int.Parse((text == "") ? "0" : text);
+        }
+
+        //======================================================================
+        private void OnSettingChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var property = GetType().GetProperty(e.PropertyName + "AsText");
+            if (property is object)
+            {
+                RaisePropertyChanged(property.Name);
+            }
         }
 
         //======================================================================

@@ -19,7 +19,13 @@ namespace Sidecab.View
             InitializeComponent();
 
             this.DataContext = App.Core.Settings;
-            App.Core.Settings.PropertyChanged += OnSettingWidthChanged;
+            App.Core.Settings.PropertyChanged += this.OnSettingChanged;
+        }
+
+        //======================================================================
+        ~FileTreeWindow()
+        {
+            App.Core.Settings.PropertyChanged -= this.OnSettingChanged;
         }
 
         //======================================================================
@@ -64,11 +70,11 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void OnSettingWidthChanged(object sender, PropertyChangedEventArgs e)
+        private void OnSettingChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Presenter.Settings.TreeWidth))
             {
-                Width = App.Core.Settings.TreeWidth;
+                this.Width = App.Core.Settings.TreeWidth;
             }
         }
 

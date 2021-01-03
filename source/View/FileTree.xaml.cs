@@ -34,12 +34,30 @@ namespace Sidecab.View
                 var doubleClickTime = Utility.SystemAttributes.GetDoubleClickTime();
                 this.clickTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)doubleClickTime);
                 this.clickTimer.Tick += clickTimer_Tick;
+
+                App.Core.Settings.PropertyChanged += this.OnSettingChanged;
             }
+        }
+
+        //======================================================================
+        ~FileTree()
+        {
+            App.Core.Settings.PropertyChanged -= this.OnSettingChanged;
         }
 
 
         private DispatcherTimer clickTimer = new DispatcherTimer();
 
+
+        //======================================================================
+        private void OnSettingChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Contains("Font"))
+            {
+                this.treeView_Directories.Items.Refresh();
+                this.treeView_Directories.UpdateLayout();
+            }
+        }
 
         //======================================================================
         private T FindParent<T>(DependencyObject child) where T : DependencyObject

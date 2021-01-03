@@ -7,11 +7,8 @@ namespace Sidecab.Presenter
 {
     public class Settings : Utility.ObserverableObject
     {
-        //----------------------------------------------------------------------
-        public int TreeMinWidth
-        {
-            get { return 100; }
-        }
+        public int TreeWidthMin { get { return 100; } }
+        public int TreeFontSizeMin { get { return 4; } }
 
         //----------------------------------------------------------------------
         public int TreeWidth
@@ -19,7 +16,7 @@ namespace Sidecab.Presenter
             get { return this.model.TreeWidth; }
             set
             {
-                this.model.TreeWidth = Math.Max(TreeMinWidth, value);
+                this.model.TreeWidth = Math.Max(this.TreeWidthMin, value);
                 RaisePropertyChanged(nameof(this.TreeWidth));
             }
         }
@@ -32,6 +29,34 @@ namespace Sidecab.Presenter
             {
                 this.model.KnobWidth = Math.Max(1, value);
                 RaisePropertyChanged(nameof(this.KnobWidth));
+            }
+        }
+
+        //----------------------------------------------------------------------
+        public int TreeFontSize
+        {
+            get { return this.model.TreeFontSize; }
+            set
+            {
+                this.model.TreeFontSize = Math.Max(this.TreeFontSizeMin, value);
+                RaisePropertyChanged(nameof(this.TreeFontSize));
+
+                if (this.model.TreeFontSize > this.model.TreeFontSizeLarge)
+                {
+                    this.model.TreeFontSizeLarge = this.model.TreeFontSize;
+                    RaisePropertyChanged(nameof(this.TreeFontSizeLarge));
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------
+        public int TreeFontSizeLarge
+        {
+            get { return this.model.TreeFontSizeLarge; }
+            set
+            {
+                this.model.TreeFontSizeLarge = Math.Max(this.TreeFontSize, value);
+                RaisePropertyChanged(nameof(this.TreeFontSizeLarge));
             }
         }
 
