@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Sidecab.Presenter
 {
-    public class MainWindow : Utility.ObserverableObject
+    public class MainWindow : Utility.ObservableObject
     {
         public Settings Settings { get { return App.Core.Settings; } }
 

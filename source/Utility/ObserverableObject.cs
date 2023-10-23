@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Sidecab.Utility
 {
-    public class ObserverableObject : INotifyPropertyChanged
+    public class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

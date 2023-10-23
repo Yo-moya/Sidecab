@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace Sidecab.Presenter
 {
-    public class Settings : Utility.ObserverableObject
+    public class Settings : Utility.ObservableObject
     {
         public int TreeWidthMin { get { return 100; } }
         public int TreeFontSizeMin { get { return 4; } }
