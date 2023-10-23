@@ -3,14 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:view="clr-namespace:Sidecab.View"
     mc:Ignorable="d"
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
-    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    FontFamily="{materialDesign:MaterialDesignFont}"
-    Background="{DynamicResource MaterialDesignPaper}"
+    Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
     Title="Settings" Height="400" Width="500" MinHeight="450" MinWidth="500"
     WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False"
     Closing="window_Closing" SourceInitialized="window_SourceInitialized">
@@ -68,7 +65,7 @@
 
             <TextBlock Grid.Row="6" Grid.Column="0" Margin="{StaticResource CaptionMargin}" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Knob bar color"/>
             <Button x:Name="button_KnobColor"  Grid.Row="6" Grid.Column="1" Margin="{StaticResource EditBoxMargin}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                Padding="4,4" Height="25" Background="{Binding Settings.KnobBrush}" Style="{DynamicResource MaterialDesignFlatButton}" Focusable="True" Click="button_KnobColor_Click"/>
+                Padding="4,4" Height="25" Background="{Binding Settings.KnobBrush}" Focusable="True" Click="button_KnobColor_Click"/>
 
             <Popup x:Name="popup_KnobColor" Placement="Bottom" DataContext="{Binding Settings.KnobColor}" PlacementTarget="{Binding ElementName=button_KnobColor}" StaysOpen="False">
                 <view:ColorPicker/>

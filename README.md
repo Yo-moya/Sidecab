@@ -4,7 +4,7 @@
 
 Overview
 ---
-You can easilly access to folders on your PC. 
+You can easilly access to folders on your PC.
 
 How to use
 ---
@@ -16,7 +16,6 @@ How to use
 
 Acknowledgements
 ---
-* [Material Design In XAML Toolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 * [WpfAppBar](https://github.com/mgaffigan/WpfAppBar)
 * [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
 
