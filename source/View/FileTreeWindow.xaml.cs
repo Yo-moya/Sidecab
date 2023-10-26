@@ -2,7 +2,6 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.ComponentModel;
 
@@ -13,43 +12,34 @@ namespace Sidecab.View
         //======================================================================
         public FileTreeWindow()
         {
-            this.WindowStyle = WindowStyle.None;
-            this.ResizeMode = ResizeMode.NoResize;
+            WindowStyle = WindowStyle.None;
+            ResizeMode = ResizeMode.NoResize;
 
             InitializeComponent();
 
-            this.DataContext = App.Core.Settings;
-            App.Core.Settings.PropertyChanged += this.OnSettingChanged;
-        }
-
-        //======================================================================
-        ~FileTreeWindow()
-        {
-            App.Core.Settings.PropertyChanged -= this.OnSettingChanged;
+            DataContext = App.Core.Settings;
+            App.Core.Settings.PropertyChanged += OnSettingChanged;
         }
 
         //======================================================================
         public void ShowWithAnimation(Window parentWindow)
         {
-            this.Top    = parentWindow.Top;
-            this.Height = parentWindow.Height;
-            this.Left   = parentWindow.Left;
-            this.Width  = App.Core.Settings.TreeWidth;
+            Top    = parentWindow.Top;
+            Height = parentWindow.Height;
+            Left   = parentWindow.Left;
+            Width  = App.Core.Settings.TreeWidth;
 
-            //------------------------------------------------------------------
             if (App.Core.Settings.DockPosition == Type.DockPosition.Left)
             {
-                this.border_FileTree.RenderTransformOrigin = new Point(0, 0);
+                Border_FileTree.RenderTransformOrigin = new Point(0, 0);
             }
-            //------------------------------------------------------------------
             else
             {
-                this.border_FileTree.RenderTransformOrigin = new Point(1, 0);
-                this.Left -= App.Core.Settings.TreeWidth - App.Core.Settings.KnobWidth;
+                Border_FileTree.RenderTransformOrigin = new Point(1, 0);
+                Left -= App.Core.Settings.TreeWidth - App.Core.Settings.KnobWidth;
             }
-            //------------------------------------------------------------------
 
-            if (TryFindResource("storyboard_AnimToShow") is Storyboard storyboard)
+            if (TryFindResource("Storyboard_AnimToShow") is Storyboard storyboard)
             {
                 storyboard.Begin();
             }
@@ -63,7 +53,7 @@ namespace Sidecab.View
         //======================================================================
         public void HideWithAnimation()
         {
-            if (TryFindResource("storyboard_AnimToHide") is Storyboard storyboard)
+            if (TryFindResource("Storyboard_AnimToHide") is Storyboard storyboard)
             {
                 storyboard.Begin();
             }
@@ -74,12 +64,12 @@ namespace Sidecab.View
         {
             if (e.PropertyName == nameof(Presenter.Settings.TreeWidth))
             {
-                this.Width = App.Core.Settings.TreeWidth;
+                Width = App.Core.Settings.TreeWidth;
             }
         }
 
         //======================================================================
-        private void treeWindow_Closing(object sender, CancelEventArgs e)
+        private void TreeWindow_Closing(object sender, CancelEventArgs e)
         {
             // Close this window if the MainWindow is lost
             var result = (App.Current.MainWindow as MainWindow)
@@ -93,7 +83,7 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void treeWindow_KeyDown(object sender, KeyEventArgs e)
+        private void TreeWindow_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
@@ -102,7 +92,7 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void storyboard_AnimToHide_Completed(object sender, EventArgs e)
+        private void Storyboard_AnimToHide_Completed(object sender, EventArgs e)
         {
             App.Current.MainWindow.ShowActivated = false;
             App.Current.MainWindow.Show();

@@ -1,46 +1,60 @@
 ﻿<Window x:Class="Sidecab.View.FileTreeWindow"
-    x:Name = "treeWindow"
+    x:Name = "TreeWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:Sidecab.View"
     mc:Ignorable="d"
-    TextElement.FontWeight="Medium"
-    TextElement.FontSize="14"
-    WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Background="Transparent"
-    Width="{Binding TreeWidth}" MinWidth="{Binding TreeMinWidth}" d:DesignHeight="450" d:DesignWidth="400"
-    Closing="treeWindow_Closing" KeyDown="treeWindow_KeyDown">
+    TextElement.FontWeight="Medium" TextElement.FontSize="14"
+    WindowStyle="None" ShowInTaskbar="False"
+    AllowsTransparency="True" Background="Transparent"
+    Width="{Binding TreeWidth}" MinWidth="{Binding TreeMinWidth}"
+    d:DesignHeight="450" d:DesignWidth="400"
+    Closing="TreeWindow_Closing" KeyDown="TreeWindow_KeyDown">
 
     <Window.Resources>
-        <Storyboard x:Key="storyboard_AnimToShow" RepeatBehavior="1x">
+        <Storyboard x:Key="Storyboard_AnimToShow" RepeatBehavior="1x">
 
-            <DoubleAnimation Storyboard.TargetName="border_FileTree_Scale" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
-            Duration="0:0:0.3" From ="0.2" To="1.0">
+            <DoubleAnimation
+                Storyboard.TargetName="Border_FileTree_Scale"
+                Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                Duration="0:0:0.3" From ="0.2" To="1.0">
+
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase Exponent="3" EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
 
-            <DoubleAnimation Storyboard.TargetName="fileTree_Body" Storyboard.TargetProperty="Opacity"
-            Duration="0:0:0.4" From="0.0" To="1.0">
+            <DoubleAnimation
+                Storyboard.TargetName="FileTree_Body" Storyboard.TargetProperty="Opacity"
+                Duration="0:0:0.4" From="0.0" To="1.0">
+
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase Exponent="6" EasingMode="EaseIn"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
 
         </Storyboard>
-        <Storyboard x:Key="storyboard_AnimToHide" RepeatBehavior="1x" Completed="storyboard_AnimToHide_Completed">
 
-            <DoubleAnimation Storyboard.TargetName="border_FileTree_Scale" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
-            Duration="0:0:0.2" From ="1.0" To="0.2">
+        <Storyboard x:Key="Storyboard_AnimToHide"
+            RepeatBehavior="1x" Completed="Storyboard_AnimToHide_Completed">
+
+            <DoubleAnimation
+                Storyboard.TargetName="Border_FileTree_Scale"
+                Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                Duration="0:0:0.2" From ="1.0" To="0.2">
+
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase Exponent="3" EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
 
-            <DoubleAnimation Storyboard.TargetName="fileTree_Body" Storyboard.TargetProperty="Opacity"
-            Duration="0:0:0.1" From="1.0" To="0.0">
+            <DoubleAnimation
+                Storyboard.TargetName="FileTree_Body"
+                Storyboard.TargetProperty="Opacity"
+                Duration="0:0:0.1" From="1.0" To="0.0">
+
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase Exponent="6" EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -49,11 +63,12 @@
         </Storyboard>
     </Window.Resources>
 
-    <Border x:Name="border_FileTree" Padding="0">
+    <Border x:Name="Border_FileTree" Padding="0">
         <Border.RenderTransform>
-            <ScaleTransform x:Name="border_FileTree_Scale" ScaleX="1" ScaleY="1"/>
+            <ScaleTransform x:Name="Border_FileTree_Scale" ScaleX="1" ScaleY="1"/>
         </Border.RenderTransform>
-        <view:FileTree x:Name="fileTree_Body" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <view:FileTree x:Name="FileTree_Body"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Border>
 
 </Window>
