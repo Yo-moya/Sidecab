@@ -9,7 +9,7 @@ namespace Sidecab.View
 {
     public partial class FileTreeWindow : Window
     {
-        //======================================================================
+        //----------------------------------------------------------------------
         public FileTreeWindow()
         {
             WindowStyle = WindowStyle.None;
@@ -21,12 +21,14 @@ namespace Sidecab.View
             App.Core.Settings.PropertyChanged += OnSettingChanged;
         }
 
-        //======================================================================
-        public void ShowWithAnimation(Window parentWindow)
+        //----------------------------------------------------------------------
+        public void ShowWithAnimation()
         {
-            Top    = parentWindow.Top;
-            Height = parentWindow.Height;
-            Left   = parentWindow.Left;
+            var workingArea = ScreenInfo.GetWorkingArea(this);
+
+            Top    = workingArea.Top;
+            Height = workingArea.Height;
+            Left   = workingArea.Left;
             Width  = App.Core.Settings.TreeWidth;
 
             if (App.Core.Settings.DockPosition == Type.DockPosition.Left)
@@ -43,14 +45,9 @@ namespace Sidecab.View
             {
                 storyboard.Begin();
             }
-
-            // Calling Hide() makes the window inactive, so avoid it.
-            App.Current.MainWindow.Visibility = Visibility.Collapsed;
-
-            Show();
         }
 
-        //======================================================================
+        //----------------------------------------------------------------------
         public void HideWithAnimation()
         {
             if (TryFindResource("Storyboard_AnimToHide") is Storyboard storyboard)
@@ -89,15 +86,6 @@ namespace Sidecab.View
             {
                 HideWithAnimation();
             }
-        }
-
-        //======================================================================
-        private void Storyboard_AnimToHide_Completed(object sender, EventArgs e)
-        {
-            App.Current.MainWindow.ShowActivated = false;
-            App.Current.MainWindow.Show();
-
-            Hide();
         }
     }
 }

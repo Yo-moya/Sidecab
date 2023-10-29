@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System;
 
 namespace Sidecab
 {
@@ -26,13 +27,26 @@ namespace Sidecab
             //------------------------------------------------------------------
         }
 
-        //======================================================================
+        //----------------------------------------------------------------------
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            if (MainWindow is View.FileTreeWindow window)
+            {
+                window.ShowWithAnimation();
+            }
+        }
+
+
+        //----------------------------------------------------------------------
         protected override void OnDeactivated(System.EventArgs e)
         {
-            if (this.MainWindow is View.MainWindow mainWindow)
+            base.OnDeactivated(e);
+
+            if (MainWindow is View.FileTreeWindow window)
             {
-                mainWindow.CloseFileTreeWindow();
-                mainWindow.CloseSettingsWindow();
+                window.HideWithAnimation();
             }
         }
 

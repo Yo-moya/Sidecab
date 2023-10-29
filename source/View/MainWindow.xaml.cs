@@ -32,7 +32,7 @@ namespace Sidecab.View
             }
 
             this.fileTreeWindow.ShowActivated = activate;
-            this.fileTreeWindow.ShowWithAnimation(this);
+            this.fileTreeWindow.ShowWithAnimation();
         }
 
         //======================================================================
