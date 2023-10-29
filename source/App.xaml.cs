@@ -32,7 +32,7 @@ namespace Sidecab
         {
             base.OnActivated(e);
 
-            if (MainWindow is View.FileTreeWindow window)
+            if (MainWindow is View.TreeWindow window)
             {
                 window.ShowWithAnimation();
             }
@@ -44,7 +44,7 @@ namespace Sidecab
         {
             base.OnDeactivated(e);
 
-            if (MainWindow is View.FileTreeWindow window)
+            if (MainWindow is View.TreeWindow window)
             {
                 window.HideWithAnimation();
             }

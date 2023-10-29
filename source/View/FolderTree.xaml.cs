@@ -10,16 +10,16 @@ using System.ComponentModel;
 
 namespace Sidecab.View
 {
-    public partial class FileTree : UserControl
+    public partial class FolderTree : UserControl
     {
         //----------------------------------------------------------------------
-        public Presenter.FileTree Presenter
+        public Presenter.FolderTree Presenter
         {
-            get { return this.DataContext as Presenter.FileTree; }
+            get { return this.DataContext as Presenter.FolderTree; }
         }
 
         //======================================================================
-        public FileTree()
+        public FolderTree()
         {
             InitializeComponent();
 
@@ -29,7 +29,7 @@ namespace Sidecab.View
             // To avoid "Object reference not set to an instance of an object"
             if (isDesignTime == false)
             {
-                this.DataContext = new Presenter.FileTree();
+                this.DataContext = new Presenter.FolderTree();
 
                 var doubleClickTime = Utility.SystemAttributes.GetDoubleClickTime();
                 this.clickTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)doubleClickTime);
@@ -40,7 +40,7 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        ~FileTree()
+        ~FolderTree()
         {
             App.Core.Settings.PropertyChanged -= this.OnSettingChanged;
         }
@@ -81,23 +81,23 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        private void button_AppMenu_Click(object sender, RoutedEventArgs e)
+        private void Button_AppMenu_Click(object sender, RoutedEventArgs e)
         {
-            if (FindResource("contextMenu_App") is ContextMenu menu)
+            if (FindResource("ContextMenu_App") is ContextMenu menu)
             {
-                menu.PlacementTarget = this.button_AppMenu;
+                menu.PlacementTarget = Button_AppMenu;
                 menu.IsOpen = true;
             }
         }
 
         //======================================================================
-        private void manuItem_Settings_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_Settings_Click(object sender, RoutedEventArgs e)
         {
             (App.Current.MainWindow as MainWindow)?.OpenSettingsWindow();
         }
 
         //======================================================================
-        private void menuItem_CloseApp_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_CloseApp_Click(object sender, RoutedEventArgs e)
         {
             App.Current.Shutdown();
         }

@@ -1,5 +1,4 @@
 ﻿
-using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -7,10 +6,10 @@ using System.ComponentModel;
 
 namespace Sidecab.View
 {
-    public partial class FileTreeWindow : Window
+    public partial class TreeWindow : Window
     {
         //----------------------------------------------------------------------
-        public FileTreeWindow()
+        public TreeWindow()
         {
             WindowStyle = WindowStyle.None;
             ResizeMode = ResizeMode.NoResize;
@@ -33,11 +32,11 @@ namespace Sidecab.View
 
             if (App.Core.Settings.DockPosition == Type.DockPosition.Left)
             {
-                Border_FileTree.RenderTransformOrigin = new Point(0, 0);
+                Border_FolderTree.RenderTransformOrigin = new Point(0, 0);
             }
             else
             {
-                Border_FileTree.RenderTransformOrigin = new Point(1, 0);
+                Border_FolderTree.RenderTransformOrigin = new Point(1, 0);
                 Left -= App.Core.Settings.TreeWidth - App.Core.Settings.KnobWidth;
             }
 

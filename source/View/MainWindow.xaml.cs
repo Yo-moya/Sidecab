@@ -24,21 +24,21 @@ namespace Sidecab.View
         }
 
         //======================================================================
-        public void OpenFileTreeWindow(bool activate = true)
+        public void OpenTreeWindow(bool activate = true)
         {
-            if (this.fileTreeWindow is null)
+            if (this.treeWindow is null)
             {
-                this.fileTreeWindow = new FileTreeWindow();
+                this.treeWindow = new TreeWindow();
             }
 
-            this.fileTreeWindow.ShowActivated = activate;
-            this.fileTreeWindow.ShowWithAnimation();
+            this.treeWindow.ShowActivated = activate;
+            this.treeWindow.ShowWithAnimation();
         }
 
         //======================================================================
-        public void CloseFileTreeWindow()
+        public void CloseTreeWindow()
         {
-            this.fileTreeWindow?.HideWithAnimation();
+            this.treeWindow?.HideWithAnimation();
         }
 
         //======================================================================
@@ -63,7 +63,7 @@ namespace Sidecab.View
             if (child is object)
             {
                 //--------------------------------------------------------------
-                if (child == this.fileTreeWindow)
+                if (child == this.treeWindow)
                 {
                     return WindowBehaviorRestriction.CanNotClose;
                 }
@@ -80,14 +80,14 @@ namespace Sidecab.View
         }
 
 
-        FileTreeWindow fileTreeWindow = null;
+        TreeWindow treeWindow = null;
         SettingsWindow settingsWindow = null;
 
 
         //======================================================================
         private void border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            OpenFileTreeWindow();
+            OpenTreeWindow();
         }
     }
 }

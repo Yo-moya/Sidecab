@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Sidecab.Presenter
 {
-    public class FileTree : Utility.ObservableObject
+    public class FolderTree : Utility.ObservableObject
     {
         public Selector<TreeRoot> RootSelector { get; } = new Selector<TreeRoot>();
 
 
         //======================================================================
-        public FileTree()
+        public FolderTree()
         {
             this.RootSelector.PropertyChanged += this.OnRootChanged;
             RefreshRootSelector();
@@ -19,7 +19,7 @@ namespace Sidecab.Presenter
         }
 
         //======================================================================
-        ~FileTree()
+        ~FolderTree()
         {
             this.RootSelector.PropertyChanged -= this.OnRootChanged;
         }

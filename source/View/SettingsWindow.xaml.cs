@@ -82,7 +82,7 @@ namespace Sidecab.View
         //======================================================================
         private void button_KnobColor_Click(object sender, RoutedEventArgs e)
         {
-            (App.Current.MainWindow as MainWindow)?.CloseFileTreeWindow();
+            (App.Current.MainWindow as MainWindow)?.CloseTreeWindow();
             this.popup_KnobColor.IsOpen = true;
         }
 
@@ -132,13 +132,13 @@ namespace Sidecab.View
         //======================================================================
         private void control_Knob_GotFocus(object sender, RoutedEventArgs e)
         {
-            (App.Current.MainWindow as MainWindow)?.CloseFileTreeWindow();
+            (App.Current.MainWindow as MainWindow)?.CloseTreeWindow();
         }
 
         //======================================================================
         private void control_Tree_GotFocus(object sender, RoutedEventArgs e)
         {
-            (App.Current.MainWindow as MainWindow)?.OpenFileTreeWindow(activate : false);
+            (App.Current.MainWindow as MainWindow)?.OpenTreeWindow(activate : false);
         }
 
         //======================================================================
