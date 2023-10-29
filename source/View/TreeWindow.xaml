@@ -5,12 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:Sidecab.View"
     mc:Ignorable="d"
+    d:DesignHeight="450" d:DesignWidth="400"
     Title="Sidecab"
     TextElement.FontWeight="Medium" TextElement.FontSize="14"
     WindowStyle="None" ShowInTaskbar="True"
     AllowsTransparency="True" Background="Transparent"
     Width="{Binding TreeWidth}" MinWidth="{Binding TreeMinWidth}"
-    d:DesignHeight="450" d:DesignWidth="400"
     Closing="TreeWindow_Closing" KeyDown="TreeWindow_KeyDown">
 
     <Window.Resources>

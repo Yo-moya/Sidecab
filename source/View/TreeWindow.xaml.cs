@@ -1,13 +1,17 @@
 ﻿
+using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using System.ComponentModel;
 
 namespace Sidecab.View
 {
     public partial class TreeWindow : Window
     {
+        private SettingsWindow _settingsWindow;
+
+
         //----------------------------------------------------------------------
         public TreeWindow()
         {
@@ -15,9 +19,7 @@ namespace Sidecab.View
             ResizeMode = ResizeMode.NoResize;
 
             InitializeComponent();
-
             DataContext = App.Core.Settings;
-            App.Core.Settings.PropertyChanged += OnSettingChanged;
         }
 
         //----------------------------------------------------------------------
@@ -55,30 +57,28 @@ namespace Sidecab.View
             }
         }
 
-        //======================================================================
-        private void OnSettingChanged(object sender, PropertyChangedEventArgs e)
+        //----------------------------------------------------------------------
+        public void OpenSettingsWindow()
         {
-            if (e.PropertyName == nameof(Presenter.Settings.TreeWidth))
-            {
-                Width = App.Core.Settings.TreeWidth;
-            }
+            _settingsWindow ??= new SettingsWindow();
+            _settingsWindow.Closed += OnSettingsWindowClosed;
+            _settingsWindow.Show();
         }
 
-        //======================================================================
+
+        //----------------------------------------------------------------------
+        private void OnSettingsWindowClosed(object sender, EventArgs e)
+        {
+            _settingsWindow = null;
+        }
+
+        //----------------------------------------------------------------------
         private void TreeWindow_Closing(object sender, CancelEventArgs e)
         {
-            // Close this window if the MainWindow is lost
-            var result = (App.Current.MainWindow as MainWindow)
-                ?.NotifyChildWindowClosing(this) ?? MainWindow.WindowBehaviorRestriction.CanClose;
-
-            if (result == MainWindow.WindowBehaviorRestriction.CanNotClose)
-            {
-                e.Cancel = true;
-                HideWithAnimation();
-            }
+            _settingsWindow?.Close();
         }
 
-        //======================================================================
+        //----------------------------------------------------------------------
         private void TreeWindow_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)

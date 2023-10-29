@@ -93,7 +93,7 @@ namespace Sidecab.View
         //======================================================================
         private void MenuItem_Settings_Click(object sender, RoutedEventArgs e)
         {
-            (App.Current.MainWindow as MainWindow)?.OpenSettingsWindow();
+            (App.Current.MainWindow as TreeWindow)?.OpenSettingsWindow();
         }
 
         //======================================================================
