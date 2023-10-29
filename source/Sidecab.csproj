@@ -12,6 +12,7 @@
     <PackageProjectUrl>https://github.com/Yo-moya/Sidecab</PackageProjectUrl>
     <PackageIcon>Icon.png</PackageIcon>
     <Company>YoMoya</Company>
+    <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
