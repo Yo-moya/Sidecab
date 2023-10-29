@@ -19,7 +19,7 @@ namespace Sidecab.View
         {
             InitializeComponent();
 
-            Utility.WindowAttributes.SetAsToolWindow(this);
+            WindowAttributes.SetAsToolWindow(this);
             this.DataContext = new Presenter.MainWindow();
         }
 
