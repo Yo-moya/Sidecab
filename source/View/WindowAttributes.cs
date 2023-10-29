@@ -4,11 +4,11 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Runtime.InteropServices;
 
-namespace Sidecab.Utility
+namespace Sidecab.View
 {
-    internal class WindowAttributes
+    internal static class WindowAttributes
     {
-        //======================================================================
+        //----------------------------------------------------------------------
         public static void SetAsToolWindow(Window window)
         {
             var helper = new WindowInteropHelper(window);
@@ -19,7 +19,7 @@ namespace Sidecab.Utility
             SetWindowLongPtr(helper.Handle, GWL.EXSTYLE, style);
         }
 
-        //======================================================================
+        //----------------------------------------------------------------------
         public static void HideTitleBarIcon(Window window)
         {
             var helper = new WindowInteropHelper(window);
@@ -36,7 +36,7 @@ namespace Sidecab.Utility
                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
         }
 
-        //======================================================================
+        //----------------------------------------------------------------------
         public static void HideMinimizeButton(Window window)
         {
             var helper = new WindowInteropHelper(window);
@@ -72,7 +72,7 @@ namespace Sidecab.Utility
         private const long WS_MAXIMIZEBOX      = 0x00010000L;
         private const long WS_MINIMIZEBOX      = 0x00020000L;
 
-        //----------------------------------------------------------------------
+        //======================================================================
         private enum GWL : int
         {
             WNDPROC    =  -4,
