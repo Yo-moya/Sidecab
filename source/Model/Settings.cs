@@ -1,8 +1,6 @@
 ﻿
-using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Media;
 using Newtonsoft.Json;
 
 namespace Sidecab.Model
@@ -10,124 +8,82 @@ namespace Sidecab.Model
     public class Settings
     {
         //----------------------------------------------------------------------
-        public int KnobWidth
-        {
-            get { return  this.data.KnobWidth; }
-            set { this.data.KnobWidth = value; }
-        }
-
-        //----------------------------------------------------------------------
         public int TreeWidth
         {
-            get { return  this.data.TreeWidth; }
-            set { this.data.TreeWidth = value; }
+            get => _data.TreeWidth;
+            set => _data.TreeWidth = value;
         }
 
         //----------------------------------------------------------------------
         public int TreeFontSize
         {
-            get { return  this.data.TreeFontSize; }
-            set { this.data.TreeFontSize = value; }
+            get => _data.TreeFontSize;
+            set => _data.TreeFontSize = value;
         }
 
         //----------------------------------------------------------------------
         public int TreeFontSizeLarge
         {
-            get { return  this.data.TreeFontSizeLarge; }
-            set { this.data.TreeFontSizeLarge = value; }
+            get => _data.TreeFontSizeLarge;
+            set => _data.TreeFontSizeLarge = value;
         }
 
         //----------------------------------------------------------------------
         public Type.DockPosition DockPosition
         {
-            get { return  this.data.DockPosition; }
-            set { this.data.DockPosition = value; }
-        }
-
-        //----------------------------------------------------------------------
-        public Color KnobColor
-        {
-            get { return  this.data.KnobColor; }
-            set { this.data.KnobColor = value; }
+            get =>_data.DockPosition;
+            set =>_data.DockPosition = value;
         }
 
         //----------------------------------------------------------------------
         public int DisplayIndex
         {
-            get { return this.data.DisplayIndex; }
-            set
-            {
-                using (var monitors = WpfAppBar.MonitorInfo.GetAllMonitors().GetEnumerator())
-                {
-                    int count = 0;
-                    while (monitors.MoveNext()) { count++; }
-                    this.data.DisplayIndex = Math.Max(0, Math.Min(count - 1, value));
-                }
-            }
+            get => _data.DisplayIndex;
+            set => _data.DisplayIndex = value;
         }
 
         //----------------------------------------------------------------------
-        private static string SaveFilePath
-        {
-            get
-            {
-                return System.IO.Directory.GetCurrentDirectory() + @"\Settings.json";
-            }
-        }
+        private static string SaveFilePath =>
+            System.IO.Directory.GetCurrentDirectory() + @"\Settings.json";
 
 
-        //======================================================================
+
+        //----------------------------------------------------------------------
         public Task Load()
         {
             return Task.Run(() =>
             {
-                //--------------------------------------------------------------
                 try
                 {
-                    using (var file = new StreamReader(Settings.SaveFilePath))
-                    {
-                        var json = new JsonSerializer();
-                        this.data = json.Deserialize<Data>(new JsonTextReader(file));
-                    }
+                    using var file = new StreamReader(Settings.SaveFilePath);
+                    var json = new JsonSerializer();
+                    _data = json.Deserialize<Data>(new JsonTextReader(file));
                 }
-                //--------------------------------------------------------------
-                catch
-                {
-                }
-                //--------------------------------------------------------------
+                catch {}
             });
         }
 
-        //======================================================================
+        //----------------------------------------------------------------------
         public Task Save()
         {
             return Task.Run(() =>
             {
-                //--------------------------------------------------------------
                 try
                 {
-                    using (var file = new StreamWriter(Settings.SaveFilePath))
-                    {
-                        var str = JsonConvert.SerializeObject(this, Formatting.Indented);
-                        file.Write(str);
-                    }
+                    using var file = new StreamWriter(Settings.SaveFilePath);
+                    var str = JsonConvert.SerializeObject(this, Formatting.Indented);
+                    file.Write(str);
                 }
-                //--------------------------------------------------------------
-                catch
-                {
-                }
-                //--------------------------------------------------------------
+                catch {}
             });
         }
 
 
-        private Data data = new Data();
+        private Data _data = new Data();
 
-
-        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //======================================================================
         private class Data
         {
-            public int KnobWidth { get; set; } =  10;
             public int TreeWidth { get; set; } = 300;
 
             public int TreeFontSize { get; set; } = 14;
@@ -135,7 +91,6 @@ namespace Sidecab.Model
 
             public int DisplayIndex { get; set; } = 0;
             public Type.DockPosition DockPosition { get; set; } = Type.DockPosition.Left;
-            public Color KnobColor { get; set; } = Colors.Orange;
         }
     }
 }

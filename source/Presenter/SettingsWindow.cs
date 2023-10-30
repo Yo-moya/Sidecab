@@ -18,13 +18,6 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        public string KnobWidthAsText
-        {
-            get { return this.Settings.KnobWidth.ToString(); }
-            set { this.Settings.KnobWidth = ConvertTextToNumber(value); }
-        }
-
-        //----------------------------------------------------------------------
         public string TreeFontSizeAsText
         {
             get { return this.Settings.TreeFontSize.ToString(); }
