@@ -28,9 +28,9 @@ namespace Sidecab.Presenter
                 _model.TreeFontSize = Math.Max(TreeFontSizeMin, value);
                 RaisePropertyChanged();
 
-                if (_model.TreeFontSize > _model.TreeFontSizeLarge)
+                if (TreeFontSize > TreeFontSizeLarge)
                 {
-                    TreeFontSizeLarge = _model.TreeFontSize;
+                    TreeFontSizeLarge = TreeFontSize;
                 }
             }
         }
