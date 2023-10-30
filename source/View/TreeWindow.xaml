@@ -10,7 +10,6 @@
     TextElement.FontWeight="Medium" TextElement.FontSize="14"
     WindowStyle="None" ShowInTaskbar="True"
     AllowsTransparency="True" Background="Transparent"
-    Width="{Binding TreeWidth}" MinWidth="{Binding TreeMinWidth}"
     Closing="TreeWindow_Closing" KeyDown="TreeWindow_KeyDown">
 
     <Window.Resources>

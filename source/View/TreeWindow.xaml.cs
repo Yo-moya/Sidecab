@@ -19,7 +19,7 @@ namespace Sidecab.View
             ResizeMode = ResizeMode.NoResize;
 
             InitializeComponent();
-            DataContext = App.Core.Settings;
+            App.Core.Settings.PropertyChanged += OnSettingsChanged;
         }
 
         //----------------------------------------------------------------------
@@ -39,7 +39,7 @@ namespace Sidecab.View
             else
             {
                 Border_FolderTree.RenderTransformOrigin = new Point(1, 0);
-                Left -= App.Core.Settings.TreeWidth - App.Core.Settings.KnobWidth;
+                Left -= App.Core.Settings.TreeWidth;
             }
 
             if (TryFindResource("Storyboard_AnimToShow") is Storyboard storyboard)
@@ -67,9 +67,19 @@ namespace Sidecab.View
 
 
         //----------------------------------------------------------------------
+        private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Presenter.Settings.TreeWidth))
+            {
+                Width = App.Core.Settings.TreeWidth;
+            }
+        }
+
+        //----------------------------------------------------------------------
         private void OnSettingsWindowClosed(object sender, EventArgs e)
         {
             _settingsWindow = null;
+            App.Core.Settings.PropertyChanged -= OnSettingsChanged;
         }
 
         //----------------------------------------------------------------------
