@@ -1,10 +1,10 @@
 # Sidecab
 
-![screenshot](screenshot01.png)
+![screenshot](resource/screenshot01.png)
 
 Overview
 ---
-You can easilly access to folders on your PC.
+You can easily access to folders on your PC.
 
 How to use
 ---
@@ -12,7 +12,7 @@ How to use
 2. A narrow bar appears on left side of the desktop.
 3. Click the bar to show folder tree.
 
-![screenshot](screenshot02.gif)
+![screenshot](resource/screenshot02.gif)
 
 Acknowledgements
 ---

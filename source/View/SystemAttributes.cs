@@ -1,7 +1,7 @@
 ﻿
 using System.Runtime.InteropServices;
 
-namespace Sidecab.Utility
+namespace Sidecab.View
 {
     class SystemAttributes
     {

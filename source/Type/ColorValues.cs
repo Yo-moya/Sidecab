@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace Sidecab.Type
 {
-    public class ColorValues : Utility.ObservableObject
+    public class ColorValues : ObservableObject
     {
         //----------------------------------------------------------------------
         public byte R

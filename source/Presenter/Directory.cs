@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace Sidecab.Presenter
 {
-    public class Directory : Utility.ObservableObject
+    public class Directory : ObservableObject
     {
         public Model.Directory Model { get; private set; }
         public string Name { get { return this.Model?.Name ?? ""; } }

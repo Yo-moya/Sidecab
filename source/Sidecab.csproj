@@ -8,7 +8,7 @@
     <Authors>YoMoya</Authors>
     <Product />
     <RepositoryUrl>https://github.com/Yo-moya/Sidecab</RepositoryUrl>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resource\Icon.ico</ApplicationIcon>
     <PackageProjectUrl>https://github.com/Yo-moya/Sidecab</PackageProjectUrl>
     <PackageIcon>Icon.png</PackageIcon>
     <Company>YoMoya</Company>
@@ -16,11 +16,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <Content Include="Resource\Icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Icon.ico" />
+    <Resource Include="Resource/Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

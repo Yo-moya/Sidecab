@@ -31,7 +31,7 @@ namespace Sidecab.View
             {
                 this.DataContext = new Presenter.FolderTree();
 
-                var doubleClickTime = Utility.SystemAttributes.GetDoubleClickTime();
+                var doubleClickTime = SystemAttributes.GetDoubleClickTime();
                 this.clickTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)doubleClickTime);
                 this.clickTimer.Tick += clickTimer_Tick;
 

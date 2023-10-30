@@ -7,7 +7,7 @@ using System.Windows.Media.Animation;
 
 namespace Sidecab.View
 {
-    public partial class TreeWindow : Window
+    public sealed partial class TreeWindow : Window
     {
         private SettingsWindow _settingsWindow;
 

@@ -1,7 +1,7 @@
 ﻿
 namespace Sidecab.Presenter
 {
-    public class Core : Utility.ObservableObject
+    public class Core : ObservableObject
     {
         public Model.Core Model  { get; private set; } = new Model.Core();
         public Settings Settings { get; private set; }
