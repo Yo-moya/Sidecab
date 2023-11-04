@@ -1,96 +1,76 @@
 ﻿
-using System.IO;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System;
 
 namespace Sidecab.Model
 {
-    public class Settings
+    //==========================================================================
+    public interface ISettingsFile
     {
+        Settings Load();
+        bool Save(Settings settings);
+    }
+
+
+    //==========================================================================
+    public sealed class Settings
+    {
+        public static int MinTreeWidth => 100;
+        public static int MinFolderNameFontSize => 4;
+
         //----------------------------------------------------------------------
         public int TreeWidth
         {
-            get => _data.TreeWidth;
-            set => _data.TreeWidth = value;
-        }
-
-        //----------------------------------------------------------------------
-        public int TreeFontSize
-        {
-            get => _data.TreeFontSize;
-            set => _data.TreeFontSize = value;
-        }
-
-        //----------------------------------------------------------------------
-        public int TreeFontSizeLarge
-        {
-            get => _data.TreeFontSizeLarge;
-            set => _data.TreeFontSizeLarge = value;
-        }
-
-        //----------------------------------------------------------------------
-        public Type.DockPosition DockPosition
-        {
-            get =>_data.DockPosition;
-            set =>_data.DockPosition = value;
-        }
-
-        //----------------------------------------------------------------------
-        public int DisplayIndex
-        {
-            get => _data.DisplayIndex;
-            set => _data.DisplayIndex = value;
-        }
-
-        //----------------------------------------------------------------------
-        private static string SaveFilePath =>
-            System.IO.Directory.GetCurrentDirectory() + @"\Settings.json";
-
-
-
-        //----------------------------------------------------------------------
-        public Task Load()
-        {
-            return Task.Run(() =>
+            get => _treeWidth;
+            set
             {
-                try
-                {
-                    using var file = new StreamReader(Settings.SaveFilePath);
-                    var json = new JsonSerializer();
-                    _data = json.Deserialize<Data>(new JsonTextReader(file));
-                }
-                catch {}
-            });
+                _treeWidth = Math.Max(MinTreeWidth, value);
+            }
         }
 
         //----------------------------------------------------------------------
-        public Task Save()
+        public int FolderNameFontSize
         {
-            return Task.Run(() =>
+            get => _folderNameFontSize;
+            set
             {
-                try
+                _folderNameFontSize = Math.Max(MinFolderNameFontSize, value);
+
+                if (FolderNameFontSize > FolderNameFontSizeLarge)
                 {
-                    using var file = new StreamWriter(Settings.SaveFilePath);
-                    var str = JsonConvert.SerializeObject(this, Formatting.Indented);
-                    file.Write(str);
+                    FolderNameFontSizeLarge = FolderNameFontSize;
                 }
-                catch {}
-            });
+            }
         }
 
-
-        private Data _data = new Data();
-
-        //======================================================================
-        private class Data
+        //----------------------------------------------------------------------
+        public int FolderNameFontSizeLarge
         {
-            public int TreeWidth { get; set; } = 300;
+            get => _folderNameFontSizeLarge;
+            set
+            {
+                _folderNameFontSizeLarge = Math.Max(FolderNameFontSize, value);
+            }
+        }
 
-            public int TreeFontSize { get; set; } = 14;
-            public int TreeFontSizeLarge { get; set; } = 20;
+        public Type.DockPosition DockPosition { get; set; }
+        public int DisplayIndex { get; set; }
 
-            public int DisplayIndex { get; set; } = 0;
-            public Type.DockPosition DockPosition { get; set; } = Type.DockPosition.Left;
+
+        private int _treeWidth = 200;
+        private int _folderNameFontSize = 12;
+        private int _folderNameFontSizeLarge = 12;
+
+
+        //----------------------------------------------------------------------
+        public static Settings Load(ISettingsFile fileIO)
+        {
+            return fileIO.Load() ?? new();
+        }
+
+        //----------------------------------------------------------------------
+        public bool Save(ISettingsFile fileIO)
+        {
+            return fileIO.Save(this);
         }
     }
 }

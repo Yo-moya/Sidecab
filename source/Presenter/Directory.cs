@@ -18,10 +18,10 @@ namespace Sidecab.Presenter
             get
             {
                 var settings = App.Core.Settings;
-                if (this.Model is null) return settings.TreeFontSize;
+                if (Model is null) return settings.FolderNameFontSize;
 
-                double gap = Math.Max(0, settings.TreeFontSizeLarge - settings.TreeFontSize);
-                return gap * this.Model.GetFreshnessScale() + settings.TreeFontSize;
+                double gap = Math.Max(0, settings.FolderNameFontSizeLarge - settings.FolderNameFontSize);
+                return gap * Model.GetFreshnessScale() + settings.FolderNameFontSize;
             }
         }
 

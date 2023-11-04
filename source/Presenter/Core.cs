@@ -7,11 +7,11 @@ namespace Sidecab.Presenter
         public Settings Settings { get; private set; }
 
 
-        //======================================================================
+        //----------------------------------------------------------------------
         public Core()
         {
-            this.Settings = new Settings(this.Model.Settings);
-            this.Settings.Load();
+            Settings = new Settings(this.Model.Settings);
+            Settings.LoadAsync();
         }
     }
 }

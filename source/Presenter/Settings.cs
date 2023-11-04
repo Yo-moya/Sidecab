@@ -1,71 +1,49 @@
 ﻿
-using System;
+using System.Threading.Tasks;
 
 namespace Sidecab.Presenter
 {
     public class Settings : ObservableObject
     {
-        public int TreeWidthMin => 100;
-        public int TreeFontSizeMin => 4;
-
         //----------------------------------------------------------------------
         public int TreeWidth
         {
             get => _model.TreeWidth;
-            set
-            {
-                _model.TreeWidth = Math.Max(TreeWidthMin, value);
-                RaisePropertyChanged();
-            }
+            set => ModifyNestedProperty(_model, nameof(Model.Settings.TreeWidth), value);
         }
 
         //----------------------------------------------------------------------
-        public int TreeFontSize
+        public int FolderNameFontSize
         {
-            get => _model.TreeFontSize;
+            get => _model.FolderNameFontSize;
             set
             {
-                _model.TreeFontSize = Math.Max(TreeFontSizeMin, value);
-                RaisePropertyChanged();
-
-                if (TreeFontSize > TreeFontSizeLarge)
+                if (ModifyNestedProperty(_model, nameof(Model.Settings.FolderNameFontSize), value))
                 {
-                    TreeFontSizeLarge = TreeFontSize;
+                    RaisePropertyChanged(nameof(FolderNameFontSizeLarge));// has potential for adjustment
                 }
             }
         }
 
         //----------------------------------------------------------------------
-        public int TreeFontSizeLarge
+        public int FolderNameFontSizeLarge
         {
-            get => _model.TreeFontSizeLarge;
-            set
-            {
-                _model.TreeFontSizeLarge = Math.Max(TreeFontSize, value);
-                RaisePropertyChanged();
-            }
+            get => _model.FolderNameFontSizeLarge;
+            set => ModifyNestedProperty(_model, nameof(Model.Settings.FolderNameFontSizeLarge), value);
         }
 
         //----------------------------------------------------------------------
         public int DisplayIndex
         {
             get => _model.DisplayIndex;
-            set
-            {
-                _model.DisplayIndex = value;
-                RaisePropertyChanged();
-            }
+            set => ModifyNestedProperty(_model, nameof(Model.Settings.DisplayIndex), value);
         }
 
         //----------------------------------------------------------------------
         public Type.DockPosition DockPosition
         {
             get => _model.DockPosition;
-            set
-            {
-                _model.DockPosition = value;
-                RaisePropertyChanged();
-            }
+            set => ModifyNestedProperty(_model, nameof(Model.Settings.DockPosition), value);
         }
 
 
@@ -76,16 +54,16 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        public async void Load()
+        public async void LoadAsync()
         {
-            await _model.Load();
+            _model = await Task.Run(() => Model.Settings.Load(new IO.SettingsJson()));
             RaiseAllPropertiesChanged();
         }
 
         //----------------------------------------------------------------------
-        public async void Save()
+        public async Task<bool> SaveAsync()
         {
-            await _model.Save();
+            return await Task.Run(() => _model.Save(new IO.SettingsJson()));
         }
 
 

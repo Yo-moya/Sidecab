@@ -8,27 +8,27 @@ namespace Sidecab.Presenter
 {
     public class SettingsWindow : ObservableObject
     {
-        public Settings Settings { get { return App.Core.Settings; } }
+        public Settings Settings => App.Core.Settings;
 
         //----------------------------------------------------------------------
         public string TreeWidthAsText
         {
-            get { return this.Settings.TreeWidth.ToString(); }
-            set { this.Settings.TreeWidth = ConvertTextToNumber(value); }
+            get => Settings.TreeWidth.ToString();
+            set => Settings.TreeWidth = ConvertTextToNumber(value);
         }
 
         //----------------------------------------------------------------------
-        public string TreeFontSizeAsText
+        public string FolderNameFontSizeAsText
         {
-            get { return this.Settings.TreeFontSize.ToString(); }
-            set { this.Settings.TreeFontSize = ConvertTextToNumber(value); }
+            get => Settings.FolderNameFontSize.ToString();
+            set => Settings.FolderNameFontSize = ConvertTextToNumber(value);
         }
 
         //----------------------------------------------------------------------
-        public string TreeFontSizeLargeAsText
+        public string FolderNameFontSizeLargeAsText
         {
-            get { return this.Settings.TreeFontSizeLarge.ToString(); }
-            set { this.Settings.TreeFontSizeLarge = ConvertTextToNumber(value); }
+            get => Settings.FolderNameFontSizeLarge.ToString();
+            set => Settings.FolderNameFontSizeLarge = ConvertTextToNumber(value);
         }
 
         //----------------------------------------------------------------------
@@ -36,10 +36,10 @@ namespace Sidecab.Presenter
         {
             get
             {
-                this.displayIndexSelector.Current =
-                    this.displayIndexSelector.List[this.Settings.DisplayIndex];
+                _displayIndexSelector.Current =
+                    _displayIndexSelector.List[Settings.DisplayIndex];
 
-                return this.displayIndexSelector;
+                return _displayIndexSelector;
             }
         }
 
@@ -48,18 +48,18 @@ namespace Sidecab.Presenter
         {
             get
             {
-                this.dockPositionSelector.Index =
-                    this.dockPositionSelector.List.IndexOf(this.Settings.DockPosition.ToString());
+                _dockPositionSelector.Index =
+                    _dockPositionSelector.List.IndexOf(Settings.DockPosition.ToString());
 
-                return this.dockPositionSelector;
+                return _dockPositionSelector;
             }
         }
 
 
-        //======================================================================
+        //----------------------------------------------------------------------
         public SettingsWindow()
         {
-            this.Settings.PropertyChanged += this.OnSettingChanged;
+            Settings.PropertyChanged += OnSettingChanged;
 
             var displayIndexList = new List<string>();
             var dockPositionList = new List<string>();
@@ -81,66 +81,71 @@ namespace Sidecab.Presenter
             }
             //------------------------------------------------------------------
 
-            this.displayIndexSelector = new Selector<string>(displayIndexList);
-            this.displayIndexSelector.PropertyChanged += this.OnDisplayIndexChanged;
+            _displayIndexSelector = new Selector<string>(displayIndexList);
+            _displayIndexSelector.PropertyChanged += OnDisplayIndexChanged;
 
-            this.dockPositionSelector = new Selector<string>(dockPositionList);
-            this.dockPositionSelector.PropertyChanged += this.OnDockPositionChanged;
+            _dockPositionSelector = new Selector<string>(dockPositionList);
+            _dockPositionSelector.PropertyChanged += OnDockPositionChanged;
         }
 
-        //======================================================================
-        ~SettingsWindow()
-        {
-            this.Settings.PropertyChanged -= this.OnSettingChanged;
-            this.displayIndexSelector.PropertyChanged -= this.OnDisplayIndexChanged;
-            this.dockPositionSelector.PropertyChanged -= this.OnDockPositionChanged;
-        }
-
-        //======================================================================
+        //----------------------------------------------------------------------
         public void RefreshView()
         {
             RaiseAllPropertiesChanged();
         }
 
 
-        //======================================================================
-        private int ConvertTextToNumber(string text)
+        //----------------------------------------------------------------------
+        private static int ConvertTextToNumber(string text)
         {
             text = Regex.Replace(text, @"\D", "");
             return int.Parse((text == "") ? "0" : text);
         }
 
-        //======================================================================
+        //----------------------------------------------------------------------
         private void OnSettingChanged(object sender, PropertyChangedEventArgs e)
         {
             var property = GetType().GetProperty(e.PropertyName + "AsText");
-            if (property is object)
+            if (property is not null)
             {
                 RaisePropertyChanged(property.Name);
+                return;
+            }
+
+            if (e.PropertyName == nameof(Settings.DisplayIndex))
+            {
+                DisplayIndexSelector.Index = Settings.DisplayIndex;
+                return;
+            }
+
+            if (e.PropertyName == nameof(Settings.DockPosition))
+            {
+                DockPositionSelector.Index = (int)Settings.DockPosition;
+                return;
             }
         }
 
-        //======================================================================
+        //----------------------------------------------------------------------
         private void OnDisplayIndexChanged(object sender, PropertyChangedEventArgs e)
         {
-            this.Settings.DisplayIndex = this.displayIndexSelector.Index;
+            Settings.DisplayIndex = _displayIndexSelector.Index;
         }
 
-        //======================================================================
+        //----------------------------------------------------------------------
         private void OnDockPositionChanged(object sender, PropertyChangedEventArgs e)
         {
             foreach (var dockPos in Enum.GetValues(typeof(Type.DockPosition)))
             {
-                if (this.dockPositionSelector.Current == dockPos.ToString())
+                if (_dockPositionSelector.Current == dockPos.ToString())
                 {
-                    this.Settings.DockPosition = (Type.DockPosition)dockPos;
+                    Settings.DockPosition = (Type.DockPosition)dockPos;
                     return;
                 }
             }
         }
 
 
-        private Selector<string> displayIndexSelector;
-        private Selector<string> dockPositionSelector;
+        private Selector<string> _displayIndexSelector;
+        private Selector<string> _dockPositionSelector;
     }
 }
