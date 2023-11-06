@@ -35,13 +35,15 @@
 
         <Button x:Name="Button_AppMenu"
             Grid.Row="0" Grid.Column="0" Margin="4" Padding="4,4" Focusable="False"
-            Height="{Binding Height, ElementName=comboBox_RootSelector}"
+            Height="{Binding Height, ElementName=ComboBox_RootSelector}"
             Width="{Binding Height, RelativeSource={RelativeSource Self}}"
             Click="Button_AppMenu_Click">
         </Button>
 
-        <ComboBox x:Name="comboBox_RootSelector" Grid.Row="0" Grid.Column="1" Margin="4,4,16,4" HorizontalAlignment="Stretch"
-            ItemsSource="{Binding RootSelector.List}" SelectedItem="{Binding RootSelector.Current}" Focusable="False">
+        <ComboBox x:Name="ComboBox_RootSelector"
+            Grid.Row="0" Grid.Column="1" Margin="4,4,16,4"
+            HorizontalAlignment="Stretch" Focusable="False"
+            ItemsSource="{Binding RootSelector.List}" SelectedItem="{Binding RootSelector.Current}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding SelectorCaption}"/>
@@ -49,9 +51,14 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <TreeView x:Name="treeView_Directories" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+        <TreeView x:Name="TreeView_Directories"
+            Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,4"
+            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+            VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
             ItemsSource="{Binding RootSelector.Current.Subdirectories}"
-            PreviewMouseDoubleClick="treeView_Directories_PreviewMouseDoubleClick" PreviewMouseLeftButtonUp="treeView_Directories_PreviewMouseLeftButtonUp" PreviewMouseRightButtonUp="treeView_Directories_PreviewMouseRightButtonUp">
+            PreviewMouseDoubleClick="TreeView_Directories_PreviewMouseDoubleClick"
+            PreviewMouseLeftButtonUp="TreeView_Directories_PreviewMouseLeftButtonUp"
+            PreviewMouseRightButtonUp="TreeView_Directories_PreviewMouseRightButtonUp">
 
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="presenter:Directory" ItemsSource="{Binding Subdirectories}">
@@ -61,18 +68,15 @@
 
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                    <EventSetter Event="Expanded" Handler="treeViewItem_Directories_Expanded"/>
+                    <EventSetter Event="Expanded" Handler="TreeViewItem_Directories_Expanded"/>
                 </Style>
             </TreeView.ItemContainerStyle>
 
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem x:Name="manuItem_Pin" Header="Pin this folder" Click="manuItem_Pin_Click">
-                    </MenuItem>
-                    <MenuItem x:Name="menuItem_OpenFolder" Header="Open in Explorer" Click="menuItem_OpenFolder_Click">
-                    </MenuItem>
-                    <MenuItem x:Name="manuItem_CopyPath" Header="Copy as path" Click="manuItem_CopyPath_Click">
-                    </MenuItem>
+                    <MenuItem x:Name="MenuItem_Pin" Header="Pin this folder" Click="MenuItem_Pin_Click"/>
+                    <MenuItem x:Name="MenuItem_OpenFolder" Header="Open in Explorer" Click="MenuItem_OpenFolder_Click"/>
+                    <MenuItem x:Name="MenuItem_CopyPath" Header="Copy as path" Click="MenuItem_CopyPath_Click"/>
                 </ContextMenu>
             </TreeView.ContextMenu>
 
