@@ -56,7 +56,7 @@ namespace Sidecab.View
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             DataObject.RemovePastingHandler(TextBox_TreeWidth, TextBox_Pasting);
-            _ = App.Core.Settings.SaveAsync();
+            _ = App.Settings.SaveAsync();
         }
 
         //----------------------------------------------------------------------

@@ -31,9 +31,9 @@ namespace Sidecab.View
 
                 var doubleClickTime = SystemAttributes.GetDoubleClickTime();
                 _clickTimer.Interval = new TimeSpan(0, 0, 0, 0, (int)doubleClickTime);
-                _clickTimer.Tick += clickTimer_Tick;
+                _clickTimer.Tick += ClickTimer_Tick;
 
-                App.Core.Settings.PropertyChanged += OnSettingChanged;
+                App.Settings.PropertyChanged += OnSettingChanged;
             }
         }
 
@@ -43,8 +43,8 @@ namespace Sidecab.View
         {
             if (e.PropertyName.Contains("Font"))
             {
-                TreeView_Directories.Items.Refresh();
-                TreeView_Directories.UpdateLayout();
+                TreeView_Folders.Items.Refresh();
+                TreeView_Folders.UpdateLayout();
             }
         }
 
@@ -61,7 +61,7 @@ namespace Sidecab.View
         }
 
         //----------------------------------------------------------------------
-        private void clickTimer_Tick(object sender, EventArgs e)
+        private void ClickTimer_Tick(object sender, EventArgs e)
         {
             _clickTimer.Stop();
         }
@@ -95,17 +95,17 @@ namespace Sidecab.View
             {
                 e.Handled = true;
 
-                var directory = TreeView_Directories.SelectedItem as Presenter.Directory;
-                directory?.Open();
+                var folder = TreeView_Folders.SelectedItem as Presenter.Folder;
+                folder?.Open();
             }
         }
 
         //----------------------------------------------------------------------
         private void MenuItem_Pin_Click(object sender, RoutedEventArgs e)
         {
-            if (TreeView_Directories.SelectedItem is Presenter.Directory directory)
+            if (TreeView_Folders.SelectedItem is Presenter.Folder folder)
             {
-                _presenter.AddBookmark(directory);
+                _presenter.AddBookmark(folder);
             }
 
             _presenter.SelectLastRoot();
@@ -114,19 +114,19 @@ namespace Sidecab.View
         //----------------------------------------------------------------------
         private void MenuItem_OpenFolder_Click(object sender, RoutedEventArgs e)
         {
-            var directory = TreeView_Directories.SelectedItem as Presenter.Directory;
-            directory?.Open();
+            var folder = TreeView_Folders.SelectedItem as Presenter.Folder;
+            folder?.Open();
         }
 
         //----------------------------------------------------------------------
         private void MenuItem_CopyPath_Click(object sender, RoutedEventArgs e)
         {
-            var directory = TreeView_Directories.SelectedItem as Presenter.Directory;
-            directory?.CopyPath();
+            var folder = TreeView_Folders.SelectedItem as Presenter.Folder;
+            folder?.CopyPath();
         }
 
         //----------------------------------------------------------------------
-        private void TreeView_Directories_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void TreeView_Folders_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is ToggleButton) return;
             if (_clickTimer.IsEnabled) return;
@@ -135,8 +135,8 @@ namespace Sidecab.View
             {
                 if (clicked.IsExpanded == false)
                 {
-                    var directory = clicked.DataContext as Presenter.Directory;
-                    directory?.CollectSubdirectories();
+                    var folder = clicked.DataContext as Presenter.Folder;
+                    folder?.CollectSubFolders();
                 }
 
                 _clickTimer.Start();
@@ -145,7 +145,7 @@ namespace Sidecab.View
         }
 
         //----------------------------------------------------------------------
-        private void TreeView_Directories_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void TreeView_Folders_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var clicked = FindParent<TreeViewItem>(e.OriginalSource as DependencyObject);
             if (clicked is null)
@@ -156,24 +156,30 @@ namespace Sidecab.View
 
             clicked.IsSelected = true;
 
-            var directory = TreeView_Directories.SelectedItem as Presenter.Directory;
-            MenuItem_Pin.IsEnabled = directory?.HasSubdirectories ?? false;
+            var folder = TreeView_Folders.SelectedItem as Presenter.Folder;
+            MenuItem_Pin.IsEnabled = folder?.HasSubFolders ?? false;
         }
 
         //----------------------------------------------------------------------
-        private void TreeViewItem_Directories_Expanded(object sender, RoutedEventArgs e)
+        private void TreeViewItem_Folders_Expanded(object sender, RoutedEventArgs e)
         {
             if (_clickTimer.IsEnabled) return;
 
             if (sender is TreeViewItem treeViewItem)
             {
-                if (treeViewItem.DataContext is Presenter.Directory directory)
+                if (treeViewItem.DataContext is Presenter.Folder folder)
                 {
-                    directory.CollectSubdirectories();
+                    folder.CollectSubFolders();
                 }
 
                 _clickTimer.Start();
             }
+        }
+
+        //----------------------------------------------------------------------
+        private void TreeView_Folders_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

@@ -51,24 +51,24 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <TreeView x:Name="TreeView_Directories"
+        <TreeView x:Name="TreeView_Folders"
             Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,4"
             VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
             VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
-            ItemsSource="{Binding RootSelector.Current.Subdirectories}"
-            PreviewMouseDoubleClick="TreeView_Directories_PreviewMouseDoubleClick"
-            PreviewMouseLeftButtonUp="TreeView_Directories_PreviewMouseLeftButtonUp"
-            PreviewMouseRightButtonUp="TreeView_Directories_PreviewMouseRightButtonUp">
+            ItemsSource="{Binding RootSelector.Current.SubFolders}"
+            PreviewMouseDoubleClick="TreeView_Folders_PreviewMouseDoubleClick"
+            PreviewMouseLeftButtonUp="TreeView_Folders_PreviewMouseLeftButtonUp"
+            PreviewMouseRightButtonUp="TreeView_Folders_PreviewMouseRightButtonUp">
 
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="presenter:Directory" ItemsSource="{Binding Subdirectories}">
-                    <TextBlock Text="{Binding Name}" FontSize="{Binding TextFontSize}" VerticalAlignment="Stretch" Margin="0"/>
+                <HierarchicalDataTemplate DataType="presenter:Folder" ItemsSource="{Binding SubFolders}">
+                    <TextBlock Text="{Binding Name}" FontSize="{Binding FontSize}" VerticalAlignment="Stretch" Margin="0"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
 
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                    <EventSetter Event="Expanded" Handler="TreeViewItem_Directories_Expanded"/>
+                    <EventSetter Event="Expanded" Handler="TreeViewItem_Folders_Expanded"/>
                 </Style>
             </TreeView.ItemContainerStyle>
 

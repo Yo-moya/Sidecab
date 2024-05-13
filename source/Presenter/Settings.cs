@@ -1,10 +1,14 @@
 ﻿
+using System;
 using System.Threading.Tasks;
 
 namespace Sidecab.Presenter
 {
-    public class Settings : ObservableObject
+    public sealed class Settings : ObservableObject
     {
+        public event Action LoadedEvent;
+
+
         //----------------------------------------------------------------------
         public int TreeWidth
         {
@@ -47,16 +51,14 @@ namespace Sidecab.Presenter
         }
 
 
-        //----------------------------------------------------------------------
-        public Settings(Model.Settings model)
-        {
-            _model = model;
-        }
+        private Model.Settings _model;
+
 
         //----------------------------------------------------------------------
         public async void LoadAsync()
         {
             _model = await Task.Run(() => Model.Settings.Load(new IO.SettingsJson()));
+            LoadedEvent?.Invoke();
             RaiseAllPropertiesChanged();
         }
 
@@ -65,8 +67,5 @@ namespace Sidecab.Presenter
         {
             return await Task.Run(() => _model.Save(new IO.SettingsJson()));
         }
-
-
-        private Model.Settings _model;
     }
 }
