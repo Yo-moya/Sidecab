@@ -7,7 +7,7 @@ namespace Sidecab
 {
     public class ObservableObject : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
 
         // Returns true if value-type property modified
@@ -28,7 +28,7 @@ namespace Sidecab
         {
             var property = propertyOwner.GetType().GetProperty(propertyName);
 
-            if ((property.GetValue(propertyOwner) is not T oldValue)
+            if ((property?.GetValue(propertyOwner) is not T oldValue)
                 || EqualityComparer<T>.Default.Equals(oldValue, newValue)) return false;
 
             property.SetValue(propertyOwner, newValue);

@@ -5,14 +5,14 @@ namespace Sidecab.Model
 {
     public class Drive : Folder
     {
-        public string Label { get; private set; } = "";
+        public string Label { get; private init; }
 
 
         //----------------------------------------------------------------------
-        public Drive(DriveInfo info)
+        public Drive(FolderTree tree, DriveInfo info) : base(tree)
         {
             Label = info.VolumeLabel;
-            Name = info.Name.Substring(0, 2);
+            Name  = info.Name[..2];
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Sidecab.Presenter
 {
     public sealed class Settings : ObservableObject
     {
-        public event Action LoadedEvent;
+        public event Action? Loaded;
 
 
         //----------------------------------------------------------------------
@@ -24,13 +24,13 @@ namespace Sidecab.Presenter
             {
                 if (ModifyNestedProperty(_model, nameof(Model.Settings.FolderNameFontSize), value))
                 {
-                    RaisePropertyChanged(nameof(FolderNameFontSizeLarge));// has potential for adjustment
+                    RaisePropertyChanged(nameof(FolderNameFontSizeMax));// has potential for adjustment
                 }
             }
         }
 
         //----------------------------------------------------------------------
-        public int FolderNameFontSizeLarge
+        public int FolderNameFontSizeMax
         {
             get => _model.FolderNameFontSizeLarge;
             set => ModifyNestedProperty(_model, nameof(Model.Settings.FolderNameFontSizeLarge), value);
@@ -51,15 +51,19 @@ namespace Sidecab.Presenter
         }
 
 
-        private Model.Settings _model;
+        private Model.Settings _model = new();
 
 
         //----------------------------------------------------------------------
         public async void LoadAsync()
         {
-            _model = await Task.Run(() => Model.Settings.Load(new IO.SettingsJson()));
-            LoadedEvent?.Invoke();
-            RaiseAllPropertiesChanged();
+            var model = await Task.Run(() => Model.Settings.Load(new IO.SettingsJson()));
+            if (model is not null)
+            {
+                _model = model;
+                Loaded?.Invoke();
+                RaiseAllPropertiesChanged();
+            }
         }
 
         //----------------------------------------------------------------------

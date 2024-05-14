@@ -9,13 +9,23 @@ namespace Sidecab.IO
     {
         private static string FilePath => FolderPath + "Settings.json";
 
+        //----------------------------------------------------------------------
         private static string FolderPath =>
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
             + @"\Sidecab\";
 
 
         //----------------------------------------------------------------------
-        public Model.Settings Load()
+        private static readonly JsonSerializerOptions _options = new()
+        {
+            IncludeFields = false,
+            IgnoreReadOnlyProperties = true,
+            WriteIndented = true,
+        };
+
+
+        //----------------------------------------------------------------------
+        public Model.Settings? Load()
         {
             try
             {
@@ -31,29 +41,15 @@ namespace Sidecab.IO
         //----------------------------------------------------------------------
         public bool Save(Model.Settings settings)
         {
-            if (Directory.Exists(FolderPath) == false)
+            try
             {
-                try
+                if (Directory.Exists(FolderPath) == false)
                 {
                     Directory.CreateDirectory(FolderPath);
                 }
-                catch
-                {
-                    return false;
-                }
-            }
 
-            var serializerOptions = new JsonSerializerOptions()
-            {
-                IncludeFields = false,
-                IgnoreReadOnlyProperties = true,
-                WriteIndented = true,
-            };
-
-            try
-            {
-                using var stream = new FileStream(FilePath, FileMode.OpenOrCreate);
-                JsonSerializer.Serialize<Model.Settings>(stream, settings, serializerOptions);
+                using FileStream stream = new(FilePath, FileMode.OpenOrCreate);
+                JsonSerializer.Serialize<Model.Settings>(stream, settings, _options);
             }
             catch
             {

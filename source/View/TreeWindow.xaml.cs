@@ -9,7 +9,7 @@ namespace Sidecab.View
 {
     public sealed partial class TreeWindow : Window
     {
-        private SettingsWindow _settingsWindow;
+        private SettingsWindow? _settingsWindow;
 
 
         //----------------------------------------------------------------------
@@ -67,7 +67,7 @@ namespace Sidecab.View
 
 
         //----------------------------------------------------------------------
-        private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
+        private void OnSettingsChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Presenter.Settings.TreeWidth))
             {
@@ -76,7 +76,7 @@ namespace Sidecab.View
         }
 
         //----------------------------------------------------------------------
-        private void OnSettingsWindowClosed(object sender, EventArgs e)
+        private void OnSettingsWindowClosed(object? sender, EventArgs e)
         {
             _settingsWindow = null;
             App.Settings.PropertyChanged -= OnSettingsChanged;

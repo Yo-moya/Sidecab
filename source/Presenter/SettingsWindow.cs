@@ -27,8 +27,8 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public string FolderNameFontSizeLargeAsText
         {
-            get => Settings.FolderNameFontSizeLarge.ToString();
-            set => Settings.FolderNameFontSizeLarge = ConvertTextToNumber(value);
+            get => Settings.FolderNameFontSizeMax.ToString();
+            set => Settings.FolderNameFontSizeMax = ConvertTextToNumber(value);
         }
 
         //----------------------------------------------------------------------
@@ -55,6 +55,9 @@ namespace Sidecab.Presenter
             }
         }
 
+        private Selector<string> _displayIndexSelector;
+        private Selector<string> _dockPositionSelector;
+
 
         //----------------------------------------------------------------------
         public SettingsWindow()
@@ -64,22 +67,10 @@ namespace Sidecab.Presenter
             var displayIndexList = new List<string>();
             var dockPositionList = new List<string>();
 
-            //------------------------------------------------------------------
-            using (var monitors = WpfAppBar.MonitorInfo.GetAllMonitors().GetEnumerator())
-            {
-                int count = 0;
-                while (monitors.MoveNext())
-                {
-                    count++;
-                    displayIndexList.Add("Display " + count.ToString());
-                }
-            }
-            //------------------------------------------------------------------
             foreach (var dockPos in Enum.GetValues(typeof(Type.DockPosition)))
             {
-                dockPositionList.Add(dockPos.ToString());
+                dockPositionList.Add(dockPos?.ToString() ?? string.Empty);
             }
-            //------------------------------------------------------------------
 
             _displayIndexSelector = new Selector<string>(displayIndexList);
             _displayIndexSelector.PropertyChanged += OnDisplayIndexChanged;
@@ -103,7 +94,7 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        private void OnSettingChanged(object sender, PropertyChangedEventArgs e)
+        private void OnSettingChanged(object? sender, PropertyChangedEventArgs e)
         {
             var property = GetType().GetProperty(e.PropertyName + "AsText");
             if (property is not null)
@@ -126,13 +117,13 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        private void OnDisplayIndexChanged(object sender, PropertyChangedEventArgs e)
+        private void OnDisplayIndexChanged(object? sender, PropertyChangedEventArgs e)
         {
             Settings.DisplayIndex = _displayIndexSelector.Index;
         }
 
         //----------------------------------------------------------------------
-        private void OnDockPositionChanged(object sender, PropertyChangedEventArgs e)
+        private void OnDockPositionChanged(object? sender, PropertyChangedEventArgs e)
         {
             foreach (var dockPos in Enum.GetValues(typeof(Type.DockPosition)))
             {
@@ -143,9 +134,5 @@ namespace Sidecab.Presenter
                 }
             }
         }
-
-
-        private Selector<string> _displayIndexSelector;
-        private Selector<string> _dockPositionSelector;
     }
 }

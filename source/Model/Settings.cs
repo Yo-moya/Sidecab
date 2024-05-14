@@ -6,7 +6,7 @@ namespace Sidecab.Model
     //==========================================================================
     public interface ISettingsFile
     {
-        Settings Load();
+        Settings? Load();
         bool Save(Settings settings);
     }
 

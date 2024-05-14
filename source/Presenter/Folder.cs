@@ -8,16 +8,15 @@ namespace Sidecab.Presenter
 {
     public class Folder : ObservableObject
     {
-        public string Name => Model?.Name ?? string.Empty;
-        public string Path => Model?.GetFullPath() ?? string.Empty;
+        public string Name => Model.Name;
+        public string Path => Model.GetFullPath();
 
-        public bool HasSubFolders => Model?.HasSubFolders ?? false;
+        public bool HasSubFolders => Model.HasSubFolders;
 
         //----------------------------------------------------------------------
         public ObservableCollection<Folder> SubFolders =>
             (HasSubFolders && (Model.SubFolders.Count == 0))
-                ? new ObservableCollection<Folder> { new Folder() }
-                : _subFolders;
+                ? _dummyList : _subFolders;
 
         //----------------------------------------------------------------------
         public double FontSize
@@ -25,25 +24,25 @@ namespace Sidecab.Presenter
             get
             {
                 var fontSize = App.Settings.FolderNameFontSize;
-                var fontSizeLarge = App.Settings.FolderNameFontSizeLarge;
+                var fontSizeMax = App.Settings.FolderNameFontSizeMax;
                 var scale = Model?.GetFreshnessScale() ?? 0;
 
-                return (fontSizeLarge - fontSize) * scale + fontSize;
+                return (fontSizeMax - fontSize) * scale + fontSize;
             }
         }
 
 
         protected Model.Folder Model { get; private init; }
 
-        private ObservableCollection<Folder> _subFolders;
-        private Stopwatch _animationDuration;
-
-
         //----------------------------------------------------------------------
-        public Folder()
-        {
-            // Initialize as a dummy
-        }
+        // A list used if the folder has children, but haven't collected yet.
+        // It makes a ListViewItem like "[+] Foo"
+        //----------------------------------------------------------------------
+        private static readonly ObservableCollection<Folder> _dummyList = [new()];
+
+        private ObservableCollection<Folder> _subFolders = [];
+        private Stopwatch? _animationDuration;
+
 
         //----------------------------------------------------------------------
         public Folder(Model.Folder model)
@@ -55,8 +54,12 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        protected Folder(Folder other) : this(other.Model)
+        protected Folder(Folder other) : this(other.Model) {}
+
+        //----------------------------------------------------------------------
+        private Folder()
         {
+            Model = new(new());
         }
 
 
@@ -67,16 +70,8 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        public void Open()
-        {
-            Model.Open();
-        }
-
-        //----------------------------------------------------------------------
-        public void CopyPath()
-        {
-            Model.CopyPath();
-        }
+        public void Open() => Model.Open();
+        public void CopyPath() => Model.CopyPath();
 
 
         //----------------------------------------------------------------------
@@ -91,26 +86,26 @@ namespace Sidecab.Presenter
             switch (updateType)
             {
                 case Sidecab.Model.Folder.UpdateType.Initialize :
-
-                    _subFolders = new ObservableCollection<Folder>();
+                {
+                    _subFolders = [];
                     RaisePropertyChanged(nameof(SubFolders));
                     break;
-
+                }
                 case Sidecab.Model.Folder.UpdateType.Growing :
-
-                    AddSubFolders();
-                    RaisePropertyChanged(nameof(SubFolders));
+                {
+                    RefreshSubFolders();
                     break;
-
+                }
                 case Sidecab.Model.Folder.UpdateType.Finished :
-
+                {
                     _animationDuration = null;
                     break;
+                }
             }
         }
 
         //----------------------------------------------------------------------
-        private void AddSubFolders()
+        private void RefreshSubFolders()
         {
             if (_animationDuration is null)
             {
@@ -119,11 +114,11 @@ namespace Sidecab.Presenter
             }
 
             var actualCount = Model.SubFolders.Count;
-            if (actualCount > _subFolders.Count)
+            if (actualCount > SubFolders.Count)
             {
-                for (int i = _subFolders.Count; i < actualCount; i++)
+                for (int i = SubFolders.Count; i < actualCount; i++)
                 {
-                    AddSubdirectory(new(Model.SubFolders[i]));
+                    AddSubFolder(new(Model.SubFolders[i]));
                 }
             }
 
@@ -140,18 +135,18 @@ namespace Sidecab.Presenter
         private static extern int StrCmpLogicalW(string x, string y);
 
         //----------------------------------------------------------------------
-        private void AddSubdirectory(Folder folder)
+        private void AddSubFolder(Folder folder)
         {
-            for (int i = 0; i < _subFolders.Count; i++)
+            for (int i = 0; i < SubFolders.Count; i++)
             {
-                if (StrCmpLogicalW(_subFolders[i].Name, folder.Name) > 0)
+                if (StrCmpLogicalW(SubFolders[i].Name, folder.Name) > 0)
                 {
-                    App.Current.Dispatcher.Invoke(() => _subFolders.Insert(i, folder));
+                    App.Current.Dispatcher.Invoke(() => SubFolders.Insert(i, folder));
                     return;
                 }
             }
 
-            App.Current.Dispatcher.Invoke(() => _subFolders.Add(folder));
+            App.Current.Dispatcher.Invoke(() => SubFolders.Add(folder));
         }
     }
 }

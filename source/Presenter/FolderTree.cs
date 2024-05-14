@@ -8,8 +8,9 @@ namespace Sidecab.Presenter
     {
         public Selector<FolderRoot> RootSelector { get; } = new();
 
+
         private Model.FolderTree _model = new();
-        private List<Folder> _bookmarks = new();
+        private List<Folder> _bookmarks = [];
 
 
         //----------------------------------------------------------------------
@@ -52,7 +53,7 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        private void OnRootChanged(object sender, PropertyChangedEventArgs e)
+        private void OnRootChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Selector<FolderRoot>.Current))
             {

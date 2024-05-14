@@ -22,43 +22,42 @@ namespace Sidecab.Model
 
 
         public delegate void FreshnessUpdateHandler();
-        public event FreshnessUpdateHandler FreshnessUpdated;
+        public event FreshnessUpdateHandler? FreshnessUpdated;
 
-        public delegate void ChildrenUpdateHandler(Folder.UpdateType updateType);
-        public event ChildrenUpdateHandler ChildrenUpdated;
+        public delegate void ChildrenUpdateHandler(UpdateType updateType);
+        public event ChildrenUpdateHandler? ChildrenUpdated;
 
 
-        public Folder Parent { get; private set; }
-        public bool HasSubFolders { get; private set; } = false;
+        public Folder? Parent { get; private init; } = null;
+        public bool HasSubFolders { get; private init; } = false;
         public List<Folder> SubFolders { get; } = [];
-        public string Name { get; protected set; } = "";
+        public string Name { get; protected init; } = string.Empty;
 
 
+        private readonly FolderTree _tree;
         private readonly object _semaphoreForEnumeration = new();
 
 
         //----------------------------------------------------------------------
-        public Folder(DirectoryInfo info, Folder parent = null)
+        public Folder(FolderTree tree)
         {
-            var fullPath = Path.TrimEndingDirectorySeparator(info.FullName);
-            var location = Path.GetDirectoryName(fullPath);
+            _tree = tree;
+        }
 
-            Name = (location is null) ? fullPath : fullPath.Substring(location.Length);
-
+        //----------------------------------------------------------------------
+        public Folder(FolderTree tree, DirectoryInfo info, Folder parent) : this(tree)
+        {
+            Name = ExtractNameFrom(info);
             HasSubFolders = info.EnumerateDirectories().GetEnumerator().MoveNext();
             Parent = parent;
         }
 
-        //----------------------------------------------------------------------
-        protected Folder()
-        {
-        }
 
         //----------------------------------------------------------------------
         public void Open()
         {
             Process.Start("explorer.exe", GetFullPath());
-            FolderTree.Instance.NotifyFolder(this);
+            _tree.NotifyFolder(this);
         }
 
         //----------------------------------------------------------------------
@@ -70,13 +69,13 @@ namespace Sidecab.Model
         //----------------------------------------------------------------------
         public string GetFullPath()
         {
-            return (Parent?.GetFullPath() ?? "") + Name + "\\";
+            return (Parent?.GetFullPath() ?? string.Empty) + Name + "\\";
         }
 
         //----------------------------------------------------------------------
         public double GetFreshnessScale()
         {
-            return FolderTree.Instance.GetFolderFreshnessScale(this);
+            return _tree.GetFolderFreshnessScaleOf(this);
         }
 
         //----------------------------------------------------------------------
@@ -101,11 +100,19 @@ namespace Sidecab.Model
 
                 ChildrenUpdated?.Invoke(UpdateType.Initialize);
                 CollectSubFoldersOf(new(path));// call "growing" event inside it
-
                 ChildrenUpdated?.Invoke(UpdateType.Finished);
             });
         }
 
+
+        //----------------------------------------------------------------------
+        private static string ExtractNameFrom(DirectoryInfo info)
+        {
+            var fullPath = Path.TrimEndingDirectorySeparator(info.FullName);
+            var location = Path.GetDirectoryName(fullPath);
+
+            return (location is null) ? fullPath : fullPath[location.Length..];
+        }
 
         //----------------------------------------------------------------------
         private void CollectSubFoldersOf(DirectoryInfo info)
@@ -116,12 +123,12 @@ namespace Sidecab.Model
                 {
                     try
                     {
-                        Folder folder = new(child, this);
+                        Folder folder = new(_tree, child, this);
                         lock(SubFolders) { SubFolders.Add(folder); }
                     }
                     catch (UnauthorizedAccessException)
                     {
-                        return;// skip if access denied
+                        continue;// skip if access denied
                     }
 
                     ChildrenUpdated?.Invoke(UpdateType.Growing);

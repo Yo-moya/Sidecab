@@ -22,7 +22,7 @@ namespace Sidecab.Model
         }
 
 
-        private HashSet<Item> _historyList = new HashSet<Item>();
+        private HashSet<Item> _historyList = [];
         private int _maxFreshness = 10;
         private int _maxHistories = 10;
 
@@ -37,13 +37,14 @@ namespace Sidecab.Model
                 i.Folder.InvokeFreshnessUpdateEvent();
             }
 
-            Item existingItem;
-            Item item = new Item(folder);
-
-            if (_historyList.TryGetValue(item, out existingItem))
+            Item item = new(folder);
+            if (_historyList.TryGetValue(item, out var existingItem))
             {
-                existingItem.Freshness = MaxFreshness;
-                existingItem.Folder.InvokeFreshnessUpdateEvent();
+                if (existingItem is not null)
+                {
+                    existingItem.Freshness = MaxFreshness;
+                    existingItem.Folder.InvokeFreshnessUpdateEvent();
+                }
             }
             else
             {
@@ -63,10 +64,8 @@ namespace Sidecab.Model
         //----------------------------------------------------------------------
         public int GetFreshness(Folder folder)
         {
-            Item existingItem;
-            Item item = new Item(folder);
-
-            if (_historyList.TryGetValue(item, out existingItem))
+            Item item = new(folder);
+            if (_historyList.TryGetValue(item, out var existingItem))
             {
                 return existingItem.Freshness;
             }
@@ -98,9 +97,9 @@ namespace Sidecab.Model
             }
 
             //------------------------------------------------------------------
-            public bool Equals(Item other)
+            public bool Equals(Item? other)
             {
-                if (GetHashCode() == other.GetHashCode())
+                if (GetHashCode() == other?.GetHashCode())
                 {
                     return Path == other.Path;
                 }
