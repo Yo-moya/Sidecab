@@ -57,7 +57,7 @@ namespace Sidecab.Presenter
         {
             if (e.PropertyName == nameof(Selector<FolderRoot>.Current))
             {
-                RootSelector.Current?.CollectSubFolders();
+                RootSelector.Current?.StartRefreshChildren();
             }
         }
     }

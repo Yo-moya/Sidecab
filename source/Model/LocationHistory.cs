@@ -86,7 +86,7 @@ namespace Sidecab.Model
             public Item(Folder folder)
             {
                 Folder = folder;
-                Path = folder.GetFullPath();
+                Path = folder.FetchFullPath();
                 _hashCode = Path.GetHashCode();
             }
 

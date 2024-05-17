@@ -1,22 +1,18 @@
 ﻿
-using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Sidecab.Presenter
 {
     public class Folder : ObservableObject
     {
         public string Name => Model.Name;
-        public string Path => Model.GetFullPath();
-
+        public string Path => Model.FetchFullPath();
         public bool HasSubFolders => Model.HasSubFolders;
 
-        //----------------------------------------------------------------------
-        public ObservableCollection<Folder> SubFolders =>
-            (HasSubFolders && (Model.SubFolders.Count == 0))
-                ? _dummyList : _subFolders;
+        public ObservableCollection<Folder> SubFolders { get; } = [];
 
         //----------------------------------------------------------------------
         public double FontSize
@@ -26,47 +22,40 @@ namespace Sidecab.Presenter
                 var fontSize = App.Settings.FolderNameFontSize;
                 var fontSizeMax = App.Settings.FolderNameFontSizeMax;
                 var scale = Model?.GetFreshnessScale() ?? 0;
-
                 return (fontSizeMax - fontSize) * scale + fontSize;
             }
         }
 
 
         protected Model.Folder Model { get; private init; }
-
-        //----------------------------------------------------------------------
-        // A list used if the folder has children, but haven't collected yet.
-        // It makes a ListViewItem like "[+] Foo"
-        //----------------------------------------------------------------------
-        private static readonly ObservableCollection<Folder> _dummyList = [new()];
-
-        private ObservableCollection<Folder> _subFolders = [];
-        private Stopwatch? _animationDuration;
+        private static readonly Folder _dummyFolder = new();
 
 
         //----------------------------------------------------------------------
         public Folder(Model.Folder model)
         {
             Model = model;
-
             Model.FreshnessUpdated += OnFontSizeUpdated;
-            Model.ChildrenUpdated  += OnChildrenUpdated;
+
+            if (HasSubFolders)
+            {
+                SubFolders.Add(_dummyFolder);
+            }
         }
 
         //----------------------------------------------------------------------
         protected Folder(Folder other) : this(other.Model) {}
-
-        //----------------------------------------------------------------------
-        private Folder()
-        {
-            Model = new(new());
-        }
+        private Folder() => Model = new(new());
 
 
         //----------------------------------------------------------------------
-        public void CollectSubFolders()
+        public void StartRefreshChildren()
         {
-            Model.CollectSubFoldersAsync(true);
+            if (Monitor.TryEnter(SubFolders))
+            {
+                Task.Run(CollectSubFoldersOneByOne);
+                Monitor.Exit(SubFolders);
+            }
         }
 
         //----------------------------------------------------------------------
@@ -81,72 +70,42 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        private void OnChildrenUpdated(Model.Folder.UpdateType updateType)
+        private void CollectSubFoldersOneByOne()
         {
-            switch (updateType)
+            Monitor.Enter(SubFolders);
+            try
             {
-                case Sidecab.Model.Folder.UpdateType.Initialize :
+                App.Current.Dispatcher.Invoke(() => SubFolders.Clear());
+
+                foreach (var model in Model.SubFolders)
                 {
-                    _subFolders = [];
-                    RaisePropertyChanged(nameof(SubFolders));
-                    break;
+                    AddFolderInOrder(new(model));
                 }
-                case Sidecab.Model.Folder.UpdateType.Growing :
-                {
-                    RefreshSubFolders();
-                    break;
-                }
-                case Sidecab.Model.Folder.UpdateType.Finished :
-                {
-                    _animationDuration = null;
-                    break;
-                }
+            }
+            finally
+            {
+                Monitor.Exit(SubFolders);
             }
         }
 
         //----------------------------------------------------------------------
-        private void RefreshSubFolders()
-        {
-            if (_animationDuration is null)
-            {
-                _animationDuration = new Stopwatch();
-                _animationDuration.Start();
-            }
-
-            var actualCount = Model.SubFolders.Count;
-            if (actualCount > SubFolders.Count)
-            {
-                for (int i = SubFolders.Count; i < actualCount; i++)
-                {
-                    AddSubFolder(new(Model.SubFolders[i]));
-                }
-            }
-
-            // To keep step with the expanding animation of the tree-view
-            var delay = Math.Max(0, 16 - _animationDuration.ElapsedMilliseconds);
-            System.Threading.Thread.Sleep((int)delay);
-
-            _animationDuration.Reset();
-            _animationDuration.Start();
-        }
-
-
-        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        private static extern int StrCmpLogicalW(string x, string y);
-
-        //----------------------------------------------------------------------
-        private void AddSubFolder(Folder folder)
+        private void AddFolderInOrder(Folder subFolder)
         {
             for (int i = 0; i < SubFolders.Count; i++)
             {
-                if (StrCmpLogicalW(SubFolders[i].Name, folder.Name) > 0)
+                // Do natural numeric sorting
+                // like "1", "2", "10"... instead of "1", "10", "2"...
+                if (StrCmpLogicalW(SubFolders[i].Name, subFolder.Name) > 0)
                 {
-                    App.Current.Dispatcher.Invoke(() => SubFolders.Insert(i, folder));
+                    App.Current.Dispatcher.Invoke(() => SubFolders.Insert(i, subFolder));
                     return;
                 }
             }
 
-            App.Current.Dispatcher.Invoke(() => SubFolders.Add(folder));
+            App.Current.Dispatcher.Invoke(() => SubFolders.Add(subFolder));
         }
+
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        private static extern int StrCmpLogicalW(string x, string y);
     }
 }

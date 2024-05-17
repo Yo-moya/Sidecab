@@ -4,8 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace Sidecab.Model
 {
@@ -24,18 +23,48 @@ namespace Sidecab.Model
         public delegate void FreshnessUpdateHandler();
         public event FreshnessUpdateHandler? FreshnessUpdated;
 
-        public delegate void ChildrenUpdateHandler(UpdateType updateType);
-        public event ChildrenUpdateHandler? ChildrenUpdated;
-
 
         public Folder? Parent { get; private init; } = null;
-        public bool HasSubFolders { get; private init; } = false;
-        public List<Folder> SubFolders { get; } = [];
         public string Name { get; protected init; } = string.Empty;
+
+        //----------------------------------------------------------------------
+        public bool HasSubFolders
+        {
+            get
+            {
+                // Returns true if at least one sub folder
+                foreach (var _ in SubFolders) return true;
+                return false;
+            }
+        }
+
+        //----------------------------------------------------------------------
+        public IEnumerable<Folder> SubFolders
+        {
+            get
+            {
+                DirectoryInfo info = new(FetchFullPath());
+                IEnumerator<DirectoryInfo> enumerator;
+
+                try
+                {
+                    enumerator = info.EnumerateDirectories().GetEnumerator();
+                }
+                catch
+                {
+                    yield break;
+                }
+
+                while (enumerator.MoveNext())
+                {
+                    // We must put yield return outside of try block
+                    yield return new(_tree, enumerator.Current, this);
+                }
+            }
+        }
 
 
         private readonly FolderTree _tree;
-        private readonly object _semaphoreForEnumeration = new();
 
 
         //----------------------------------------------------------------------
@@ -47,8 +76,7 @@ namespace Sidecab.Model
         //----------------------------------------------------------------------
         public Folder(FolderTree tree, DirectoryInfo info, Folder parent) : this(tree)
         {
-            Name = ExtractNameFrom(info);
-            HasSubFolders = info.EnumerateDirectories().GetEnumerator().MoveNext();
+            Name = info.Name;
             Parent = parent;
         }
 
@@ -56,20 +84,22 @@ namespace Sidecab.Model
         //----------------------------------------------------------------------
         public void Open()
         {
-            Process.Start("explorer.exe", GetFullPath());
+            Process.Start("explorer.exe", FetchFullPath());
             _tree.NotifyFolder(this);
         }
 
         //----------------------------------------------------------------------
         public void CopyPath()
         {
-            Clipboard.SetText(GetFullPath());
+            Clipboard.SetText(FetchFullPath());
         }
 
         //----------------------------------------------------------------------
-        public string GetFullPath()
+        public string FetchFullPath()
         {
-            return (Parent?.GetFullPath() ?? string.Empty) + Name + "\\";
+            StringBuilder stringBuilder = new();
+            CollectFolderNames(stringBuilder);
+            return stringBuilder.ToString();
         }
 
         //----------------------------------------------------------------------
@@ -85,55 +115,15 @@ namespace Sidecab.Model
         }
 
         //----------------------------------------------------------------------
-        public async void CollectSubFoldersAsync(bool force)
+        private void CollectFolderNames(StringBuilder stringBuilder)
         {
-            var path = GetFullPath();
-            if (path.Length == 0) return;
-
-            if (Monitor.TryEnter(_semaphoreForEnumeration)) await Task.Run(() =>
+            if (Parent is not null)
             {
-                lock(SubFolders)
-                {
-                    if ((force == false) && (SubFolders.Count > 0)) return;
-                    SubFolders.Clear();
-                }
-
-                ChildrenUpdated?.Invoke(UpdateType.Initialize);
-                CollectSubFoldersOf(new(path));// call "growing" event inside it
-                ChildrenUpdated?.Invoke(UpdateType.Finished);
-            });
-        }
-
-
-        //----------------------------------------------------------------------
-        private static string ExtractNameFrom(DirectoryInfo info)
-        {
-            var fullPath = Path.TrimEndingDirectorySeparator(info.FullName);
-            var location = Path.GetDirectoryName(fullPath);
-
-            return (location is null) ? fullPath : fullPath[location.Length..];
-        }
-
-        //----------------------------------------------------------------------
-        private void CollectSubFoldersOf(DirectoryInfo info)
-        {
-            foreach (var child in info.EnumerateDirectories())
-            {
-                if (child.Attributes.HasFlag(FileAttributes.System) == false)
-                {
-                    try
-                    {
-                        Folder folder = new(_tree, child, this);
-                        lock(SubFolders) { SubFolders.Add(folder); }
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                        continue;// skip if access denied
-                    }
-
-                    ChildrenUpdated?.Invoke(UpdateType.Growing);
-                }
+                Parent.CollectFolderNames(stringBuilder);
             }
+
+            stringBuilder.Append(Name);
+            stringBuilder.Append('\\');
         }
     }
 }

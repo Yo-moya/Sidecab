@@ -136,7 +136,7 @@ namespace Sidecab.View
                     if ((treeViewItem.IsExpanded == false) &&
                         (treeViewItem.DataContext is Presenter.Folder folder))
                     {
-                        folder.CollectSubFolders();
+                        folder.StartRefreshChildren();
                     }
 
                     treeViewItem.IsExpanded = !treeViewItem.IsExpanded;
@@ -172,7 +172,7 @@ namespace Sidecab.View
             {
                 if (treeViewItem.DataContext is Presenter.Folder folder)
                 {
-                    folder.CollectSubFolders();
+                    folder.StartRefreshChildren();
                 }
 
                 _clickTimer.Start();
