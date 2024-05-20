@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,33 +23,6 @@ namespace Sidecab.View
             _presenter.RefreshView();
         }
 
-        //----------------------------------------------------------------------
-        private bool CorrectInputText(object sender, string input)
-        {
-            if (sender is not TextBox textBox) return false;
-
-            var selection = textBox.SelectionStart;
-            var corrected = Regex.Replace(input, @"\D", "");
-            var wholeText = textBox.Text
-                .Remove(textBox.SelectionStart, textBox.SelectionLength)
-                .Insert(textBox.SelectionStart, corrected);
-
-            textBox.Text = wholeText;
-            textBox.SelectionStart = selection + corrected.Length;
-            textBox.SelectionLength = 0;
-
-            return true;
-        }
-
-        //----------------------------------------------------------------------
-        private void UpdateTextBoxSource(object sender)
-        {
-            if (sender is TextBox textBox)
-            {
-                var binding = textBox.GetBindingExpression(TextBox.TextProperty);
-                binding?.UpdateSource();
-            }
-        }
 
         //----------------------------------------------------------------------
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -71,8 +43,9 @@ namespace Sidecab.View
         {
             if (e.SourceDataObject.GetData(DataFormats.UnicodeText) is string pasted)
             {
-                if (CorrectInputText(sender, pasted))
+                if (sender is TextBox textBox)
                 {
+                    Presenter.SettingsWindow.CorrectTextBoxInput(textBox, pasted);
                     e.CancelCommand();
                     e.Handled = true;
                 }
@@ -82,8 +55,9 @@ namespace Sidecab.View
         //----------------------------------------------------------------------
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (CorrectInputText(sender, e.Text))
+            if (sender is TextBox textBox)
             {
+                Presenter.SettingsWindow.CorrectTextBoxInput(textBox, e.Text);
                 e.Handled = true;
             }
         }
@@ -94,19 +68,29 @@ namespace Sidecab.View
             switch (e.Key)
             {
                 case Key.Escape :
+                {
                     _presenter.RefreshView();
                     break;
-
+                }
                 case Key.Enter :
-                    UpdateTextBoxSource(sender);
+                {
+                    if (sender is TextBox textBox)
+                    {
+                        Presenter.SettingsWindow.UpdateTextBoxSource(textBox);
+                    }
                     break;
+                }
             }
         }
 
         //----------------------------------------------------------------------
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            UpdateTextBoxSource(sender);
+            if (sender is TextBox textBox)
+            {
+                Presenter.SettingsWindow.UpdateTextBoxSource(textBox);
+            }
         }
+
     }
 }

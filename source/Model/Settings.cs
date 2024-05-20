@@ -14,8 +14,8 @@ namespace Sidecab.Model
     //==========================================================================
     public sealed class Settings
     {
-        public static int MinTreeWidth => 100;
-        public static int MinFolderNameFontSize => 4;
+        public static int TreeWidthMin => 100;
+        public static int FolderNameFontSizeMin => 4;
 
         //----------------------------------------------------------------------
         public int TreeWidth
@@ -23,7 +23,7 @@ namespace Sidecab.Model
             get => _treeWidth;
             set
             {
-                _treeWidth = Math.Max(MinTreeWidth, value);
+                _treeWidth = Math.Max(TreeWidthMin, value);
             }
         }
 
@@ -33,22 +33,21 @@ namespace Sidecab.Model
             get => _folderNameFontSize;
             set
             {
-                _folderNameFontSize = Math.Max(MinFolderNameFontSize, value);
-
-                if (FolderNameFontSize > FolderNameFontSizeLarge)
+                _folderNameFontSize = Math.Max(FolderNameFontSizeMin, value);
+                if (FolderNameFontSize > FolderNameFontSizeMax)
                 {
-                    FolderNameFontSizeLarge = FolderNameFontSize;
+                    FolderNameFontSizeMax = FolderNameFontSize;
                 }
             }
         }
 
         //----------------------------------------------------------------------
-        public int FolderNameFontSizeLarge
+        public int FolderNameFontSizeMax
         {
-            get => _folderNameFontSizeLarge;
+            get => _folderNameFontSizeMax;
             set
             {
-                _folderNameFontSizeLarge = Math.Max(FolderNameFontSize, value);
+                _folderNameFontSizeMax = Math.Max(FolderNameFontSize, value);
             }
         }
 
@@ -58,7 +57,7 @@ namespace Sidecab.Model
 
         private int _treeWidth = 200;
         private int _folderNameFontSize = 12;
-        private int _folderNameFontSizeLarge = 12;
+        private int _folderNameFontSizeMax = 14;
 
 
         //----------------------------------------------------------------------

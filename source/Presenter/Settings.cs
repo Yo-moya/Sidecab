@@ -32,8 +32,8 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public int FolderNameFontSizeMax
         {
-            get => _model.FolderNameFontSizeLarge;
-            set => ModifyNestedProperty(_model, nameof(Model.Settings.FolderNameFontSizeLarge), value);
+            get => _model.FolderNameFontSizeMax;
+            set => ModifyNestedProperty(_model, nameof(Model.Settings.FolderNameFontSizeMax), value);
         }
 
         //----------------------------------------------------------------------
