@@ -57,13 +57,9 @@ namespace Sidecab.Presenter
         //----------------------------------------------------------------------
         public async void LoadAsync()
         {
-            var model = await Task.Run(() => Model.Settings.Load(new IO.SettingsJson()));
-            if (model is not null)
-            {
-                _model = model;
-                Loaded?.Invoke();
-                RaiseAllPropertiesChanged();
-            }
+            _model = await Task.Run(() => Model.Settings.Load(new IO.SettingsJson()));
+            Loaded?.Invoke();
+            RaiseAllPropertiesChanged();
         }
 
         //----------------------------------------------------------------------
