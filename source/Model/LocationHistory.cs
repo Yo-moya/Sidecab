@@ -51,8 +51,8 @@ namespace Sidecab.Model
                     _historyList.RemoveWhere((Item i) => i.Freshness <= 0);
                 }
 
-                newItem.Freshness = MaxFreshness;
                 _historyList.Add(newItem);
+                newItem.Freshness = MaxFreshness;
             }
         }
 
