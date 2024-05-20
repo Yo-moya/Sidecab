@@ -86,7 +86,7 @@
                 Grid.Row="3" Grid.Column="1" Margin="{StaticResource EditBoxMargin}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 TextAlignment="Right" InputMethod.IsInputMethodEnabled="False"
-                Text="{Binding TreeFontSizeAsText, UpdateSourceTrigger=Explicit}"
+                Text="{Binding FolderNameFontSizeAsText, UpdateSourceTrigger=Explicit}"
                 PreviewTextInput="TextBox_PreviewTextInput"
                 KeyDown="TextBox_KeyDown"
                 LostFocus="TextBox_LostFocus"/>
@@ -100,7 +100,7 @@
                 Grid.Row="4" Grid.Column="1" Margin="{StaticResource EditBoxMargin}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 TextAlignment="Right" InputMethod.IsInputMethodEnabled="False"
-                Text="{Binding TreeFontSizeLargeAsText, UpdateSourceTrigger=Explicit}"
+                Text="{Binding FolderNameFontSizeMaxAsText, UpdateSourceTrigger=Explicit}"
                 PreviewTextInput="TextBox_PreviewTextInput"
                 KeyDown="TextBox_KeyDown"
                 LostFocus="TextBox_LostFocus"/>
