@@ -1,5 +1,4 @@
 ﻿
-using System;
 using System.IO;
 using System.Windows;
 using System.Diagnostics;
@@ -32,7 +31,7 @@ namespace Sidecab.Model
         {
             get
             {
-                // Returns true if at least one sub folder
+                // Returns true if it contains at least one sub folder
                 foreach (var _ in SubFolders) return true;
                 return false;
             }
@@ -57,7 +56,7 @@ namespace Sidecab.Model
 
                 while (enumerator.MoveNext())
                 {
-                    // We must put yield return outside of try block
+                    // We must put yield-return outside of try-block
                     yield return new(_tree, enumerator.Current, this);
                 }
             }
@@ -117,10 +116,7 @@ namespace Sidecab.Model
         //----------------------------------------------------------------------
         private void CollectFolderNames(StringBuilder stringBuilder)
         {
-            if (Parent is not null)
-            {
-                Parent.CollectFolderNames(stringBuilder);
-            }
+            Parent?.CollectFolderNames(stringBuilder);
 
             stringBuilder.Append(Name);
             stringBuilder.Append('\\');
