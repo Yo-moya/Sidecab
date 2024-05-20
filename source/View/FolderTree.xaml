@@ -34,15 +34,19 @@
         </Grid.ColumnDefinitions>
 
         <Button x:Name="Button_AppMenu"
-            Grid.Row="0" Grid.Column="0" Margin="4" Padding="4,4" Focusable="False"
+            Grid.Row="0" Grid.Column="0"
+            Margin="2" Padding="2,0" Focusable="False"
             Height="{Binding Height, ElementName=ComboBox_RootSelector}"
             Width="{Binding Height, RelativeSource={RelativeSource Self}}"
             Click="Button_AppMenu_Click">
+            <Label Content="..."/>
         </Button>
 
         <ComboBox x:Name="ComboBox_RootSelector"
-            Grid.Row="0" Grid.Column="1" Margin="4,4,16,4"
-            HorizontalAlignment="Stretch" Focusable="False"
+            Grid.Row="0" Grid.Column="1"
+            Margin="2,2,2,2" Focusable="False"
+            HorizontalAlignment="Stretch"
+            VerticalContentAlignment="Center"
             ItemsSource="{Binding RootSelector.List}" SelectedItem="{Binding RootSelector.Current}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -52,7 +56,8 @@
         </ComboBox>
 
         <TreeView x:Name="TreeView_Folders"
-            Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,4"
+            Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+            Margin="2,0,2,2" Padding="0,8,0,4"
             VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
             VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
             ItemsSource="{Binding RootSelector.Current.SubFolders}"
