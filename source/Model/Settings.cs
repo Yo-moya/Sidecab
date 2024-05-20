@@ -55,7 +55,7 @@ namespace Sidecab.Model
         public int DisplayIndex { get; set; }
 
 
-        private int _treeWidth = 200;
+        private int _treeWidth = 300;
         private int _folderNameFontSize = 12;
         private int _folderNameFontSizeMax = 14;
 
