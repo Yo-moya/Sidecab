@@ -11,7 +11,7 @@ namespace Sidecab.Presenter
                 if (base.Model is Model.Drive drive)
                 {
                     // 'Name' property contains drive letter
-                    return drive.Name + " [ " + drive.Label + " ]";
+                    return $"{drive.Name} {drive.Label}";
                 }
 
                 return "pinned // " + Name;
