@@ -29,17 +29,17 @@ namespace Sidecab.View
 
             Top    = workingArea.Top;
             Height = workingArea.Height;
-            Left   = workingArea.Left;
             Width  = App.Settings.TreeWidth;
 
             if (App.Settings.DockPosition == Type.DockPosition.Left)
             {
+                Left = workingArea.Left;
                 Border_FolderTree.RenderTransformOrigin = new Point(0, 0);
             }
             else
             {
+                Left = workingArea.Right - App.Settings.TreeWidth;
                 Border_FolderTree.RenderTransformOrigin = new Point(1, 0);
-                Left -= App.Settings.TreeWidth;
             }
 
             if (TryFindResource("Storyboard_AnimToShow") is Storyboard storyboard)
