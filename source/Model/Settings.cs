@@ -52,7 +52,6 @@ namespace Sidecab.Model
         }
 
         public Type.DockPosition DockPosition { get; set; }
-        public int DisplayIndex { get; set; }
 
 
         private int _treeWidth = 300;

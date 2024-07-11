@@ -33,18 +33,6 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        public Selector<string> DisplayIndexSelector
-        {
-            get
-            {
-                _displayIndexSelector.Current =
-                    _displayIndexSelector.List[Settings.DisplayIndex];
-
-                return _displayIndexSelector;
-            }
-        }
-
-        //----------------------------------------------------------------------
         public Selector<string> DockPositionSelector
         {
             get
@@ -56,7 +44,6 @@ namespace Sidecab.Presenter
             }
         }
 
-        private readonly Selector<string> _displayIndexSelector;
         private readonly Selector<string> _dockPositionSelector;
 
         [GeneratedRegex(@"\D")]
@@ -75,9 +62,6 @@ namespace Sidecab.Presenter
             {
                 dockPositionList.Add(dockPos?.ToString() ?? string.Empty);
             }
-
-            _displayIndexSelector = new Selector<string>(displayIndexList);
-            _displayIndexSelector.PropertyChanged += OnDisplayIndexChanged;
 
             _dockPositionSelector = new Selector<string>(dockPositionList);
             _dockPositionSelector.PropertyChanged += OnDockPositionChanged;
@@ -139,23 +123,11 @@ namespace Sidecab.Presenter
                 return;
             }
 
-            if (e.PropertyName == nameof(Settings.DisplayIndex))
-            {
-                DisplayIndexSelector.Index = Settings.DisplayIndex;
-                return;
-            }
-
             if (e.PropertyName == nameof(Settings.DockPosition))
             {
                 DockPositionSelector.Index = (int)Settings.DockPosition;
                 return;
             }
-        }
-
-        //----------------------------------------------------------------------
-        private void OnDisplayIndexChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            Settings.DisplayIndex = _displayIndexSelector.Index;
         }
 
         //----------------------------------------------------------------------

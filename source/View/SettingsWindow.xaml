@@ -8,8 +8,7 @@
     TextElement.FontWeight="Medium"
     TextElement.FontSize="14"
     Title="Sidecab - settings"
-    Height="400" Width="500" MinHeight="450" MinWidth="500"
-    Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+    Height="450" Width="500" MinHeight="450" MinWidth="500"
     WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False"
     Closing="Window_Closing" SourceInitialized="Window_SourceInitialized">
 
@@ -25,9 +24,7 @@
 
         <Grid VerticalAlignment="Center" Margin="24,8,24,8">
 
-
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
@@ -41,20 +38,9 @@
 
 
             <TextBlock
-                Grid.Row="0" Grid.Column="0" Margin="{StaticResource CaptionMargin}"
-                VerticalAlignment="Center" HorizontalAlignment="Right"
-                Text="Display"/>
-
-            <ComboBox x:Name="ComboBox_Display"
-                Grid.Row="0" Grid.Column="1" Margin="{StaticResource EditBoxMargin}"
-                VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding DisplayIndexSelector.List}"
-                SelectedItem="{Binding DisplayIndexSelector.Current}"/>
-
-            <TextBlock
                 Grid.Row="1" Grid.Column="0" Margin="{StaticResource CaptionMargin}"
                 VerticalAlignment="Center" HorizontalAlignment="Right"
-                Text="Window position"/>
+                Text="Dock position"/>
 
             <ComboBox x:Name="ComboBox_Position"
                 Grid.Row="1" Grid.Column="1" Margin="{StaticResource EditBoxMargin}"
@@ -65,7 +51,7 @@
             <TextBlock
                 Grid.Row="2" Grid.Column="0" Margin="{StaticResource CaptionMargin}"
                 VerticalAlignment="Center" HorizontalAlignment="Right"
-                Text="Folder tree width"/>
+                Text="Window width"/>
 
             <TextBox x:Name="TextBox_TreeWidth"
                 Grid.Row="2" Grid.Column="1" Margin="{StaticResource EditBoxMargin}"
@@ -80,7 +66,7 @@
             <TextBlock
                 Grid.Row="3" Grid.Column="0" Margin="{StaticResource CaptionMargin}"
                 VerticalAlignment="Center" HorizontalAlignment="Right"
-                Text="Folder name text size"/>
+                Text="Folder name size"/>
 
             <TextBox x:Name="TextBox_FontSize"
                 Grid.Row="3" Grid.Column="1" Margin="{StaticResource EditBoxMargin}"
@@ -104,7 +90,6 @@
                 PreviewTextInput="TextBox_PreviewTextInput"
                 KeyDown="TextBox_KeyDown"
                 LostFocus="TextBox_LostFocus"/>
-
 
         </Grid>
     </ScrollViewer>

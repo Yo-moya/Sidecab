@@ -37,13 +37,6 @@ namespace Sidecab.Presenter
         }
 
         //----------------------------------------------------------------------
-        public int DisplayIndex
-        {
-            get => _model.DisplayIndex;
-            set => ModifyNestedProperty(_model, nameof(Model.Settings.DisplayIndex), value);
-        }
-
-        //----------------------------------------------------------------------
         public Type.DockPosition DockPosition
         {
             get => _model.DockPosition;
